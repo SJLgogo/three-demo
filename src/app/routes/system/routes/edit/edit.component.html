@@ -1,0 +1,11 @@
+<div class="modal-header">
+  <div class="modal-title">编辑路由</div>
+</div>
+<nz-spin *ngIf="!i" class="modal-spin"></nz-spin>
+<div>
+  <json-editor #jsonEditor [options]="editorOptions" [data]="i"></json-editor>
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">关闭</button>
+  <button nz-button type="submit" nzType="primary" (click)="save()" [nzLoading]="http.loading">保存</button>
+</div>

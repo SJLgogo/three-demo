@@ -1,0 +1,6 @@
+<page-header [action]="phActionTpl">
+  <ng-template #phActionTpl>
+    <button (click)="add()" nz-button nzType="primary">添加字典类型</button>
+  </ng-template>
+</page-header>
+<st #st [data]="url" [columns]="columns"></st>

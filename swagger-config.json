@@ -1,0 +1,708 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:10197",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "systemDictType",
+      "description": "数据字典类型管理"
+    },
+    {
+      "name": "systemDictData",
+      "description": "数据字典管理"
+    }
+  ],
+  "paths": {
+    "/dict-type": {
+      "put": {
+        "tags": [
+          "systemDictType"
+        ],
+        "summary": "修改字典类型接口",
+        "operationId": "updateSystemDictType",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SystemDictTypeDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpResultSystemDictTypeDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "systemDictType"
+        ],
+        "summary": "添加字典类型接口",
+        "operationId": "addSystemDictType",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SystemDictTypeDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpResultSystemDictTypeDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dict-type/page-all": {
+      "post": {
+        "tags": [
+          "systemDictType"
+        ],
+        "summary": "分页查询接口",
+        "description": "分页查询接口",
+        "operationId": "pageSystemDictTypeAll",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BaseQuery"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpResultPageSystemDictTypeDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dict-type/desensitization": {
+      "post": {
+        "tags": [
+          "systemDictType"
+        ],
+        "summary": "数据脱敏测试接口",
+        "operationId": "desensitization",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpResultUser"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dict-data/page-all": {
+      "post": {
+        "tags": [
+          "systemDictData"
+        ],
+        "summary": "分页查询接口",
+        "description": "分页查询接口",
+        "operationId": "pageSystemDictDataAll",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BaseQuery"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpResultPageSystemDictDataDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dict-type/{id}": {
+      "get": {
+        "tags": [
+          "systemDictType"
+        ],
+        "summary": "通过id查询接口",
+        "description": "通过id查询接口",
+        "operationId": "findSystemDictTypeDtoById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpResultSystemDictTypeDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "systemDictType"
+        ],
+        "summary": "删除字典类型接口",
+        "operationId": "deleteSystemDictTypeById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpResultString"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dict-type/find-all": {
+      "get": {
+        "tags": [
+          "systemDictType"
+        ],
+        "summary": "全量查询接口",
+        "description": "全量查询接口",
+        "operationId": "findSystemDictTypeAll",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpResultListSystemDictTypeDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dict-data/{id}": {
+      "get": {
+        "tags": [
+          "systemDictData"
+        ],
+        "summary": "通过id查询接口",
+        "description": "通过id查询接口",
+        "operationId": "findSystemDictDataDtoById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpResultSystemDictDataDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "systemDictData"
+        ],
+        "summary": "通过id逻辑删除接口",
+        "description": "通过id逻辑删除接口",
+        "operationId": "deleteSystemDictDataById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpResultString"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dict-data/find-all": {
+      "get": {
+        "tags": [
+          "systemDictData"
+        ],
+        "summary": "全量查询接口",
+        "description": "全量查询接口",
+        "operationId": "findSystemDictDataAll",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/HttpResultListSystemDictDataDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SystemDictTypeDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "HttpResultSystemDictTypeDto": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/SystemDictTypeDto"
+          }
+        }
+      },
+      "BaseQuery": {
+        "type": "object",
+        "properties": {
+          "pageSize": {
+            "type": "integer",
+            "description": "分页大小",
+            "format": "int32",
+            "default": 20
+          },
+          "pageNo": {
+            "type": "integer",
+            "description": "页数",
+            "format": "int32"
+          }
+        }
+      },
+      "HttpResultPageSystemDictTypeDto": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/PageSystemDictTypeDto"
+          }
+        }
+      },
+      "PageSystemDictTypeDto": {
+        "type": "object",
+        "properties": {
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SystemDictTypeDto"
+            }
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/Sort"
+          },
+          "empty": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PageableObject": {
+        "type": "object",
+        "properties": {
+          "paged": {
+            "type": "boolean"
+          },
+          "unpaged": {
+            "type": "boolean"
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "offset": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/Sort"
+          }
+        }
+      },
+      "Sort": {
+        "type": "object",
+        "properties": {
+          "sorted": {
+            "type": "boolean"
+          },
+          "unsorted": {
+            "type": "boolean"
+          },
+          "empty": {
+            "type": "boolean"
+          }
+        }
+      },
+      "HttpResultUser": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/User"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "idCard": {
+            "type": "string"
+          },
+          "mobile": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          }
+        }
+      },
+      "HttpResultPageSystemDictDataDto": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/PageSystemDictDataDto"
+          }
+        }
+      },
+      "PageSystemDictDataDto": {
+        "type": "object",
+        "properties": {
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SystemDictDataDto"
+            }
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/Sort"
+          },
+          "empty": {
+            "type": "boolean"
+          }
+        }
+      },
+      "SystemDictDataDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "systemDictType": {
+            "$ref": "#/components/schemas/SystemDictTypeDto"
+          },
+          "label": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          },
+          "dictSort": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "HttpResultListSystemDictTypeDto": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SystemDictTypeDto"
+            }
+          }
+        }
+      },
+      "HttpResultSystemDictDataDto": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "$ref": "#/components/schemas/SystemDictDataDto"
+          }
+        }
+      },
+      "HttpResultListSystemDictDataDto": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SystemDictDataDto"
+            }
+          }
+        }
+      },
+      "HttpResultString": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "data": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
