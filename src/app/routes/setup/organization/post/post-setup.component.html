@@ -1,0 +1,14 @@
+<div class="modal-header">
+  <div class="modal-title">[{{ organization.name }}]岗位设置</div>
+</div>
+
+<div style="margin-bottom: 8px">
+  <button nzType="primary" nz-button (click)="addPost({})"><i nz-icon nzType="plus"></i>新增岗位</button>
+</div>
+
+<st #st [data]="postList" [columns]="columns"></st>
+
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">关闭</button>
+  <button nz-button type="submit" nzType="primary" (click)="save()" [nzLoading]="http.loading">保存</button>
+</div>
