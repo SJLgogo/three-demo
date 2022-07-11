@@ -32,6 +32,8 @@ import { SystemContactPostEditComponent } from './organization/post/post-edit.co
 import { SystemContactOrgEditComponent } from './organization/org/org-edit.component';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzTreeModule } from 'ng-zorro-antd/tree';
+import {NzCollapseModule} from "ng-zorro-antd/collapse";
+import {SetupRoutingModule} from "./setup-routing.module";
 
 const COMPONENTS: Array<Type<void>> = [
   SetupIndexComponent,
@@ -63,7 +65,7 @@ const COMPONENTS: Array<Type<void>> = [
 ];
 
 @NgModule({
-  imports: [SharedModule, SystemRoutingModule, NgJsonEditorModule, NzEmptyModule, NzTreeModule],
+  imports: [SharedModule, SystemRoutingModule, NgJsonEditorModule, NzEmptyModule, NzTreeModule,NzCollapseModule,SetupRoutingModule],
   declarations: COMPONENTS,
   providers: []
 })

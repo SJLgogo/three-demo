@@ -25,7 +25,7 @@ export class SetupContactComponent implements OnInit {
   searchValue: any = '';
   // -----------标签页
   activeTabIndex = 0;
-  panels = [];
+  panels:any = [];
   // ------------------------人员table
   employeeTableTitle = '【组织人员信息】';
   // ------------------------标签列表
