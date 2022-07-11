@@ -31,6 +31,51 @@
           "link": "/setup/security/resource-menu"
         }
       ]
+    },
+    {
+      "text": "system",
+      "i18n": "config.system",
+      "group": true,
+      "hideInBreadcrumb": true,
+      "children": [
+        {
+          "text": "system.routes",
+          "i18n": "system.routes",
+          "icon": "anticon-cloud",
+          "link": "/system/routes",
+          "reuse": false
+        },
+        {
+          "text": "system.jdl",
+          "i18n": "system.jdl",
+          "icon": "anticon-cloud",
+          "link": "/system/jdl",
+          "reuse": false
+        },
+        {
+          "text": "system.dict.data",
+          "i18n": "system.dict.data",
+          "icon": "anticon-cloud",
+          "link": "/dict/data",
+          "reuse": false
+        },
+        {
+          "text": "system.schedule",
+          "i18n": "system.schedule",
+          "icon": "anticon-cloud",
+          "externalLink": "/api/service/schedule/platform-schedule",
+          "target": "_blank",
+          "reuse": false
+        },
+        {
+          "text": "system.apiDoc",
+          "i18n": "system.apiDoc",
+          "icon": "anticon-cloud",
+          "externalLink": "/api/service/api-doc/doc.html#/home",
+          "target": "_blank",
+          "reuse": false
+        }
+      ]
     }
   ]
 }
