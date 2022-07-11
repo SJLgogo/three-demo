@@ -8,6 +8,10 @@ import { AlainThemeModule } from '@delon/theme';
 
 import { SHARED_DELON_MODULES } from './shared-delon.module';
 import { SHARED_ZORRO_MODULES } from './shared-zorro.module';
+import { SetupContactSelectComponent } from './components/contact-select/contact-select.component';
+import { NzCollapseModule } from 'ng-zorro-antd/collapse';
+import { NzTreeModule } from 'ng-zorro-antd/tree';
+import { SelectEmployeeButtonComponent } from './components/select-employee-button/select-employee-button.component';
 
 // #region third libs
 // import { NgxTinymceModule } from 'ngx-tinymce';
@@ -17,7 +21,7 @@ const THIRDMODULES: Array<Type<any>> = [];
 // #endregion
 
 // #region your componets & directives
-const COMPONENTS: Array<Type<any>> = [];
+const COMPONENTS: Array<Type<any>> = [SetupContactSelectComponent,SelectEmployeeButtonComponent];
 const DIRECTIVES: Array<Type<any>> = [];
 
 // #endregion
@@ -34,7 +38,9 @@ const DIRECTIVES: Array<Type<any>> = [];
     ...SHARED_DELON_MODULES,
     ...SHARED_ZORRO_MODULES,
     // third libs
-    ...THIRDMODULES
+    ...THIRDMODULES,
+    NzCollapseModule,
+    NzTreeModule
   ],
   declarations: [
     // your components

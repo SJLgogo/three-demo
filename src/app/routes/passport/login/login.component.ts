@@ -3,9 +3,8 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
 import { Router } from '@angular/router';
 import { StartupService } from '@core';
 import { ReuseTabService } from '@delon/abc/reuse-tab';
-import { DA_SERVICE_TOKEN, ITokenService, SocialOpenType, SocialService } from '@delon/auth';
+import { DA_SERVICE_TOKEN, ITokenService, SocialService } from '@delon/auth';
 import { _HttpClient, SettingsService } from '@delon/theme';
-import { environment } from '@env/environment';
 import { NzTabChangeEvent } from 'ng-zorro-antd/tabs';
 import { finalize } from 'rxjs/operators';
 
@@ -31,7 +30,7 @@ export class UserLoginComponent implements OnDestroy {
     private cdr: ChangeDetectorRef
   ) {
     this.form = fb.group({
-      userName: [null, [Validators.required, Validators.pattern(/^(admin|user)$/)]],
+      userName: [null, [Validators.required]],
       password: [null, [Validators.required]],
       mobile: [null, [Validators.required, Validators.pattern(/^1\d{10}$/)]],
       captcha: [null, [Validators.required]],
@@ -117,8 +116,9 @@ export class UserLoginComponent implements OnDestroy {
     this.http
       .post('/api/service/portal/login?_allow_anonymous=true', {
         type: this.type,
-        userName: this.userName.value,
-        password: this.password.value
+        account: this.userName.value,
+        password: this.password.value,
+        corpId: 'wwcfaef162fa2a9cfd'
       })
       .pipe(
         finalize(() => {
@@ -147,47 +147,6 @@ export class UserLoginComponent implements OnDestroy {
           this.router.navigateByUrl(url);
         });
       });
-  }
-
-  // #region social
-
-  open(type: string, openType: SocialOpenType = 'href'): void {
-    let url = ``;
-    let callback = ``;
-    if (environment.production) {
-      callback = `https://ng-alain.github.io/ng-alain/#/passport/callback/${type}`;
-    } else {
-      callback = `http://localhost:4200/#/passport/callback/${type}`;
-    }
-    switch (type) {
-      case 'auth0':
-        url = `//cipchk.auth0.com/login?client=8gcNydIDzGBYxzqV0Vm1CX_RXH-wsWo5&redirect_uri=${decodeURIComponent(callback)}`;
-        break;
-      case 'github':
-        url = `//github.com/login/oauth/authorize?client_id=9d6baae4b04a23fcafa2&response_type=code&redirect_uri=${decodeURIComponent(
-          callback
-        )}`;
-        break;
-      case 'weibo':
-        url = `https://api.weibo.com/oauth2/authorize?client_id=1239507802&response_type=code&redirect_uri=${decodeURIComponent(callback)}`;
-        break;
-    }
-    if (openType === 'window') {
-      this.socialService
-        .login(url, '/', {
-          type: 'window'
-        })
-        .subscribe(res => {
-          if (res) {
-            this.settingsService.setUser(res);
-            this.router.navigateByUrl('/');
-          }
-        });
-    } else {
-      this.socialService.login(url, '/', {
-        type: 'href'
-      });
-    }
   }
 
   // #endregion

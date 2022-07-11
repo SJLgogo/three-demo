@@ -1,0 +1,119 @@
+<page-header title="通讯录">
+  <ng-template #phActionTpl id="CreateNewEmployeeButton">
+    <button (click)="selectUser()" nz-button nzType="primary">新建</button>
+  </ng-template>
+</page-header>
+<div nz-row nzGutter="16">
+  <div nz-col nzSpan="6" style="max-width: 400px">
+    <nz-card>
+      <div *ngIf="orgTreeLoading" class="load-more">
+        <nz-spin nzSimple></nz-spin>
+      </div>
+      <nz-input-group [nzSuffix]="suffixIconSearch" style="width: 100%">
+        <input
+          type="text"
+          nz-input
+          [(ngModel)]="searchValue"
+          (change)="globalSearch()"
+          placeholder="搜索组织、成员、岗位、职务、标签"
+        />
+      </nz-input-group>
+      <ng-template #suffixIconSearch>
+        <i nz-icon nzType="search"></i>
+      </ng-template>
+
+      <nz-tabset (nzSelectedIndexChange)="activeTab($event)" [nzSize]="'small'" *ngIf="!showSearchResult">
+        <nz-tab nzTitle="组织">
+          <nz-tree
+            [nzData]="orgNodes"
+            [nzAsyncData]="'true'"
+            (nzExpandChange)="orgEvent($event)"
+            nzExpandAll="true"
+            (nzClick)="orgEvent($event)"
+            (nzDblClick)="orgEvent($event)"
+            [nzTreeTemplate]="nzTreeTemplate"
+          ></nz-tree>
+
+          <ng-template #nzTreeTemplate let-node>
+            <span class="custom-node" [class.active]="activedOrgNode?.key === node.key">
+              <span class="custom-node-item" *ngIf="!node.isLeaf">
+                <i nz-icon [nzType]="node.isExpanded ? 'folder-open' : 'folder'" (click)="openFolder(node)"></i>
+                <span class="folder-name"> {{ node.title }} </span>
+                <span class="file-desc">
+                  <a nz-dropdown [nzDropdownMenu]="orgOptMenu" nzTrigger="click">
+                    <!--                <i nz-icon nzType="menu" (click)="optMenu(node)" nzTheme="outline"></i>-->
+                  </a>
+                </span>
+              </span>
+              <!--              <span class="custom-node-item" *ngIf="!node.isLeaf">-->
+              <!--                <i nz-icon [nzType]="node.isExpanded ? 'folder-open' : 'folder'" (click)="openFolder(node)"></i>-->
+              <!--                <span class="folder-name"> {{ node.title }} </span>-->
+              <!--                <span class="file-desc">-->
+              <!--                  <a nz-dropdown [nzDropdownMenu]="orgOptMenu" nzTrigger="click"-->
+              <!--                    ><i nz-icon nzType="menu" (click)="optOrg(node)" nzTheme="outline"></i-->
+              <!--                  ></a>-->
+              <!--                </span>-->
+              <!--              </span>-->
+              <span class="custom-node-item" *ngIf="node.isLeaf">
+                <i nz-icon nzType="file"></i>
+                <span class="file-name">{{ node.title }}</span>
+                <span class="file-desc">
+                  <a nz-dropdown [nzDropdownMenu]="orgOptMenu" nzTrigger="click"
+                    ><i nz-icon nzType="menu" (click)="optOrg(node)" nzTheme="outline"></i
+                  ></a>
+                </span>
+              </span>
+
+              <nz-dropdown-menu #orgOptMenu>
+                <ul nz-menu>
+                  <li nz-menu-item nzDisabled>编辑部门: {{ optOrgName }}</li>
+                  <li nz-menu-divider></li>
+                  <li nz-menu-item (click)="orgOperation('add', node)">
+                    <i nz-icon nzType="plus-circle" nzTheme="outline"></i>添加下级部门
+                  </li>
+                  <li nz-menu-item (click)="orgOperation('edit-name', node)"><i nz-icon nzType="edit" nzTheme="outline"></i>修改名称</li>
+                  <li nz-menu-item (click)="orgOperation('remove', node)"><i nz-icon nzType="delete" nzTheme="outline"></i>删除</li>
+                  <li nz-menu-item (click)="orgOperation('setup-post', node)">
+                    <i nz-icon nzType="deployment-unit" nzTheme="outline"></i>设置岗位
+                  </li>
+                  <!--<li nz-menu-item (click)="orgOperation('move-up',node)"><i nz-icon nzType="arrow-up" nzTheme="outline"></i>上移</li>-->
+                  <!--<li nz-menu-item (click)="orgOperation('move-down',node)"><i nz-icon nzType="arrow-down" nzTheme="outline"></i>下移</li>-->
+                </ul>
+              </nz-dropdown-menu>
+            </span>
+          </ng-template>
+        </nz-tab>
+      </nz-tabset>
+
+      <div *ngIf="showSearchResult">
+        <nz-collapse [nzBordered]="false">
+          <nz-collapse-panel *ngFor="let panel of panels" [nzHeader]="panel.name" [nzActive]="panel.active">
+            <p *ngFor="let item of panel.childPanel" (click)="searchResult(item)">
+              {{ item.name }}
+            </p>
+          </nz-collapse-panel>
+        </nz-collapse>
+      </div>
+    </nz-card>
+  </div>
+
+  <div nz-col nzSpan="18">
+    <nz-card [nzTitle]="employeeTableTitle" [nzExtra]="extraTemplate">
+      <st
+        #st
+        [data]="url"
+        [size]="'small'"
+        [columns]="columns"
+        [req]="employeeTableRequest"
+        [res]="employeeTableResponse"
+        [scroll]="{ x: '1300px' }"
+      ></st>
+    </nz-card>
+    <ng-template #extraTemplate>
+      <button *ngIf="showAssignEmployeeButton" nz-button nzType="default" (click)="addAccount()" nzBlock>
+        <i nz-icon nzType="plus"></i>添加非同步的其它账号
+      </button>
+      <!--<sf mode="search" [schema]="searchSchema" (formSubmit)="st.reset($event)" (formReset)="st.reset($event)"></sf>-->
+    </ng-template>
+  </div>
+</div>

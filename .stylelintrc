@@ -4,7 +4,7 @@
     "stylelint-config-rational-order",
     "stylelint-config-prettier"
   ],
-  "customSyntax": "postcss-less",
+  "customSyntax": ["postcss-html","postcss-less"],
   "plugins": [
     "stylelint-order",
     "stylelint-declaration-block-no-ignored-properties"

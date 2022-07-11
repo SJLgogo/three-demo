@@ -1,0 +1,87 @@
+<!--<div nz-col [nzSpan]="18">-->
+<!--  <nz-card>-->
+<!--    <div class="app-list">-->
+<!--      <div class="app" [class.active]="selectedApp.id == app.id" *ngFor="let app of appList"-->
+<!--           (click)="optAppPermission(app)">-->
+<!--        <div class="app-logo">-->
+<!--          <img style="width: 36px; height: 36px;"-->
+<!--               src="http://wework.qpic.cn/bizmail/hoew4PTXG3u0fJUZjw5uYrVYRc3tR2esphAa0nhZ6PR7SibQ9el4sKw/0">-->
+<!--        </div>-->
+<!--        <div class="app-content">-->
+<!--          <span class="app-title">{{app.name}}</span>-->
+<!--          <span class="app-desc">{{app.description}}</span>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <button nz-button nzType="primary" (click)="addApp()">添加应用</button>-->
+<!--    </div>-->
+
+<!--    <nz-card>-->
+<!--      <nz-empty *ngIf=" roleAppPermissions.length == 0 "></nz-empty>-->
+
+<!--      <ng-container *ngIf=" roleAppPermissions.length != 0 ">-->
+<!--        <div nz-row>-->
+<!--          <h3>[{{selectedApp.name}}] 权限项目列表</h3>-->
+<!--        </div>-->
+<!--        <div nz-row class="permission-list">-->
+<!--          <div nz-col nzSpan="6" *ngFor="let permission of roleAppPermissions" style="margin-bottom: 5px;">-->
+<!--            <label nz-checkbox [nzValue]="permission.value" [ngModel]="permission.checked"-->
+<!--                   (nzCheckedChange)="changeRolePermission(permission)">{{permission.label}}</label>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div nz-row *ngIf=" roleAppPermissions.length != 0 " class="permission-operation">-->
+<!--          <button nz-button nzType="primary" (click)="saveRolePermission()">保存</button>-->
+<!--          <button nz-button nzType="default" style="margin-right: 10px;">取消</button>-->
+<!--        </div>-->
+<!--      </ng-container>-->
+<!--    </nz-card>-->
+<!--  </nz-card>-->
+<!--</div>-->
+
+<nz-card>
+  <div nz-row [nzGutter]="6">
+    <div nz-col [nzSpan]="24">
+      <nz-card>
+        <div class="app-list">
+          <div class="app" [class.active]="selectedApp.id == app.id" *ngFor="let app of appList" (click)="optAppPermission(app)">
+            <div class="app-logo">
+              <img
+                style="width: 36px; height: 36px"
+                src="http://wework.qpic.cn/bizmail/hoew4PTXG3u0fJUZjw5uYrVYRc3tR2esphAa0nhZ6PR7SibQ9el4sKw/0"
+              />
+            </div>
+            <div class="app-content">
+              <span class="app-title">{{ app.name }}</span>
+              <span class="app-desc">{{ app.description }}</span>
+            </div>
+          </div>
+          <button nz-button nzType="primary" (click)="addApp()">添加应用</button>
+        </div>
+
+        <nz-card>
+          <nz-empty *ngIf="roleAppPermissions.length == 0"></nz-empty>
+
+          <ng-container *ngIf="roleAppPermissions.length != 0">
+            <div nz-row>
+              <h3>[{{ selectedApp.name }}] 权限项目列表</h3>
+            </div>
+            <div nz-row class="permission-list">
+              <div nz-col nzSpan="6" *ngFor="let permission of roleAppPermissions" style="margin-bottom: 5px">
+                <label
+                  nz-checkbox
+                  [nzValue]="permission.value"
+                  [ngModel]="permission.checked"
+                  (nzCheckedChange)="changeRolePermission(permission)"
+                  >{{ permission.label }}</label
+                >
+              </div>
+            </div>
+            <div nz-row *ngIf="roleAppPermissions.length != 0" class="permission-operation">
+              <button nz-button nzType="primary" (click)="saveRolePermission()">保存</button>
+              <button nz-button nzType="default" style="margin-right: 10px">取消</button>
+            </div>
+          </ng-container>
+        </nz-card>
+      </nz-card>
+    </div>
+  </div>
+</nz-card>
