@@ -1,0 +1,19 @@
+<page-header [action]="phActionTpl">
+  <ng-template #phActionTpl>
+  </ng-template>
+</page-header>
+
+<nz-card>
+  <st #stPro [data]="urlPro" [columns]="columnsPro"></st>
+</nz-card>
+
+<nz-card>
+  <p>项目名</p>
+  <div>
+    <button  nz-button nzType="primary" (click)="addApp()">添加应用</button>
+  </div>
+  <st #stApp [data]="urlApp" [columns]="columnsApp"></st>
+</nz-card>
+
+
+<button (click)="choosePerson()">选人</button>
