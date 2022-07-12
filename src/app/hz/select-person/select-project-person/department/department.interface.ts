@@ -3,15 +3,21 @@ class DepartmentInterface {
 }
 
 
-interface TreeNode {
+interface childNode{
   title: string;
   key: string;
   isLeaf: boolean;
   corpId: string;
   icon: string;
-  expanded: boolean;
-  children: TreeNode[]
+  category:string;
+  expanded?: boolean;
 }
+
+interface TreeNode extends childNode{
+  children: childNode[]
+}
+
+type variable<T> = T | undefined | null;
 
 type fn = () => void
 
@@ -19,5 +25,7 @@ type fn = () => void
 export {
   DepartmentInterface,
   TreeNode,
-  fn
+  fn,
+  variable,
+  childNode
 }
