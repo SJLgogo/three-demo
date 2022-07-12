@@ -16,7 +16,7 @@ const BADGE: STColumnBadge = {
   templateUrl: './routes.component.html'
 })
 export class SystemRoutesComponent implements OnInit {
-  url = `/api/route-config/page-all`;
+  url = `/route-config/page-all`;
 
   searchSchema: SFSchema = {
     properties: {

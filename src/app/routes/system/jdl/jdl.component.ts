@@ -13,7 +13,7 @@ import { SystemJdlEditComponent } from './edit/edit.component';
   encapsulation: ViewEncapsulation.Emulated
 })
 export class SystemJdlComponent {
-  url = `/api/service/system/jdl-metadata/page-all`;
+  url = `/service/system/jdl-metadata/page-all`;
   searchSchema: SFSchema = {
     properties: {
       name: {

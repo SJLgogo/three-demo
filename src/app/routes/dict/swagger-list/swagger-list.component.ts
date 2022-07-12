@@ -10,7 +10,7 @@ import { DictSwaggerEditComponent } from '../swagger-edit/swagger-edit.component
   templateUrl: './swagger-list.component.html'
 })
 export class DictSwaggerListComponent {
-  url = '/api/service/dictionary/dict-data/page-all';
+  url = '/service/dictionary/dict-data/page-all';
   columns: STColumn[] = [
     {
       title: '编号',

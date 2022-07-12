@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-@BaseUrl('/api/route-config')
+@BaseUrl('/route-config')
 export class SystemRoutesService extends BaseApi {
   @GET('/find-all')
   findAll(): Observable<HttpResponse<any>> {

@@ -94,7 +94,7 @@ export class SetupDataPermissionsComponent implements OnInit, OnChanges {
     const node: any = event.node;
     if (event.eventName === 'expand') {
       if (node && node.getChildren().length === 0 && node.isExpanded) {
-        this.http.get(`/service/organization/admin/organization/tree/child/` + node.key + '/' + node.origin.corpId).subscribe((res) => {
+        this.http.get(`/org/service/organization/admin/organization/tree/child/` + node.key + '/' + node.origin.corpId).subscribe((res) => {
           if (res.success) {
             node.addChildren(res.data);
           }
@@ -171,7 +171,7 @@ export class SetupDataPermissionsComponent implements OnInit, OnChanges {
 
     // console.log('selectedScope:::', this.selectedScope);
 
-    this.http.get(`/service/organization/admin/organization/tree/child/root`).subscribe((res) => {
+    this.http.get(`/org/service/organization/admin/organization/tree/child/root`).subscribe((res) => {
       if (res.success) {
         this.orgNodes = [];
         if (this.selectedScope.orgIds != '' && this.selectedScope.orgIds != null) {
