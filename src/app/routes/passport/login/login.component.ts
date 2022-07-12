@@ -114,7 +114,7 @@ export class UserLoginComponent implements OnDestroy {
     this.loading = true;
     this.cdr.detectChanges();
     this.http
-      .post('/api/service/portal/login?_allow_anonymous=true', {
+      .post('/service/portal/login?_allow_anonymous=true', {
         type: this.type,
         account: this.userName.value,
         password: this.password.value,
