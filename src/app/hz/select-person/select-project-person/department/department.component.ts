@@ -23,10 +23,10 @@ export class DepartmentComponent extends DepartmentInterface implements OnInit {
   orgTreeLoading = true
   orgNodes: TreeNode[] = [];
   activeNode: any; // 编译报错补充，未测试
-  initList: fn[] = [this.loadOrgTree]
+  initList: fn[] = [this.loadOrgTree.bind(this)]
 
   ngOnInit(): void {
-    // Promise.all()
+    Promise.all(this.initList.map(fn => fn()))
   }
 
   orgEvent(event: NzFormatEmitEvent): void {
