@@ -49,7 +49,7 @@ export class SetupContactComponent implements OnInit {
   jobsNodes: any = [];
   confirmModal!: NzModalRef;
 
-  url = `/service/organization/admin/employee/table`;
+  url = `/org/service/organization/admin/employee/table`;
   employeeTableRequest: any = {
     lazyLoad: true,
     allInBody: true,
@@ -136,7 +136,7 @@ export class SetupContactComponent implements OnInit {
       this.showSearchResult = false;
     } else {
       this.showSearchResult = true;
-      this.http.post(`/service/organization/admin/employee/global-search`, params).subscribe((res) => {
+      this.http.post(`/org/service/organization/admin/employee/global-search`, params).subscribe((res) => {
         if (res.success) {
           this.panels = res.data;
         }
@@ -191,7 +191,7 @@ export class SetupContactComponent implements OnInit {
     const node: any = event.node;
     if (event.eventName === 'expand') {
       if (node && node.getChildren().length === 0 && node.isExpanded) {
-        this.http.get(`/service/organization/admin/organization/tree/child/` + node.key + '/' + node.origin.corpId).subscribe((res) => {
+        this.http.get(`/org/service/organization/admin/organization/tree/child/` + node.key + '/' + node.origin.corpId).subscribe((res) => {
           if (res.success) {
             node.addChildren(res.data);
           }
@@ -209,7 +209,7 @@ export class SetupContactComponent implements OnInit {
   // 加载组织机构树
   loadOrgTree(): void {
     this.orgTreeLoading = true;
-    this.http.get(`/service/organization/admin/organization/tree/child/root/all`).subscribe((res) => {
+    this.http.get(`/org/service/organization/admin/organization/tree/child/root/all`).subscribe((res) => {
       if (res.success) {
         this.orgNodes = res.data;
         this.orgTreeLoading = false;
@@ -280,7 +280,7 @@ export class SetupContactComponent implements OnInit {
           const params = {
             id: node.key
           };
-          this.http.post(`/service/organization/admin/organization/remove`, params).subscribe((res) => {
+          this.http.post(`/org/service/organization/admin/organization/remove`, params).subscribe((res) => {
             if (res.success) {
               this.msgSrv.success('删除成功');
               this.loadOrgTree();
@@ -298,7 +298,7 @@ export class SetupContactComponent implements OnInit {
     const node: any = event.node;
     if (event.eventName === 'expand') {
       if (node && node.getChildren().length === 0 && node.isExpanded) {
-        this.http.get(`/service/organization/admin/job/tree/child/` + node.key).subscribe((res) => {
+        this.http.get(`/org/service/organization/admin/job/tree/child/` + node.key).subscribe((res) => {
           if (res.success) {
             node.addChildren(res.data);
           }
@@ -315,7 +315,7 @@ export class SetupContactComponent implements OnInit {
   // 加载职务树
   loadJobTree(): void {
     this.orgTreeLoading = true;
-    this.http.get(`/service/organization/admin/job/tree`).subscribe((res) => {
+    this.http.get(`/org/service/organization/admin/job/tree`).subscribe((res) => {
       if (res.success) {
         this.jobsNodes = [...res.data];
         this.orgTreeLoading = false;

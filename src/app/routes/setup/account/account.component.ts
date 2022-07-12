@@ -11,7 +11,7 @@ import { SetupSynchronizeComponent } from './synchronize/synchronize.component';
   templateUrl: './account.component.html'
 })
 export class SetupAccountComponent implements OnInit {
-  url = `/service/organization/admin/employee/findByActorCondition`;
+  url = `/org/service/organization/admin/employee/findByActorCondition`;
   @ViewChild('sf', { static: false }) sf!: SFComponent;
   searchSchema: SFSchema = {
     properties: {

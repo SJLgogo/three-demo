@@ -17,7 +17,7 @@ export class SetupUserPermissionComponent  implements AfterViewInit, OnChanges {
 
   @Input() role: any;
 
-  url = `/service/organization/admin/employee/findByActorCondition`;
+  url = `/org/service/organization/admin/employee/findByActorCondition`;
   @ViewChild('sf', { static: false }) sf!: SFComponent;
   searchSchema: SFSchema = {
     properties: {
