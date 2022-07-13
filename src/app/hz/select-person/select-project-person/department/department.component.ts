@@ -65,7 +65,6 @@ export class DepartmentComponent extends DepartmentInterface implements OnInit {
   }
 
   inputChange(): void {
-    console.log(2);
     if (this.timer) {
       clearTimeout(this.timer);
     }
@@ -108,11 +107,11 @@ export class DepartmentComponent extends DepartmentInterface implements OnInit {
   }
 
   treeExpand(node: NzTreeNode): void {
-    // if (node?.getChildren().length === 0 && node.isExpanded) {
-    //   this.http.get(`/service/support/admin/outsourceApi/getUserTree/` + node.key + '/' + node.origin['corpId']).subscribe((res:any) => {
-    //     res.success && node.addChildren(res.data);
-    //   });
-    // }
+    if (node!.getChildren().length === 0 && node.isExpanded) {
+      this.http.get(`/service/support/admin/outsourceApi/getUserTree/` + node.key + '/' + node.origin['corpId']).subscribe((res:any) => {
+        res.success && node.addChildren(res.data);
+      });
+    }
   }
 
   treeNodeClick(node: NzTreeNode): void {

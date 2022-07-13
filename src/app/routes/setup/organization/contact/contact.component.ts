@@ -136,7 +136,7 @@ export class SetupContactComponent implements OnInit {
       this.showSearchResult = false;
     } else {
       this.showSearchResult = true;
-      this.http.post(`/org/service/organization/admin/employee/global-search`, params).subscribe((res) => {
+      this.http.post(`/org/service/organization/admin/employee/global-search`, params).subscribe((res:any) => {
         if (res.success) {
           this.panels = res.data;
         }
@@ -191,7 +191,7 @@ export class SetupContactComponent implements OnInit {
     const node: any = event.node;
     if (event.eventName === 'expand') {
       if (node && node.getChildren().length === 0 && node.isExpanded) {
-        this.http.get(`/org/service/organization/admin/organization/tree/child/` + node.key + '/' + node.origin.corpId).subscribe((res) => {
+        this.http.get(`/org/service/organization/admin/organization/tree/child/` + node.key + '/' + node.origin.corpId).subscribe((res:any) => {
           if (res.success) {
             node.addChildren(res.data);
           }
@@ -209,7 +209,7 @@ export class SetupContactComponent implements OnInit {
   // 加载组织机构树
   loadOrgTree(): void {
     this.orgTreeLoading = true;
-    this.http.get(`/org/service/organization/admin/organization/tree/child/root/all`).subscribe((res) => {
+    this.http.get(`/org/service/organization/admin/organization/tree/child/root/all`).subscribe((res:any) => {
       if (res.success) {
         this.orgNodes = res.data;
         this.orgTreeLoading = false;
@@ -280,7 +280,7 @@ export class SetupContactComponent implements OnInit {
           const params = {
             id: node.key
           };
-          this.http.post(`/org/service/organization/admin/organization/remove`, params).subscribe((res) => {
+          this.http.post(`/org/service/organization/admin/organization/remove`, params).subscribe((res:any) => {
             if (res.success) {
               this.msgSrv.success('删除成功');
               this.loadOrgTree();
@@ -298,7 +298,7 @@ export class SetupContactComponent implements OnInit {
     const node: any = event.node;
     if (event.eventName === 'expand') {
       if (node && node.getChildren().length === 0 && node.isExpanded) {
-        this.http.get(`/org/service/organization/admin/job/tree/child/` + node.key).subscribe((res) => {
+        this.http.get(`/org/service/organization/admin/job/tree/child/` + node.key).subscribe((res:any) => {
           if (res.success) {
             node.addChildren(res.data);
           }
@@ -315,7 +315,7 @@ export class SetupContactComponent implements OnInit {
   // 加载职务树
   loadJobTree(): void {
     this.orgTreeLoading = true;
-    this.http.get(`/org/service/organization/admin/job/tree`).subscribe((res) => {
+    this.http.get(`/org/service/organization/admin/job/tree`).subscribe((res:any) => {
       if (res.success) {
         this.jobsNodes = [...res.data];
         this.orgTreeLoading = false;
@@ -356,7 +356,7 @@ export class SetupContactComponent implements OnInit {
       const value = {
         id: node.key
       };
-      this.http.post(`/service/contact/admin/job/remove`, value).subscribe((res) => {
+      this.http.post(`/service/contact/admin/job/remove`, value).subscribe((res:any) => {
         if (res.success) {
           this.msgSrv.success(res.message);
         } else {
@@ -384,7 +384,7 @@ export class SetupContactComponent implements OnInit {
       nzTitle: '删除确认?',
       nzContent: '是否确认删除 [' + tag.name + '] 标签?',
       nzOnOk: () => {
-        this.http.post(`/service/contact/admin/tag/remove`, tag).subscribe((res) => {
+        this.http.post(`/service/contact/admin/tag/remove`, tag).subscribe((res:any) => {
           if (res.success) {
             this.msgSrv.success('删除成功');
             this.loadTagList();
@@ -396,7 +396,7 @@ export class SetupContactComponent implements OnInit {
 
   loadTagList() {
     this.orgTreeLoading = true;
-    this.http.get(`/service/contact/admin/tag/list`).subscribe((res) => {
+    this.http.get(`/service/contact/admin/tag/list`).subscribe((res:any) => {
       if (res.success) {
         this.tagList = [...res.data];
       }
@@ -439,7 +439,7 @@ export class SetupContactComponent implements OnInit {
 
   selectUser() {
     const mode = ['employee', 'organization', 'post', 'job', 'tag'];
-    this.modal.createStatic(SetupContactSelectComponent, { selectedItems: [], mode: mode }).subscribe((res) => {
+    this.modal.createStatic(SetupContactSelectComponent, { selectedItems: [], mode: mode }).subscribe((res:any) => {
       const tagEmployeeIds:any = [];
       res.selectedItems.forEach(function(value:any) {
         switch (value.category) {
@@ -453,7 +453,7 @@ export class SetupContactComponent implements OnInit {
         tagId: this.tagId,
         tagEmployeeIds: tagEmployeeIds.join(',')
       };
-      this.http.post(`/service/contact/admin/tag/assign/employees`, params).subscribe((res) => {
+      this.http.post(`/service/contact/admin/tag/assign/employees`, params).subscribe((res:any) => {
         if (res.success) {
           this.loadEmployeeTable('tag', null, null, null, null, this.tagId, null);
           this.msgSrv.success('保存成功');

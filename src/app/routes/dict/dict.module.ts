@@ -7,12 +7,14 @@ import { DictSwaggerEditComponent } from './swagger-edit/swagger-edit.component'
 import { DictSwaggerListComponent } from './swagger-list/swagger-list.component';
 import {OrganizationManagementComponent} from "./organization-management/organization-management.component";
 import {AppAddComponent} from "./organization-management/app-add/app-add.component";
+import {ProAddComponent} from "./organization-management/pro-add/pro-add.component";
 
 const COMPONENTS: Array<Type<void>> = [
   DictSwaggerListComponent,
   DictSwaggerEditComponent,
   OrganizationManagementComponent,
-  AppAddComponent
+  AppAddComponent,
+  ProAddComponent
 ];
 
 @NgModule({

@@ -34,6 +34,8 @@ import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzTreeModule } from 'ng-zorro-antd/tree';
 import {NzCollapseModule} from "ng-zorro-antd/collapse";
 import {SetupRoutingModule} from "./setup-routing.module";
+import {NzDropDownModule} from "ng-zorro-antd/dropdown";
+import {NzIconModule} from "ng-zorro-antd/icon";
 
 const COMPONENTS: Array<Type<void>> = [
   SetupIndexComponent,
@@ -65,7 +67,7 @@ const COMPONENTS: Array<Type<void>> = [
 ];
 
 @NgModule({
-  imports: [SharedModule, SystemRoutingModule, NgJsonEditorModule, NzEmptyModule, NzTreeModule,NzCollapseModule,SetupRoutingModule],
+  imports: [SharedModule, NzDropDownModule ,NzIconModule ,SystemRoutingModule, NgJsonEditorModule, NzEmptyModule, NzTreeModule,NzCollapseModule,SetupRoutingModule],
   declarations: COMPONENTS,
   providers: []
 })

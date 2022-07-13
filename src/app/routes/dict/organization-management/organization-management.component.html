@@ -4,6 +4,9 @@
 </page-header>
 
 <nz-card>
+  <div>
+    <button  nz-button nzType="primary" (click)="addPro()">添加公司</button>
+  </div>
   <st #stPro [data]="urlPro" [columns]="columnsPro"></st>
 </nz-card>
 

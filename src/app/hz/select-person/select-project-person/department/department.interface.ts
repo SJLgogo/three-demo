@@ -2,7 +2,6 @@ class DepartmentInterface {
 
 }
 
-
 interface childNode{
   title: string;
   key: string;
@@ -18,7 +17,6 @@ interface TreeNode extends childNode{
 }
 
 type variable<T> = T | undefined | null;
-
 type fn = () => void
 
 
