@@ -3,7 +3,7 @@ import {SFComponent, SFSchema, SFUISchema} from "@delon/form";
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {CommonSelect, EmptyObject, HttpResult, variable} from "../../../../api/common-interface/common-interface";
-import { SavePro} from "../organization.interface";
+import {appRange, SavePro} from "../organization.interface";
 import {OrganizationService} from "../../../../api/dict/organization-management/organization.service.ts";
 
 @Component({
@@ -21,21 +21,17 @@ export class ProAddComponent implements OnInit {
   ) {
   }
 
-  appRange: CommonSelect[] = [{label: '企业微信', value: 'wxCp'}, {label: '钉钉', value: 'ding'}, {
-    label: '云之家',
-    value: 'yzj'
-  }, {label: '其他', value: 'other'},]
+
 
   i: SavePro | EmptyObject = {};
   schema: SFSchema = {
     properties: {
       name: {type: 'string', title: '项目名称', maxLength: 100, ui: {placeholder: "请输入"}},
       corpId: {type: 'string', title: '三方公司Id', maxLength: 100, ui: {placeholder: "请输入"}},
-      agentId: {type: 'string', title: '三方应用Id', maxLength: 100, ui: {placeholder: "请输入"}},
       category: {
         type: "string",
+        enum: appRange,
         title: "应用",
-        enum: this.appRange,
         ui: {
           placeholder: "请选择",
           widget: "select",
@@ -66,8 +62,18 @@ export class ProAddComponent implements OnInit {
   }
 
   saveOperation(value: SavePro): void {
-    this.i?.id ? value.id = this.i.id : ''
-    this.organizationService.savePro(value).subscribe((res: HttpResult) => {
+    if(this.i?.id ){
+      value.id = this.i.id
+      this.fn('editPro',value)
+    }else {
+      this.fn('savePro',value)
+    }
+
+  }
+
+  fn(fnName:string,value:SavePro):void{
+    // @ts-ignore
+    this.organizationService[fnName](value).subscribe((res: HttpResult) => {
       this.httpAfterOperation(res.success, res.message)
     });
   }

@@ -1,12 +1,30 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, Optional } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { StartupService } from '@core';
-import { ReuseTabService } from '@delon/abc/reuse-tab';
-import { DA_SERVICE_TOKEN, ITokenService, SocialService } from '@delon/auth';
-import { _HttpClient, SettingsService } from '@delon/theme';
-import { NzTabChangeEvent } from 'ng-zorro-antd/tabs';
-import { finalize } from 'rxjs/operators';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Inject,
+  OnDestroy,
+  OnInit,
+  Optional
+} from '@angular/core';
+import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
+import {StartupService} from '@core';
+import {ReuseTabService} from '@delon/abc/reuse-tab';
+import {DA_SERVICE_TOKEN, ITokenService, SocialService} from '@delon/auth';
+import {_HttpClient, SettingsService} from '@delon/theme';
+import {NzTabChangeEvent} from 'ng-zorro-antd/tabs';
+import {finalize} from 'rxjs/operators';
+import {variable} from "../../../api/common-interface/common-interface";
+import {fn} from "../../../hz/select-person/select-project-person/department/department.interface";
+import {environment} from "@env/environment";
+import {NzMessageService} from "ng-zorro-antd/message";
+
+declare global {
+  interface Window {
+    WwLogin: any;
+  }
+}
 
 @Component({
   selector: 'passport-login',
@@ -15,19 +33,21 @@ import { finalize } from 'rxjs/operators';
   providers: [SocialService],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UserLoginComponent implements OnDestroy {
+export class UserLoginComponent implements OnInit, OnDestroy {
   constructor(
     fb: FormBuilder,
     private router: Router,
     private settingsService: SettingsService,
     private socialService: SocialService,
+    private activeRoute: ActivatedRoute,
     @Optional()
     @Inject(ReuseTabService)
     private reuseTabService: ReuseTabService,
     @Inject(DA_SERVICE_TOKEN) private tokenService: ITokenService,
     private startupSrv: StartupService,
     private http: _HttpClient,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private message: NzMessageService
   ) {
     this.form = fb.group({
       userName: [null, [Validators.required]],
@@ -38,7 +58,9 @@ export class UserLoginComponent implements OnDestroy {
     });
   }
 
-  // #region fields
+  agentId: variable<string>;
+  corpId: variable<string>;
+  urlId: variable<string>;
 
   get userName(): AbstractControl {
     return this.form.get('userName')!;
@@ -68,14 +90,62 @@ export class UserLoginComponent implements OnDestroy {
 
   // #endregion
 
-  switch({ index }: NzTabChangeEvent): void {
+  switch({index}: NzTabChangeEvent): void {
     this.type = index!;
+    console.log(this.type);
+    if (this.type === 1) {
+      this.activeRoute.queryParams.subscribe((params: any) => {
+        console.log(params);
+        const code = params.code;
+        const state = params.state;
+        const appid = params.appid;
+        if (code !== undefined && code !== '' && state !== undefined && state !== '' && appid !== undefined && appid !== '') {
+          this.http.get(`/auth/wxcp/codeToUser?_allow_anonymous=true`, {code: `${code}`}).subscribe(
+            (res) => {
+              const data = res.data;
+              // 清空路由复用信息
+              this.reuseTabService.clear();
+              // 设置用户Token信息
+              this.tokenService.set({
+                token: data.AccessToken,
+              });
+              this.settingsService.setData('employee', data.employee);
+
+              const employee = data.employee;
+              this.settingsService.setUser({avatar: employee.avatar, email: '', name: employee.employeeName});
+              // this.huiztechAppAuthServiceService.setLoginData(data);
+              // 重新获取 StartupService 内容，我们始终认为应用信息一般都会受当前用户授权范围而影响
+              this.startupSrv.load().subscribe(() => {
+                let url = this.tokenService.referrer!.url || '/';
+                if (url.includes('/passport')) {
+                  url = '/';
+                }
+                this.router.navigateByUrl(url);
+              });
+            },
+            (error) => {
+              this.message.error(error);
+            },
+          );
+        } else {
+          console.log(this.corpId, this.agentId);
+          window.WwLogin({
+            id: 'wx_reg',
+            appid: this.corpId,
+            agentid: this.agentId,
+            redirect_uri: window.location.href,
+            state: `${this.randomState()}`,
+          });
+        }
+      });
+    }
   }
+
 
   getCaptcha(): void {
     if (this.mobile.invalid) {
-      this.mobile.markAsDirty({ onlySelf: true });
-      this.mobile.updateValueAndValidity({ onlySelf: true });
+      this.mobile.markAsDirty({onlySelf: true});
+      this.mobile.updateValueAndValidity({onlySelf: true});
       return;
     }
     this.count = 59;
@@ -118,7 +188,7 @@ export class UserLoginComponent implements OnDestroy {
         type: this.type,
         account: this.userName.value,
         password: this.password.value,
-        corpId: 'wwcfaef162fa2a9cfd'
+        appId: this.urlId
       })
       .pipe(
         finalize(() => {
@@ -127,7 +197,6 @@ export class UserLoginComponent implements OnDestroy {
         })
       )
       .subscribe(res => {
-        console.log(res);
         if (res.code !== 200) {
           this.error = res.msg;
           this.cdr.detectChanges();
@@ -156,4 +225,44 @@ export class UserLoginComponent implements OnDestroy {
       clearInterval(this.interval$);
     }
   }
+
+  async ngOnInit(): Promise<any> {
+    await this.obtainUrlId()
+    await this.obtainCorpId()
+  }
+
+  obtainUrlId(): Promise<string> {
+    return new Promise<string>(((resolve, reject) => {
+      if (!location.href.includes('id=')) {
+        this.urlId = localStorage.getItem('urlId')
+      }else {
+        this.urlId = location.href.split('id=')[1]
+        localStorage.setItem('urlId', this.urlId)
+      }
+      resolve('')
+    }))
+  }
+
+  // http://localhost:4200/#/passport/login?id=1547139498926796801
+
+  obtainCorpId(): void {
+    if (!this.urlId) {
+      return
+    }
+    this.http.get('service/portal/appId/' + this.urlId + '?_allow_anonymous=true').subscribe(res => {
+      this.corpId = res.data.corpId
+      this.agentId = res.data.agentId
+    })
+  }
+
+
+  randomState(): string {
+    let text = '';
+    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    for (let i = 0; i < 5; i++) {
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return text;
+  }
+
 }

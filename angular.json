@@ -33,7 +33,9 @@
               "src/styles.less",
               "node_modules/jsoneditor/dist/jsoneditor.min.css"
             ],
-            "scripts": [],
+            "scripts": [
+              "node_modules/clipboard/dist/clipboard.js"
+            ],
             "allowedCommonJsDependencies": [
               "ajv",
               "ajv-formats"

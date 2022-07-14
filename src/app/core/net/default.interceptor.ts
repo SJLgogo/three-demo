@@ -188,7 +188,7 @@ export class DefaultInterceptor implements HttpInterceptor {
           if (body && body.code !== 200) {
             if (body.code === 401) {
               this.injector.get(NzMessageService).error(body.msg);
-              this.toLogin();
+              // this.toLogin();
             }
             // 注意：这里如果继续抛出错误会被行254的 catchError 二次拦截，导致外部实现的 Pipe、subscribe 操作被中断，例如：this.http.get('/').subscribe() 不会触发
             // 如果你希望外部实现，需要手动移除行254
@@ -206,10 +206,11 @@ export class DefaultInterceptor implements HttpInterceptor {
         }
         break;
       case 401:
+        console.log(401,this.refreshTokenEnabled,this.refreshTokenType);
         if (this.refreshTokenEnabled && this.refreshTokenType === 're-request') {
           return this.tryRefreshToken(ev, req, next);
         }
-        this.toLogin();
+        // this.toLogin();
         break;
       case 403:
       case 404:

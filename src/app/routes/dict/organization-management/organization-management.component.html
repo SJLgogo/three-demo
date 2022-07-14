@@ -11,12 +11,26 @@
 </nz-card>
 
 <nz-card>
-  <p>项目名</p>
+<!--  <p>项目名</p>-->
   <div>
     <button  nz-button nzType="primary" (click)="addApp()">添加应用</button>
   </div>
-  <st #stApp [data]="urlApp" [columns]="columnsApp"></st>
+  <st #stApp [data]="urlApp" [columns]="columnsApp">
+    <ng-template st-row="renderAppAuthUrl" let-c let-column="column" let-item="item" let-index="index">
+      <label class="app-auth-url" title="{{c.url+ '?id=' + c.id}}"
+             nz-tooltip
+             nzTooltipPlacement="topLeft"
+             nzTooltipTrigger="click"
+             nzTooltipTitle="已复制到粘贴板"
+             (click)="cpClickTrigger(c.url + '?id=' + c.id)"
+      >
+        <i nz-icon nzType="copy" nzTheme="outline"></i>
+        {{c.url + '?id=' + c.id}}
+      </label>
+    </ng-template>
+  </st>
 </nz-card>
 
 
 <button (click)="choosePerson()">选人</button>
+<div #cpTrigger class="cp-trigger"></div>

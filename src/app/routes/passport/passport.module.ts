@@ -7,11 +7,16 @@ import { UserLoginComponent } from './login/login.component';
 import { PassportRoutingModule } from './passport-routing.module';
 import { UserRegisterResultComponent } from './register-result/register-result.component';
 import { UserRegisterComponent } from './register/register.component';
+import {HTTP_INTERCEPTORS} from "@angular/common/http";
+import {SimpleInterceptor} from "@delon/auth";
 
 const COMPONENTS = [UserLoginComponent, UserRegisterResultComponent, UserRegisterComponent, UserLockComponent, CallbackComponent];
 
 @NgModule({
   imports: [SharedModule, PassportRoutingModule],
-  declarations: [...COMPONENTS]
+  declarations: [...COMPONENTS],
+  providers:[
+    { provide: HTTP_INTERCEPTORS, useClass: SimpleInterceptor, multi: true}
+  ]
 })
 export class PassportModule {}
