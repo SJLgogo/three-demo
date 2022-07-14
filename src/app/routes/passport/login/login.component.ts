@@ -61,6 +61,7 @@ export class UserLoginComponent implements OnInit, OnDestroy {
   agentId: variable<string>;
   corpId: variable<string>;
   urlId: variable<string>;
+  loginWay: variable<string>;
 
   get userName(): AbstractControl {
     return this.form.get('userName')!;
@@ -165,6 +166,7 @@ export class UserLoginComponent implements OnInit, OnDestroy {
       this.userName.updateValueAndValidity();
       this.password.markAsDirty();
       this.password.updateValueAndValidity();
+      this.loginWay = 'accountPassword'
       if (this.userName.invalid || this.password.invalid) {
         return;
       }
@@ -178,6 +180,10 @@ export class UserLoginComponent implements OnInit, OnDestroy {
       }
     }
 
+    if (!this.urlId) {
+      this.message.error('无效链接')
+    }
+
     // 默认配置中对所有HTTP请求都会强制 [校验](https://ng-alain.com/auth/getting-started) 用户 Token
     // 然一般来说登录请求不需要校验，因此可以在请求URL加上：`/login?_allow_anonymous=true` 表示不触发用户 Token 校验
     this.loading = true;
@@ -187,7 +193,8 @@ export class UserLoginComponent implements OnInit, OnDestroy {
         type: this.type,
         account: this.userName.value,
         password: this.password.value,
-        appId: this.urlId
+        appId: this.urlId,
+        loginWay: this.loginWay
       })
       .pipe(
         finalize(() => {
@@ -234,7 +241,7 @@ export class UserLoginComponent implements OnInit, OnDestroy {
     return new Promise<string>(((resolve, reject) => {
       if (!location.href.includes('id=')) {
         this.urlId = localStorage.getItem('urlId')
-      }else {
+      } else {
         this.urlId = location.href.split('id=')[1]
         localStorage.setItem('urlId', this.urlId)
       }
