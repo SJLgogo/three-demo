@@ -92,7 +92,6 @@ export class UserLoginComponent implements OnInit, OnDestroy {
 
   switch({index}: NzTabChangeEvent): void {
     this.type = index!;
-    console.log(this.type);
     if (this.type === 1) {
       this.activeRoute.queryParams.subscribe((params: any) => {
         console.log(params);
@@ -115,6 +114,7 @@ export class UserLoginComponent implements OnInit, OnDestroy {
               this.settingsService.setUser({avatar: employee.avatar, email: '', name: employee.employeeName});
               // this.huiztechAppAuthServiceService.setLoginData(data);
               // 重新获取 StartupService 内容，我们始终认为应用信息一般都会受当前用户授权范围而影响
+              console.log(employee);
               this.startupSrv.load().subscribe(() => {
                 let url = this.tokenService.referrer!.url || '/';
                 if (url.includes('/passport')) {
@@ -128,7 +128,6 @@ export class UserLoginComponent implements OnInit, OnDestroy {
             },
           );
         } else {
-          console.log(this.corpId, this.agentId);
           window.WwLogin({
             id: 'wx_reg',
             appid: this.corpId,
