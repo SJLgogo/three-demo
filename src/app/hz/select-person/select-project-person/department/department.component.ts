@@ -30,6 +30,7 @@ export class DepartmentComponent extends DepartmentInterface implements OnInit {
   mode: any = [];
   timer: any;
   showSearchResult = false;
+  selectedPerson: Map<string,any> = new Map<string,any>()
 
   ngOnInit(): void {
     Promise.all(this.initList.map(fn => fn.call(this)))
@@ -89,7 +90,7 @@ export class DepartmentComponent extends DepartmentInterface implements OnInit {
   treeExpand(node: NzTreeNode): void {
     if (node!.getChildren().length === 0 && node.isExpanded) {
       console.log(node, node.origin);
-      this.http.get(`/org/service/organization/admin/organization/tree/child/` + node.parentNode!.key + '/' + node.origin['companyId']).subscribe((res: any) => {
+      this.http.get(`/org/service/organization/admin/organization/tree/child/` + node.origin!.key + '/' + node.origin['companyId']).subscribe((res: any) => {
         res.success && node.addChildren(res.data);
       });
     }
@@ -114,5 +115,6 @@ export class DepartmentComponent extends DepartmentInterface implements OnInit {
   addSelectedList(category: string, id: string, name: string, corpId: string, projectId: variable<string>, projectName: variable<string>, thirdPartyAccountUserId: variable<string>) {
 
   }
+
 
 }
