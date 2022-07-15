@@ -22,33 +22,13 @@ export class DepartmentComponent extends DepartmentInterface implements OnInit {
 
   chooseMode: variable<string>; // 员工选择模式
   orgTreeLoading = true
-  orgNodes: TreeNode[] = [
-    {
-      category: "org_outsource",
-      corpId: "",
-      expanded: true,
-      icon: "",
-      isLeaf: false,
-      key: "1b10876b-f57c-4a56-a5e1-7bdfc08c57c1",
-      title: "上海鑫湘机电设备工程有限公司",
-      children: [
-        {
-          category: "outsourceProject",
-          corpId: "",
-          icon: "project",
-          isLeaf: false,
-          key: "3261a240-63f6-4263-a2b6-eb40bbf2547b",
-          title: "上海鑫湘3号线屏蔽门维保项目",
-        }
-      ]
-    }
-  ];
+  orgNodes: TreeNode[] = [];
   initList: fn[] = [this.loadOrgTree]
   searchValue: variable<string>;
-  activeNode:any;
-  panels:any = [];
+  activeNode: any;
+  panels: any = [];
   mode: any = [];
-  timer:any;
+  timer: any;
   showSearchResult = false;
 
   ngOnInit(): void {
@@ -58,7 +38,7 @@ export class DepartmentComponent extends DepartmentInterface implements OnInit {
 
   loadOrgTree(): void {
     this.orgTreeLoading = true;
-    this.http.get(`/service/support/admin/outsourceApi/findChildTree`).subscribe((res:any) => {
+    this.http.get(`/org/service/organization/admin/organization/tree/child/root`).subscribe((res: any) => {
       res.success ? this.orgNodes = res.data : this.msgSrv.warning(res.message);
       this.orgTreeLoading = false;
     });
@@ -84,7 +64,7 @@ export class DepartmentComponent extends DepartmentInterface implements OnInit {
     } else {
       this.orgTreeLoading = true;
       this.showSearchResult = true;
-      this.http.post(`/service/support/admin/UserApi/global-search`, params).subscribe((res:any) => {
+      this.http.post(`/service/support/admin/UserApi/global-search`, params).subscribe((res: any) => {
         if (res.success) {
           this.panels = res.data;
         }
@@ -108,7 +88,8 @@ export class DepartmentComponent extends DepartmentInterface implements OnInit {
 
   treeExpand(node: NzTreeNode): void {
     if (node!.getChildren().length === 0 && node.isExpanded) {
-      this.http.get(`/service/support/admin/outsourceApi/getUserTree/` + node.key + '/' + node.origin['corpId']).subscribe((res:any) => {
+      console.log(node, node.origin);
+      this.http.get(`/org/service/organization/admin/organization/tree/child/` + node.parentNode!.key + '/' + node.origin['companyId']).subscribe((res: any) => {
         res.success && node.addChildren(res.data);
       });
     }
@@ -125,7 +106,7 @@ export class DepartmentComponent extends DepartmentInterface implements OnInit {
     }
   }
 
-  optSearchResult(value:any) {
+  optSearchResult(value: any) {
     this.addSelectedList(value.category, value.id, value.name, '', value.projectId, value.projectName, value.thirdPartyAccountUserId);
   }
 

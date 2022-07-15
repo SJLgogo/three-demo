@@ -58,9 +58,10 @@ export class UserLoginComponent implements OnInit, OnDestroy {
     });
   }
 
+  oauthLogin: boolean = true;
   agentId: variable<string>;
   corpId: variable<string>;
-  urlId: variable<string>;
+  appId: variable<string>;
   loginWay: variable<string>;
 
   get userName(): AbstractControl {
@@ -94,49 +95,12 @@ export class UserLoginComponent implements OnInit, OnDestroy {
   switch({index}: NzTabChangeEvent): void {
     this.type = index!;
     if (this.type === 1) {
-      this.activeRoute.queryParams.subscribe((params: any) => {
-        console.log(params);
-        const code = params.code;
-        const state = params.state;
-        const appid = params.appid;
-        if (code !== undefined && code !== '' && state !== undefined && state !== '' && appid !== undefined && appid !== '') {
-          this.http.get(`/auth/wxcp/codeToUser?_allow_anonymous=true`, {code: `${code}`}).subscribe(
-            (res) => {
-              const data = res.data;
-              // 清空路由复用信息
-              this.reuseTabService.clear();
-              // 设置用户Token信息
-              this.tokenService.set({
-                token: data.AccessToken,
-              });
-              this.settingsService.setData('employee', data.employee);
-
-              const employee = data.employee;
-              this.settingsService.setUser({avatar: employee.avatar, email: '', name: employee.employeeName});
-              // this.huiztechAppAuthServiceService.setLoginData(data);
-              // 重新获取 StartupService 内容，我们始终认为应用信息一般都会受当前用户授权范围而影响
-              console.log(employee);
-              this.startupSrv.load().subscribe(() => {
-                let url = this.tokenService.referrer!.url || '/';
-                if (url.includes('/passport')) {
-                  url = '/';
-                }
-                this.router.navigateByUrl(url);
-              });
-            },
-            (error) => {
-              this.message.error(error);
-            },
-          );
-        } else {
-          window.WwLogin({
-            id: 'wx_reg',
-            appid: this.corpId,
-            agentid: this.agentId,
-            redirect_uri: window.location.href,
-            state: `${this.randomState()}`,
-          });
-        }
+      window.WwLogin({
+        id: 'wx_reg',
+        appid: this.corpId,
+        agentid: this.agentId,
+        redirect_uri: window.location.href,
+        state: `${this.randomState()}`,
       });
     }
   }
@@ -180,7 +144,7 @@ export class UserLoginComponent implements OnInit, OnDestroy {
       }
     }
 
-    if (!this.urlId) {
+    if (!this.appId) {
       this.message.error('无效链接')
     }
 
@@ -188,14 +152,85 @@ export class UserLoginComponent implements OnInit, OnDestroy {
     // 然一般来说登录请求不需要校验，因此可以在请求URL加上：`/login?_allow_anonymous=true` 表示不触发用户 Token 校验
     this.loading = true;
     this.cdr.detectChanges();
+    this.loginHttp()
+  }
+
+  // #endregion
+
+  ngOnDestroy(): void {
+    if (this.interval$) {
+      clearInterval(this.interval$);
+    }
+  }
+
+  async ngOnInit(): Promise<any> {
+    this.activeRoute.queryParams.subscribe((params: any) => {
+      const code = params.code;
+      const appId = params.appId;
+      if (code !== undefined && code !== '' && appId !== undefined && appId !== '') {
+        this.oauthLogin = false
+        console.log(this.oauthLogin);
+      }
+    });
+    await this.judgeScanQrCodeLogin()
+    const appId = await this.obtainUrlId()
+    await this.obtainCorpId(appId)
+  }
+
+  judgeScanQrCodeLogin(): void {
+    this.activeRoute.queryParams.subscribe((params: any) => {
+      console.log(params);
+      const code = params.code;
+      const appId = params.appId;
+      if (code !== undefined && code !== '' && appId !== undefined && appId !== '') {
+        this.scanQrCodeTechnologicalProcess(code, appId)
+      }
+    });
+  }
+
+  obtainUrlId(): Promise<string> {
+    return new Promise<string>(((resolve, reject) => {
+      if (!location.href.includes('appId=')) {
+        this.appId = localStorage.getItem('appId')
+      } else {
+        this.appId = location.href.split('appId=')[1].split('&')[0]
+        localStorage.setItem('appId', this.appId)
+      }
+      resolve((this.appId as string))
+    }))
+  }
+
+  obtainCorpId(appId: string): void {
+    if (!this.appId) {
+      return
+    }
+    this.http.get('service/portal/appId/' + appId + '?_allow_anonymous=true').subscribe(res => {
+      this.corpId = res.data.corpId
+      this.agentId = res.data.agentId
+    })
+  }
+
+
+  randomState(): string {
+    let text = '';
+    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    for (let i = 0; i < 5; i++) {
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return text;
+  }
+
+
+  async scanQrCodeTechnologicalProcess(authCode: string, appId: string): Promise<void> {
+    this.loginWay = 'scanCode'
+    await this.loginHttp(authCode, appId)
+  }
+
+
+  loginHttp(authCode?: string, appId?: string): void {
+    const post = this.postDataGet(authCode, appId)
     this.http
-      .post('/service/portal/login?_allow_anonymous=true', {
-        type: this.type,
-        account: this.userName.value,
-        password: this.password.value,
-        appId: this.urlId,
-        loginWay: this.loginWay
-      })
+      .post('/service/portal/login?_allow_anonymous=true', post)
       .pipe(
         finalize(() => {
           this.loading = true;
@@ -224,51 +259,23 @@ export class UserLoginComponent implements OnInit, OnDestroy {
       });
   }
 
-  // #endregion
-
-  ngOnDestroy(): void {
-    if (this.interval$) {
-      clearInterval(this.interval$);
+  postDataGet(authCode?: string, appId?: string): any {
+    const post: any = {
+      type: this.type,
+      account: this.userName.value,
+      password: this.password.value,
+      appId: this.appId,
+      loginWay: this.loginWay
     }
-  }
-
-  async ngOnInit(): Promise<any> {
-    await this.obtainUrlId()
-    await this.obtainCorpId()
-  }
-
-  obtainUrlId(): Promise<string> {
-    return new Promise<string>(((resolve, reject) => {
-      if (!location.href.includes('id=')) {
-        this.urlId = localStorage.getItem('urlId')
-      } else {
-        this.urlId = location.href.split('id=')[1]
-        localStorage.setItem('urlId', this.urlId)
-      }
-      resolve('')
-    }))
-  }
-
-  // http://localhost:4200/#/passport/login?id=1547139498926796801
-
-  obtainCorpId(): void {
-    if (!this.urlId) {
-      return
+    if (authCode && appId) {
+      post.authCode = authCode
+      post.appId = appId
+      delete post.password
+      delete post.account
+      delete post.type
     }
-    this.http.get('service/portal/appId/' + this.urlId + '?_allow_anonymous=true').subscribe(res => {
-      this.corpId = res.data.corpId
-      this.agentId = res.data.agentId
-    })
+    return post
   }
 
-
-  randomState(): string {
-    let text = '';
-    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for (let i = 0; i < 5; i++) {
-      text += possible.charAt(Math.floor(Math.random() * possible.length));
-    }
-    return text;
-  }
 
 }

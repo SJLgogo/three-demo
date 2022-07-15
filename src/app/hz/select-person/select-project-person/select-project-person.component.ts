@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {NzModalRef} from "ng-zorro-antd/modal";
+import {NzMessageService} from "ng-zorro-antd/message";
 
 @Component({
   selector: 'app-select-project-person',
@@ -7,9 +9,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SelectProjectPersonComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private modal: NzModalRef,
+    private msgSrv: NzMessageService,
+  ) {
+  }
 
   ngOnInit(): void {
+  }
+
+
+  close(): void {
+    this.modal.destroy()
+  }
+
+  save(): void {
+    this.modal.close(true)
   }
 
 }
