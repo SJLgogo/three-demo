@@ -21,8 +21,10 @@ export class OrganizationManagementComponent implements OnInit {
   @ViewChild('stApp') private readonly stApp!: STComponent;
   @ViewChild('cpTrigger')
   cpTrigger!: ElementRef;
+
   constructor(private  modal: ModalHelper, private organizationService: OrganizationService, private msgSrv: NzMessageService) {
   }
+
   cpData: variable<string>;
   urlPro = '/base/api/agent/company/page-all'
   urlApp = '/base/api/agent/app/page-all'
@@ -119,8 +121,12 @@ export class OrganizationManagementComponent implements OnInit {
     this[tableName].reload()
   }
 
+
   choosePerson(): void {
-    this.modal.createStatic(SelectProjectPersonComponent).subscribe(res => {
+    this.modal.createStatic(SelectProjectPersonComponent, {
+      chooseMode: 'department',  // department organization employee
+      functionName: 'test1222'
+    }).subscribe(res => {
 
     })
   }

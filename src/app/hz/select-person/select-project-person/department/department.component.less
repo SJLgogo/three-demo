@@ -1,23 +1,37 @@
-.container{
+.container {
   display: flex;
   box-sizing: border-box;
   height: auto;
 
-  .left{
+  .left {
     box-sizing: border-box;
-    padding: 10px ;
+    padding: 10px;
     width: 60%;
     border-right: 1px solid #eeeeee;
   }
 
-  .right{
+  .right {
     box-sizing: border-box;
     width: 40%;
-    padding: 10px ;
+    padding: 10px;
 
-    &>p:nth-of-type(1){
+    & > p:nth-of-type(1) {
       margin-bottom: 15px;
       color: black;
+    }
+
+    .main {
+      display: flex;
+      flex-wrap: wrap;
+
+      .item {
+        cursor: pointer;
+        box-sizing: border-box;
+        padding: 2px 10px;
+        margin-right: 20px;
+        margin-bottom: 5px;
+        background: rgb(245,245,245);
+      }
     }
   }
 }

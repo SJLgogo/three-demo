@@ -1,29 +1,51 @@
-class DepartmentInterface {
+class DepartmentClass {
 
 }
 
-interface childNode{
+interface childNode {
   title: string;
   key: string;
   isLeaf: boolean;
   corpId: string;
   icon: string;
-  category:string;
+  category: string;
   expanded?: boolean;
 }
 
-interface TreeNode extends childNode{
+interface TreeNode extends childNode {
   children: childNode[]
 }
 
-type variable<T> = T | undefined | null;
-type fn = () => void
+interface Person extends CommonSelect {
+  corpId: string,
+  projectId: string,
+  projectName: string
+}
 
+interface Organization extends CommonSelect {
+}
+
+type Department = Partial<Person>
+
+interface CommonSelect {
+  category: string,
+  id: string,
+  name: string,
+}
+
+type selected = Person | Organization | Department
+type variable<T> = T | undefined | null;
+type fn = voidFn;
+type voidFn = () => void
+type promiseFn<T = void> = (str: string) => Promise<T>
 
 export {
-  DepartmentInterface,
+  DepartmentClass,
   TreeNode,
   fn,
   variable,
-  childNode
+  childNode,
+  Person,
+  Organization,
+  selected
 }

@@ -1,3 +1,24 @@
-.choose{
+.choose {
   min-height: 150px;
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  .selectMain {
+    display: flex;
+    flex-wrap: wrap;
+
+    .item {
+      margin-right: 10px;
+      margin-bottom: 5px;
+      cursor: pointer;
+      background: rgb(245,245,245);
+      box-sizing: border-box;
+      padding: 2px 5px 2px 5px;
+      display: inline-block;
+      span{
+        color: rgb(155,155,154);
+        margin-right: 20px;
+      }
+    }
+  }
 }

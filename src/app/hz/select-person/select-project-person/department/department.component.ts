@@ -1,41 +1,60 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit, Output, EventEmitter, OnChanges, SimpleChanges, OnDestroy} from '@angular/core';
 import {NzFormatEmitEvent, NzTreeNode} from "ng-zorro-antd/tree";
 import {_HttpClient, ModalHelper} from "@delon/theme";
 import {NzModalRef, NzModalService} from "ng-zorro-antd/modal";
-import {DepartmentInterface, fn, TreeNode, variable, childNode} from "./department.interface";
+import {
+  fn,
+  TreeNode,
+  variable,
+  Person,
+  Organization,
+  selected, DepartmentClass
+} from "./department.interface";
+import {RxjsChangeService} from "../../rxjsChange.service";
+import {Unsubscribable} from "rxjs";
 
 @Component({
   selector: 'app-department',
   templateUrl: './department.component.html',
   styleUrls: ['./department.component.less']
 })
-export class DepartmentComponent extends DepartmentInterface implements OnInit {
+export class DepartmentComponent extends DepartmentClass implements OnInit, OnDestroy {
+
+  @Input()
+  chooseMode: variable<string>
+  @Input()
+  functionName: variable<string>
+  @Input()
+  selectList: selected[] = []
+  @Output()
+  selectListChange = new EventEmitter();
 
   constructor(
     public http: _HttpClient,
     private modal: ModalHelper,
     private modalRef: NzModalRef,
     private msgSrv: NzModalService,
+    private rxjsChangeService: RxjsChangeService,
   ) {
     super()
   }
 
-  chooseMode: variable<string>; // 员工选择模式
+
+  unSub: variable<Unsubscribable>;
   orgTreeLoading = true
   orgNodes: TreeNode[] = [];
-  initList: fn[] = [this.loadOrgTree]
+  initList: fn[] = [this.loadOrgTree, this.receiveDeleteId, this.getSelectedByCatch, this.commonDepartmentObtain]
   searchValue: variable<string>;
   activeNode: any;
   panels: any = [];
-  mode: any = [];
   timer: any;
   showSearchResult = false;
-  selectedPerson: Map<string,any> = new Map<string,any>()
+  selected: Map<string, selected> = new Map<string, selected>()
+  commonDepartments: selected[] = []
 
   ngOnInit(): void {
     Promise.all(this.initList.map(fn => fn.call(this)))
   }
-
 
   loadOrgTree(): void {
     this.orgTreeLoading = true;
@@ -52,20 +71,20 @@ export class DepartmentComponent extends DepartmentInterface implements OnInit {
     this.timer = setTimeout(() => {
       this.globalSearch()
       clearTimeout(this.timer);
-    }, 1000);
+    }, 600);
   }
 
   globalSearch() {
     const params = {
       searchValue: this.searchValue,
-      mode: this.mode,
+      mode: this.chooseMode,
     };
     if (this.searchValue === '' || this.searchValue === 'undefined') {
       this.showSearchResult = false;
     } else {
       this.orgTreeLoading = true;
       this.showSearchResult = true;
-      this.http.post(`/service/support/admin/UserApi/global-search`, params).subscribe((res: any) => {
+      this.http.post(`/org/service/organization/admin/account/global-search`, params).subscribe((res: any) => {
         if (res.success) {
           this.panels = res.data;
         }
@@ -99,21 +118,114 @@ export class DepartmentComponent extends DepartmentInterface implements OnInit {
   treeNodeClick(node: NzTreeNode): void {
     switch (this.chooseMode) {
       case 'employee':
-        this.addSelectedList('employee', node.key, node.title, node.origin['corpId'], node.parentNode!['key'], node.parentNode!['title'], node.origin['thirdPartyAccountUserId'])
+        this.addPerson(node)
         break;
-      case 'project':
-        this.addSelectedList('outsourceProject', node.key, node.title, node.origin['corpId'], '', '', '');
+      case 'organization':
+        this.addOrganization(node)
+        break;
+      case 'department':
+        this.addSelectedDepartmentList(node)
         break;
     }
   }
 
   optSearchResult(value: any) {
-    this.addSelectedList(value.category, value.id, value.name, '', value.projectId, value.projectName, value.thirdPartyAccountUserId);
+    this.addSelectedPersonList(value.type, value.id.toString(), value.name, '', value.projectId, value.projectName, value.thirdPartyAccountUserId);
   }
 
 
-  addSelectedList(category: string, id: string, name: string, corpId: string, projectId: variable<string>, projectName: variable<string>, thirdPartyAccountUserId: variable<string>) {
+  addSelectedPersonList(category: string, id: string, name: string, corpId: string, projectId: string, projectName: string, thirdPartyAccountUserId: variable<string>) {
+    const person: Person = {
+      name: name,
+      id: id,
+      corpId: corpId,
+      projectId: projectId,
+      projectName: projectName,
+      category: category
+    }
+    this.selected.set(id, person)
+    this.getSelectedList<Person>(this.selected as Map<string, Person>)
+  }
 
+  getSelectedList<T>(map: Map<string, T>): void {
+    this.selectList = []
+    map.forEach((item: T) => this.selectList.push((item as unknown as Person as Organization)))
+    Promise.all([this.emitSelectFn(), this.cacheSelectList()])
+  }
+
+  receiveDeleteId(): void {
+    this.unSub = this.rxjsChangeService.subscribe((res: Pick<Person, 'id' | 'category'>) => {
+      this.selected.delete(res.id)
+    })
+  }
+
+
+  addSelectedOrganizationList(category: string, id: string, name: string): void {
+    const organization: Organization = {
+      name: name,
+      id: id,
+      category: category
+    }
+    this.selected.set(id, organization)
+    this.getSelectedList<Organization>(this.selected as Map<string, Organization>)
+  }
+
+  addSelectedDepartmentList(node: NzTreeNode): void {
+    if (node.origin['category'] === 'employee') {
+      this.addPerson(node)
+    }
+    if (node.origin['category'] === 'organization') {
+      this.addSelectedOrganizationList(node.origin!['category'], node.key, node.title)
+    }
+  }
+
+
+  emitSelectFn(): void {
+    this.selectListChange.emit(this.selectList)
+  }
+
+  cacheSelectList(): void {
+    localStorage.setItem(this.functionName!, JSON.stringify(this.selectList))
+  }
+
+  addPerson(node: NzTreeNode): void {
+    if (this.chooseMode === node.origin['category'] || this.chooseMode === 'department') {
+      this.addSelectedPersonList(node.origin!['category'], node.key, node.title, node.origin['corpId'], node.parentNode!['key'], node.parentNode!['title'], node.origin['thirdPartyAccountUserId'])
+    }
+  }
+
+  addOrganization(node: NzTreeNode): void {
+    if (this.chooseMode === node.origin['category'] || this.chooseMode === 'department') {
+      this.addSelectedOrganizationList(node.origin!['category'], node.key, node.title)
+    }
+  }
+
+  commonDepartmentObtain(): void {
+    const appId = localStorage.getItem('appId')
+    const postData = {pageNo: 0, pageSize: 5, appId: appId, functionId: this.functionName}
+    this.http.post('/org/service/organization/SelectOrgTotalController/findByAppIdAndFunctionId', postData).subscribe(res => {
+      this.commonDepartments = res.data.map((item: any) => {
+        return {
+          id: item.id,
+          category: 'organization',
+          name: item.name
+        }
+      })
+      console.log(this.commonDepartments);
+    })
+  }
+
+  getSelectedByCatch(): void {
+    const res = localStorage.getItem(this.functionName!) ? JSON.parse(<string>localStorage.getItem(this.functionName!)) : []
+    res.forEach((item: selected) => this.selected.set((item.id as string), item))
+  }
+
+  commonDepartmentsClick(item: selected): void {
+    this.addSelectedOrganizationList('organization', item.id as string, item.name as string)
+  }
+
+  ngOnDestroy(): void {
+    this.unSub && this.unSub.unsubscribe();
   }
 
 
