@@ -211,7 +211,6 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
           name: item.name
         }
       })
-      console.log(this.commonDepartments);
     })
   }
 
