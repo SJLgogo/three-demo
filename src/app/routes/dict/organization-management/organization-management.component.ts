@@ -125,12 +125,14 @@ export class OrganizationManagementComponent implements OnInit {
   choosePerson(): void {
     this.modal.createStatic(SelectProjectPersonComponent, {
       chooseMode: 'department',  // department organization employee
-      functionName: 'test1222'
+      functionName: 'test1222',
+      selectList:[
+        {name:'研发部',id:"1539562806221774849",category:"organization"}
+      ]
     }).subscribe(res => {
 
     })
   }
-
 
   deleteProHttp(id: string): void {
     this.organizationService.deletePro(id).subscribe((res: HttpResult) => {

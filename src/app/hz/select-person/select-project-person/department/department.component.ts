@@ -43,7 +43,7 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
   unSub: variable<Unsubscribable>;
   orgTreeLoading = true
   orgNodes: TreeNode[] = [];
-  initList: fn[] = [this.loadOrgTree, this.receiveDeleteId, this.getSelectedByCatch, this.commonDepartmentObtain]
+  initList: fn[] = [this.loadOrgTree, this.receiveDeleteId, this.getSelectedByCatch, this.commonDepartmentObtain, this.renderSelectList]
   searchValue: variable<string>;
   activeNode: any;
   panels: any = [];
@@ -151,11 +151,13 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
     this.selectList = []
     map.forEach((item: T) => this.selectList.push((item as unknown as Person as Organization)))
     Promise.all([this.emitSelectFn(), this.cacheSelectList()])
+    console.log(this.selectList);
   }
 
   receiveDeleteId(): void {
     this.unSub = this.rxjsChangeService.subscribe((res: Pick<Person, 'id' | 'category'>) => {
       this.selected.delete(res.id)
+      // localStorage.setItem(this.functionName!, this.selectList)
     })
   }
 
@@ -212,6 +214,10 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
         }
       })
     })
+  }
+
+  renderSelectList(): void {
+    this.selectList.length && this.selectList.forEach(item => this.selected.set((item.id as string), item))
   }
 
   getSelectedByCatch(): void {
