@@ -38,7 +38,7 @@
     "theme": "ng-alain-plugin-theme -t=themeCss",
     "icon": "ng g ng-alain:plugin icon",
     "prepare": "husky install",
-    "add": "ng g huiztech:add"
+    "add": "ng g @huiztech/code-generator:add"
   },
   "dependencies": {
     "@angular/animations": "~13.3.0",
