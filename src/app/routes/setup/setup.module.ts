@@ -36,6 +36,7 @@ import {NzCollapseModule} from "ng-zorro-antd/collapse";
 import {SetupRoutingModule} from "./setup-routing.module";
 import {NzDropDownModule} from "ng-zorro-antd/dropdown";
 import {NzIconModule} from "ng-zorro-antd/icon";
+import {UserManagementComponent} from "./user-management/user-management.component";
 
 const COMPONENTS: Array<Type<void>> = [
   SetupIndexComponent,
@@ -63,7 +64,8 @@ const COMPONENTS: Array<Type<void>> = [
   SystemContactTagEmployeeComponent,
   SystemContactTagEditComponent,
   SystemContactPostEditComponent,
-  SystemContactOrgEditComponent
+  SystemContactOrgEditComponent,
+  UserManagementComponent
 ];
 
 @NgModule({

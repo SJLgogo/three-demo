@@ -15,10 +15,6 @@
       "hideInBreadcrumb": true,
       "children": [
         {
-          "text": "组织机构管理",
-          "link": "/setup/security/contact"
-        },
-        {
           "text": "组织机构",
           "link": "/setup/security/contact"
         },
@@ -29,6 +25,10 @@
         {
           "text": "角色授权",
           "link": "/setup/security/role-permission"
+        },
+        {
+          "text": "用户管理",
+          "link": "/setup/user"
         },
         {
           "text": "菜单管理",

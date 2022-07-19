@@ -12,6 +12,7 @@ import {SetupAccountComponent} from './account/account.component';
 import {SetupSynchronizeComponent} from './account/synchronize/synchronize.component';
 import {SetupDataPermissionsComponent} from './security/data-permissions/data-permissions.component';
 import {NzCollapseModule} from "ng-zorro-antd/collapse";
+import {UserManagementComponent} from "./user-management/user-management.component";
 
 const routes: Routes = [
   {path: '', redirectTo: 'security/contact', pathMatch: 'full'},
@@ -32,7 +33,8 @@ const routes: Routes = [
   },
   {path: 'security/contact', component: SetupContactComponent, data: {title: '组织机构', titleI18n: '组织机构'}},
   {path: 'security/account', component: SetupAccountComponent, data: {title: '账号管理', titleI18n: '账号管理'}},
-  {path: 'synchronize', component: SetupSynchronizeComponent, data: {title: '第三方账户同步', titleI18n: '第三方账户同步'}}
+  {path: 'synchronize', component: SetupSynchronizeComponent, data: {title: '第三方账户同步', titleI18n: '第三方账户同步'}},
+  {path: 'user', component: UserManagementComponent, data: {title: '用户管理', titleI18n: '用户管理'}}
 ];
 
 @NgModule({

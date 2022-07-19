@@ -191,10 +191,8 @@ export class SetupContactComponent implements OnInit {
     const node: any = event.node;
     if (event.eventName === 'expand') {
       if (node && node.getChildren().length === 0 && node.isExpanded) {
-        this.http.get(`/org/service/organization/admin/organization/tree/child/` + node.key + '/' + node.origin.corpId).subscribe((res:any) => {
-          if (res.success) {
-            node.addChildren(res.data);
-          }
+        this.http.get(`/org/service/organization/admin/organization/tree/child/` + node.origin!.key + '/' + node.origin['companyId']).subscribe((res: any) => {
+          res.success && node.addChildren(res.data);
         });
       }
     } else if (event.eventName === 'click') {
@@ -209,7 +207,7 @@ export class SetupContactComponent implements OnInit {
   // 加载组织机构树
   loadOrgTree(): void {
     this.orgTreeLoading = true;
-    this.http.get(`/org/service/organization/admin/organization/tree/child/root/all`).subscribe((res:any) => {
+    this.http.get(`/org/service/organization/admin/organization/tree/child/root`).subscribe((res:any) => {
       if (res.success) {
         this.orgNodes = res.data;
         this.orgTreeLoading = false;
