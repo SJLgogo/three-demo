@@ -49,7 +49,7 @@ export class SetupContactComponent implements OnInit {
   jobsNodes: any = [];
   confirmModal!: NzModalRef;
 
-  url = `/org/service/organization/admin/employee/table`;
+  url = `/org/service/organization/rpc/user/findByOrgId`;
   employeeTableRequest: any = {
     lazyLoad: true,
     allInBody: true,

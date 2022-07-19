@@ -11,7 +11,7 @@ import { SetupSynchronizeComponent } from './synchronize/synchronize.component';
   templateUrl: './account.component.html'
 })
 export class SetupAccountComponent implements OnInit {
-  url = `/service/organization/admin/user/page-all`;
+  url = `/org/service/organization/admin/account/page-all`;
   @ViewChild('sf', { static: false }) sf!: SFComponent;
   searchSchema: SFSchema = {
     properties: {
@@ -30,9 +30,8 @@ export class SetupAccountComponent implements OnInit {
     {
       title: '',
       buttons: [
-        // { text: '查看', click: (item: any) => `/form/${item.id}` },
-        // { text: '编辑', type: 'static', component: SetupAccountEditComponent },
-        // { text: '编辑', type: 'static', icon: 'edit', click: (item: any) => this.updatePageElementResource(item) },
+        { text: '查看', click: (item: any) => `/form/${item.id}` },
+        { text: '编辑', type: 'static', icon: 'edit', click: (item: any) => this.updatePageElementResource(item) },
       ]
     }
   ];

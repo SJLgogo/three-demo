@@ -34,18 +34,12 @@ export class UserManagementComponent implements OnInit {
           icon: "delete",
           type: "del",
           pop: {
-            title: "确认删除该计划?",
+            title: "确认删除?",
             okType: "danger",
             icon: "star",
           },
           click: (e) => {
           },
-        },
-        {
-          text: `应用列表`,
-        },
-        {
-          text: `管理员账号`,
         },
       ],
     },
