@@ -23,6 +23,7 @@ interface Person extends CommonSelect {
 }
 
 interface Organization extends CommonSelect {
+  selected?: boolean
 }
 
 type Department = Partial<Person>

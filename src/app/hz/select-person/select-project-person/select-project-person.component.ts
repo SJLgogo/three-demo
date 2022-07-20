@@ -42,7 +42,7 @@ export class SelectProjectPersonComponent implements OnInit {
   }
 
   clearCatch(): void {
-    localStorage.getItem(this.functionName!) ? localStorage.removeItem(this.functionName!) : ''
+     localStorage.removeItem(this.functionName!)
   }
 
   getSelectedByCatch(): void {

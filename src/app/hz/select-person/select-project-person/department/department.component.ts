@@ -43,17 +43,18 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
   unSub: variable<Unsubscribable>;
   orgTreeLoading = true
   orgNodes: TreeNode[] = [];
-  initList: fn[] = [this.loadOrgTree, this.receiveDeleteId, this.getSelectedByCatch, this.commonDepartmentObtain, this.renderSelectList]
+  initList: fn[] = [this.loadOrgTree, this.receiveDeleteId, this.getSelectedByCatch, this.renderSelectList]
   searchValue: variable<string>;
   activeNode: any;
   panels: any = [];
   timer: any;
   showSearchResult = false;
   selected: Map<string, selected> = new Map<string, selected>()
-  commonDepartments: selected[] = []
+  commonDepartments: Organization[] = []
 
   ngOnInit(): void {
     Promise.all(this.initList.map(fn => fn.call(this)))
+    Promise.resolve(this.commonDepartmentObtain()).then(res => this.judgeCommonDepartmentSelect(res))
   }
 
   loadOrgTree(): void {
@@ -108,7 +109,6 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
 
   treeExpand(node: NzTreeNode): void {
     if (node!.getChildren().length === 0 && node.isExpanded) {
-      console.log(node, node.origin);
       this.http.get(`/org/service/organization/admin/organization/tree/child/` + node.origin!.key + '/' + node.origin['companyId']).subscribe((res: any) => {
         res.success && node.addChildren(res.data);
       });
@@ -157,7 +157,8 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
   receiveDeleteId(): void {
     this.unSub = this.rxjsChangeService.subscribe((res: Pick<Person, 'id' | 'category'>) => {
       this.selected.delete(res.id)
-      // localStorage.setItem(this.functionName!, this.selectList)
+      this.getSelectedList<selected>(this.selected as Map<string, selected>)
+      this.judgeCommonDepartmentSelect(this.commonDepartments)
     })
   }
 
@@ -202,16 +203,20 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
     }
   }
 
-  commonDepartmentObtain(): void {
-    const appId = localStorage.getItem('appId')
-    const postData = {pageNo: 0, pageSize: 5, appId: appId, functionId: this.functionName}
-    this.http.post('/org/service/organization/SelectOrgTotalController/findByAppIdAndFunctionId', postData).subscribe(res => {
-      this.commonDepartments = res.data.map((item: any) => {
-        return {
-          id: item.id,
-          category: 'organization',
-          name: item.name
-        }
+  commonDepartmentObtain(): Promise<Organization[]> {
+    return new Promise<Organization[]>(resolve => {
+      const appId = localStorage.getItem('appId')
+      const postData = {pageNo: 0, pageSize: 5, appId: appId, functionId: this.functionName}
+      this.http.post('/org/service/organization/SelectOrgTotalController/findByAppIdAndFunctionId', postData).subscribe(res => {
+        this.commonDepartments = res.data.map((item: any) => {
+          return {
+            id: item.id,
+            category: 'organization',
+            name: item.name,
+            selected: false
+          }
+        })
+        resolve(this.commonDepartments)
       })
     })
   }
@@ -220,14 +225,21 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
     this.selectList.length && this.selectList.forEach(item => this.selected.set((item.id as string), item))
   }
 
+  judgeCommonDepartmentSelect(commonDepartments: Organization[]): void {
+    const selectIds: string[] = this.selectList.map(item => item.id!)
+    commonDepartments.forEach(item => selectIds.includes(item.id as string) ? (item as Organization).selected = true : (item as Organization).selected = false)
+  }
+
   getSelectedByCatch(): void {
     const res = localStorage.getItem(this.functionName!) ? JSON.parse(<string>localStorage.getItem(this.functionName!)) : []
     res.forEach((item: selected) => this.selected.set((item.id as string), item))
   }
 
-  commonDepartmentsClick(item: selected): void {
+  commonDepartmentsClick(item: selected, idx: number): void {
+    this.commonDepartments[idx].selected = true
     this.addSelectedOrganizationList('organization', item.id as string, item.name as string)
   }
+
 
   ngOnDestroy(): void {
     this.unSub && this.unSub.unsubscribe();

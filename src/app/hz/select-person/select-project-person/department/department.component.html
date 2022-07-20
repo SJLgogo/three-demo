@@ -57,8 +57,10 @@
   <div class="right">
     <p>常用部门 : </p>
     <div class="main">
-      <div (click)="commonDepartmentsClick(item)" class="item" *ngFor="let item of commonDepartments">
-        <span>{{item.name}}</span>
+      <div  (click)="commonDepartmentsClick(item,i)"
+            [class]="item.selected ? 'selectedItem' : 'item' "
+           *ngFor="let item of commonDepartments let i=index">
+        <span  [class]="item.selected ? 'spanItem' : '' ">{{item.name}}</span>
       </div>
     </div>
   </div>

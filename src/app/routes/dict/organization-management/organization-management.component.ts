@@ -125,10 +125,8 @@ export class OrganizationManagementComponent implements OnInit {
   choosePerson(): void {
     this.modal.createStatic(SelectProjectPersonComponent, {
       chooseMode: 'department',  // department organization employee
-      functionName: 'test1222',
-      selectList:[
-        {name:'研发部',id:"1539562806221774849",category:"organization"}
-      ]
+      functionName: '23123',
+      selectList:[]
     }).subscribe(res => {
 
     })
