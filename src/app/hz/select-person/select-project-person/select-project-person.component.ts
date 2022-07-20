@@ -24,6 +24,7 @@ export class SelectProjectPersonComponent implements OnInit {
   chooseMode: variable<string>;  // 必填，organization | employee | department
   functionName: variable<string>; // 必填，自定义功能名称
   selectList: selected[] = []
+  pageSize:number = 10; // 常用部门查询
 
   ngOnInit(): void {
     Promise.all([this.judge(), this.getSelectedByCatch()])
@@ -42,7 +43,7 @@ export class SelectProjectPersonComponent implements OnInit {
   }
 
   clearCatch(): void {
-     localStorage.removeItem(this.functionName!)
+    localStorage.removeItem(this.functionName!)
   }
 
   getSelectedByCatch(): void {

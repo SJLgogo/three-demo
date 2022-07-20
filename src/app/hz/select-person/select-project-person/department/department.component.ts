@@ -25,6 +25,8 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
   @Input()
   functionName: variable<string>
   @Input()
+  pageSize: variable<number>
+  @Input()
   selectList: selected[] = []
   @Output()
   selectListChange = new EventEmitter();
@@ -206,7 +208,7 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
   commonDepartmentObtain(): Promise<Organization[]> {
     return new Promise<Organization[]>(resolve => {
       const appId = localStorage.getItem('appId')
-      const postData = {pageNo: 0, pageSize: 5, appId: appId, functionId: this.functionName}
+      const postData = {pageNo: 0, pageSize: this.pageSize, appId: appId, functionId: this.functionName}
       this.http.post('/org/service/organization/SelectOrgTotalController/findByAppIdAndFunctionId', postData).subscribe(res => {
         this.commonDepartments = res.data.map((item: any) => {
           return {
