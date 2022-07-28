@@ -80,7 +80,7 @@ export class SetupAccountEditComponent implements OnInit {
     if (this.i.id) {
       url = 'updateUser';
     }
-    this.http.post(`/service/security/admin/actor/user/` + url, value).subscribe((res) => {
+    this.http.post(`//base/service/security/admin/actor/user/` + url, value).subscribe((res) => {
       if (res.success) {
         this.msgSrv.success('保存成功');
         this.modalRef.close(true);

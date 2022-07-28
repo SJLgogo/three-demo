@@ -40,7 +40,7 @@ export class SetupSecurityRolePermissionComponent implements OnInit {
   //加载组织机构树
   loadRoleTree(): void {
     this.roleTreeLoading = true;
-    this.http.get(`/service/security/admin/authority/role/role-tree`).subscribe((res) => {
+    this.http.get(`//base/service/security/admin/authority/role/role-tree`).subscribe((res) => {
       if (res.success) {
         this.roleNodes = res.data;
         this.roleTreeLoading = false;
@@ -96,7 +96,7 @@ export class SetupSecurityRolePermissionComponent implements OnInit {
           let params = {
             roleId: node.key
           };
-          this.http.post(`/service/security/admin/authority/role/delete/` + node.key).subscribe((res) => {
+          this.http.post(`//base/service/security/admin/authority/role/delete/` + node.key).subscribe((res) => {
             if (res.success) {
               this.messageService.success('删除成功');
               this.loadRoleTree();

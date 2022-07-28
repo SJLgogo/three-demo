@@ -41,7 +41,7 @@ export class SetupDataPermissionsComponent implements OnInit, OnChanges {
 
   loadAppList() {
     this.selectedScope = {};
-    // this.http.get(`/service/security/admin/scopePermission/findAll`).subscribe((res) => {
+    // this.http.get(`//base/service/security/admin/scopePermission/findAll`).subscribe((res) => {
     //   if (res.success) {
     //     this.appList = res.data;
     //   }
@@ -62,7 +62,7 @@ export class SetupDataPermissionsComponent implements OnInit, OnChanges {
       checkedOrgIds: this.checkedOrgIds.join(),
       category: this.selectedScope.category
     };
-    this.http.post(`/service/security/admin/scopePermission/update`, params).subscribe((res) => {
+    this.http.post(`//base/service/security/admin/scopePermission/update`, params).subscribe((res) => {
       if (res.success) {
         this.msgSrv.success(res.message);
       }

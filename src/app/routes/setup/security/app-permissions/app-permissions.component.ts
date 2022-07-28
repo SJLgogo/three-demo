@@ -29,7 +29,7 @@ export class SetupAppPermissionsComponent implements OnInit, OnChanges {
 
   loadAppList() {
     this.selectedApp = {};
-    this.http.get(`/service/security/admin/application/list`).subscribe((res) => {
+    this.http.get(`//base/service/security/admin/application/list`).subscribe((res) => {
       if (res.success) {
         this.appList = res.data;
 
@@ -41,7 +41,7 @@ export class SetupAppPermissionsComponent implements OnInit, OnChanges {
     });
   }
 
-  ///service/security/admin/authority/role/permission/list/all
+  ////base/service/security/admin/authority/role/permission/list/all
   optAppPermission(app: any) {
     console.log('选择应用：：：：：', app);
 
@@ -58,7 +58,7 @@ export class SetupAppPermissionsComponent implements OnInit, OnChanges {
       roleId: this.role.id,
       applicationId: this.selectedApp.id
     };
-    this.http.post(`/service/security/admin/authority/role/permission/list/all`, params).subscribe(res => {
+    this.http.post(`//base/service/security/admin/authority/role/permission/list/all`, params).subscribe(res => {
       console.log('权限资源:', res);
       if (res.success) {
         this.roleAppPermissions = res.data;
@@ -81,7 +81,7 @@ export class SetupAppPermissionsComponent implements OnInit, OnChanges {
       appId: this.selectedApp.id,
       permissions: this.roleAppPermissions
     };
-    this.http.post(`/service/security/admin/authority/role/updateRolePermissionsByButton`, params).subscribe((res) => {
+    this.http.post(`//base/service/security/admin/authority/role/updateRolePermissionsByButton`, params).subscribe((res) => {
       if (res.success) {
         this.msgSrv.success(res.message);
         this.loadRoleAppPermission();

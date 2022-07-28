@@ -30,7 +30,7 @@ export class SetupSecurityResourceMenuCheckComponent implements OnInit, OnChange
   confirmModal!: NzModalRef;
   halfCheckedIds: any = [];
 
-  url = `/service/security/admin/authority/permission/page-element-table`;
+  url = `//base/service/security/admin/authority/permission/page-element-table`;
   searchSchema: SFSchema = {
     properties: {
       no: {
@@ -140,7 +140,7 @@ export class SetupSecurityResourceMenuCheckComponent implements OnInit, OnChange
   // 加载组织机构树
   loadMenuTree(): void {
     this.orgTreeLoading = true;
-    this.http.get(`/service/security/admin/security-resource/menu-tree?menuId=root&roleId=` + this.role.id).subscribe((res) => {
+    this.http.get(`//base/service/security/admin/security-resource/menu-tree?menuId=root&roleId=` + this.role.id).subscribe((res) => {
       if (res.success) {
         // this.defaultCheckedKeys = ['ff808081751a80fd01751a9fdc770009'];
         console.log('res.data:', res.data);
@@ -255,7 +255,7 @@ export class SetupSecurityResourceMenuCheckComponent implements OnInit, OnChange
     };
 
     console.log('requestParams:', requestParams);
-    this.http.post(`/service/security/admin/authority/role/assign-permissions`, requestParams).subscribe((res) => {
+    this.http.post(`//base/service/security/admin/authority/role/assign-permissions`, requestParams).subscribe((res) => {
       this.msgSrv.success(res.message);
     });
   }

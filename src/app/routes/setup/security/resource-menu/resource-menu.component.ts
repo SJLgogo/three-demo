@@ -23,7 +23,7 @@ export class SetupSecurityResourceMenuComponent implements OnInit {
   activedMenuNode!: NzTreeNode;
   confirmModal!: NzModalRef;
 
-  url = `/service/security/admin/authority/permission/page-element-table`;
+  url = `//base/service/security/admin/authority/permission/page-element-table`;
   searchSchema: SFSchema = {
     properties: {
       no: {
@@ -74,7 +74,7 @@ export class SetupSecurityResourceMenuComponent implements OnInit {
               nzTitle: '删除确认?',
               nzContent: '是否确认删除元素 [' + item.name + '] ?',
               nzOnOk: () => {
-                this.http.post(`/service/security/admin/security-resource/page-element-delete`, item).subscribe((res) => {
+                this.http.post(`//base/service/security/admin/security-resource/page-element-delete`, item).subscribe((res) => {
                   if (res.success) {
                     this.msgSrv.success('删除成功');
                     this.loadPageElementResourceTable(this.optMenuId);
@@ -122,7 +122,7 @@ export class SetupSecurityResourceMenuComponent implements OnInit {
   // 加载组织机构树
   loadMenuTree(): void {
     this.orgTreeLoading = true;
-    this.http.get(`/service/security/admin/security-resource/menu-tree?menuId=root`).subscribe((res) => {
+    this.http.get(`//base/service/security/admin/security-resource/menu-tree?menuId=root`).subscribe((res) => {
       if (res.success) {
         this.menuNodes = res.data.tree;
         this.orgTreeLoading = false;
@@ -183,7 +183,7 @@ export class SetupSecurityResourceMenuComponent implements OnInit {
           let params = {
             menuId: node.key
           };
-          this.http.post(`/service/security/admin/security-resource/menu-delete`, params).subscribe((res) => {
+          this.http.post(`//base/service/security/admin/security-resource/menu-delete`, params).subscribe((res) => {
             if (res.success) {
               this.msgSrv.success('删除成功');
               this.loadMenuTree();

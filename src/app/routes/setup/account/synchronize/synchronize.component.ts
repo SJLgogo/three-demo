@@ -49,7 +49,7 @@ export class SetupSynchronizeComponent implements OnInit {
         ui: {
           widget: 'select',
           asyncData: () => {
-            return this.http.get(`/service/security/admin/application/list`).pipe(
+            return this.http.get(`//base/service/security/admin/application/list`).pipe(
               map((item) => {
                 const children = item.data.map((element: any) => {
                   return { label: element.name, value: element.id };
@@ -110,7 +110,7 @@ export class SetupSynchronizeComponent implements OnInit {
 
   save(value: any) {
     this.http
-      .get(`/service/security/admin/userThirdPartyApi/synchronizeThirdPartyAccountWeb/` + value.applicationId, value)
+      .get(`//base/service/security/admin/userThirdPartyApi/synchronizeThirdPartyAccountWeb/` + value.applicationId, value)
       .subscribe((res) => {
         this.msgSrv.success('同步成功');
         this.modalRef.close(true);

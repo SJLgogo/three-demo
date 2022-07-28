@@ -25,7 +25,7 @@ export class SetupSecurityResourcePageElementEditComponent implements OnInit {
         ui: {
           widget: 'select',
           asyncData: () => {
-            return this.http.get(`/service/security/admin/application/list`).pipe(
+            return this.http.get(`//base/service/security/admin/application/list`).pipe(
               map((item) => {
                 const children = item.data.map((element:any) => {
                   return { label: element.name, value: element.id };
@@ -72,7 +72,7 @@ export class SetupSecurityResourcePageElementEditComponent implements OnInit {
   ngOnInit(): void {
     if (this.pageElement.id != null) {
       this.http
-        .get('/service/security/admin/security-resource/page-element-view', { pageElementId: this.pageElement.id })
+        .get('//base/service/security/admin/security-resource/page-element-view', { pageElementId: this.pageElement.id })
         .subscribe((res) => {
           if (res.success) {
             this.pageElement = res.data;
@@ -84,10 +84,10 @@ export class SetupSecurityResourcePageElementEditComponent implements OnInit {
   }
 
   save(value: any) {
-    let url = `/service/security/admin/security-resource/page-element-create`;
+    let url = `//base/service/security/admin/security-resource/page-element-create`;
     value.menuId = this.menuId;
     if (this.pageElement.id != null) {
-      url = `/service/security/admin/security-resource/page-element-update`;
+      url = `//base/service/security/admin/security-resource/page-element-update`;
     }
 
     this.http.post(url, value).subscribe((res) => {

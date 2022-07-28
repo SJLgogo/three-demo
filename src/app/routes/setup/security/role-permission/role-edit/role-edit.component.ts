@@ -42,11 +42,11 @@ export class SetupSecurityRoleEditComponent implements OnInit {
   }
 
   save(value: any) {
-    let url = `/service/security/admin/authority/role/create`;
+    let url = `//base/service/security/admin/authority/role/create`;
     if (this.mode === 'add') {
       value.parentId = this.editNode.key;
     } else if (this.mode === 'edit') {
-      url = `/service/security/admin/authority/role/edit-name`;
+      url = `//base/service/security/admin/authority/role/edit-name`;
     }
 
     this.http.post(url, value).subscribe((res) => {

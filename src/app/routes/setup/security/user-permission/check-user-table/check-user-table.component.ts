@@ -35,7 +35,7 @@ export class SetupCheckUserTableComponent  implements OnInit {
     },
   };
 
-  url = `/service/security/admin/actor/user/findUserSearch`;
+  url = `//base/service/security/admin/actor/user/findUserSearch`;
   searchSchema: SFSchema = {
     properties: {
       name: {
@@ -109,7 +109,7 @@ export class SetupCheckUserTableComponent  implements OnInit {
     console.log('checkedIds:', checkedIds);
     value.userIds = checkedIds;
     value.roleId = this.i.roleId;
-    this.http.post(`/service/security/admin/authorization/batch-assign-role-to-user`, value).subscribe((res) => {
+    this.http.post(`//base/service/security/admin/authorization/batch-assign-role-to-user`, value).subscribe((res) => {
       if (res.success) {
         this.msgSrv.success('角色授权成功');
         this.modal.close(true);

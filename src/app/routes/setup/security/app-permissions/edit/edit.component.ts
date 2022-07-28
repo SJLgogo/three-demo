@@ -86,7 +86,7 @@ export class SetupSecurityAppPermissionsEditComponent implements OnInit {
 
   ngOnInit(): void {
     if (typeof this.record.id != 'undefined') {
-      this.http.get(`/service/security/admin/application/${this.record.id}`).subscribe((res) => {
+      this.http.get(`//base/service/security/admin/application/${this.record.id}`).subscribe((res) => {
         if (res.success) {
           this.i = res.data;
         }
@@ -99,7 +99,7 @@ export class SetupSecurityAppPermissionsEditComponent implements OnInit {
     let category: any = categoryProperty.schema.enum?.find((item: any) => item.value == value.category);
     console.log('category:', category);
     value.categoryName = category.label;
-    this.http.post(`/service/security/admin/application/add`, value).subscribe((res) => {
+    this.http.post(`//base/service/security/admin/application/add`, value).subscribe((res) => {
       if (res.success) {
         this.msgSrv.success('保存成功');
         this.modal.close(true);

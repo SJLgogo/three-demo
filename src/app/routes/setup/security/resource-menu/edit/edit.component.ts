@@ -21,7 +21,7 @@ export class SetupResourceMenuEditComponent implements OnInit {
         ui: {
           widget: 'select',
           asyncData: () => {
-            return this.http.get(`/service/security/admin/application/list`).pipe(
+            return this.http.get(`//base/service/security/admin/application/list`).pipe(
               map((item) => {
                 const children = item.data.map((element: any) => {
                   return { label: element.name, value: element.id };
@@ -67,10 +67,10 @@ export class SetupResourceMenuEditComponent implements OnInit {
     let url = '';
     if (this.menu.mode === 'add') {
       value.parentId = this.menu.key;
-      url = `/service/security/admin/security-resource/menu-create`;
+      url = `//base/service/security/admin/security-resource/menu-create`;
     } else if (this.menu.mode === 'edit') {
       value.id = this.menu.id;
-      url = `/service/security/admin/security-resource/menu-edit`;
+      url = `//base/service/security/admin/security-resource/menu-edit`;
     }
 
     this.http.post(url, value).subscribe((res) => {
