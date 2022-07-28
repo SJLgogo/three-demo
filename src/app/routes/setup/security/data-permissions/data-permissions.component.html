@@ -1,0 +1,54 @@
+<div nz-col [nzSpan]="24">
+  <nz-card>
+    <div class="app-list">
+      <div class="app" [class.active]="selectedScope.id == app.id" *ngFor="let app of appList" (click)="optDataPermission(app)">
+        <!--            <div class="app-logo">-->
+        <!--              <img-->
+        <!--                style="width: 36px; height: 36px"-->
+        <!--                src="http://wework.qpic.cn/bizmail/hoew4PTXG3u0fJUZjw5uYrVYRc3tR2esphAa0nhZ6PR7SibQ9el4sKw/0"-->
+        <!--              />-->
+        <!--            </div>-->
+        <div class="app-content">
+          <span class="app-title">{{ app.name }}</span>
+          <!--              <span class="app-desc">{{ app.description }}</span>-->
+        </div>
+      </div>
+      <!--          <button nz-button nzType="primary" (click)="addPermissionScope()">添加权限范围组</button>-->
+    </div>
+
+    <nz-card>
+      <ng-container>
+        <div nz-row>
+          <h3>[{{ selectedScope.name }}] 权限范围树</h3>
+        </div>
+
+        <nz-tree
+          #dataPermissionsTreeComponent
+          [nzData]="orgNodes"
+          nzCheckable
+          nzMultiple
+          (nzClick)="orgEvent($event)"
+          (nzExpandChange)="orgEvent($event)"
+          (nzCheckBoxChange)="orgEvent($event)"
+        ></nz-tree>
+        <ng-template #nzTreeTemplate let-node>
+              <span class="custom-node" [class.active]="activedOrgNode?.key === node.key">
+                <span class="custom-node-item" *ngIf="!node.isLeaf">
+                  <i nz-icon [nzType]="node.isExpanded ? 'folder-open' : 'folder'" (click)="openFolder(node)"></i>
+                  <span class="folder-name"> {{ node.title }} </span>
+                </span>
+                <span class="custom-node-item" *ngIf="node.isLeaf">
+                  <i nz-icon nzType="file"></i>
+                  <span class="file-name">{{ node.title }}</span>
+                </span>
+              </span>
+        </ng-template>
+
+        <div nz-row class="permission-operation">
+          <button nz-button nzType="primary" (click)="saveRolePermission()">保存</button>
+          <button nz-button nzType="default" style="margin-right: 10px">取消</button>
+        </div>
+      </ng-container>
+    </nz-card>
+  </nz-card>
+</div>

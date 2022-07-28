@@ -1,0 +1,79 @@
+<page-header [title]="'菜单管理'" [breadcrumb]="breadcrumb" [content]="content">
+  <ng-template #breadcrumb>
+    <!--    <nz-breadcrumb>-->
+    <!--      <nz-breadcrumb-item><a>系统设置</a></nz-breadcrumb-item>-->
+    <!--      <nz-breadcrumb-item><a>用户授权</a></nz-breadcrumb-item>-->
+    <!--      <nz-breadcrumb-item><a>菜单管理</a></nz-breadcrumb-item>-->
+    <!--    </nz-breadcrumb>-->
+  </ng-template>
+  <ng-template #content>
+    <p>设置系统的菜单信息，并且可在配置每个菜单中包含的页面权限元素，如需要控制权限的按钮、Div等。</p>
+  </ng-template>
+</page-header>
+
+<div nz-row nzGutter="18">
+  <div nz-col nzSpan="6">
+    <nz-card nzTitle="菜单列表">
+      <nz-tree
+        [nzData]="menuNodes"
+        [nzAsyncData]="'true'"
+        (nzExpandChange)="menuEvent($event)"
+        nzExpandAll="true"
+        (nzClick)="menuEvent($event)"
+        (nzDblClick)="menuEvent($event)"
+        [nzTreeTemplate]="nzTreeTemplate"
+        nzVirtualHeight="580px"
+      ></nz-tree>
+      <ng-template #nzTreeTemplate let-node>
+        <span class="custom-node" [class.active]="activedMenuNode?.key === node.key">
+          <span class="custom-node-item" *ngIf="!node.isLeaf">
+            <i nz-icon [nzType]="node.isExpanded ? 'folder-open' : 'folder'" (click)="openFolder(node)"></i>
+            <span class="folder-name"> {{ node.title }} </span>
+            <span class="file-desc">
+              <a nz-dropdown [nzDropdownMenu]="orgOptMenu" nzTrigger="hover"
+                ><i nz-icon nzType="menu" (click)="optMenu(node)" nzTheme="outline"></i
+              ></a>
+            </span>
+          </span>
+          <span class="custom-node-item" *ngIf="node.isLeaf">
+            <i nz-icon nzType="file"></i>
+            <span class="file-name">{{ node.title }}</span>
+            <span class="file-desc">
+              <a nz-dropdown [nzDropdownMenu]="orgOptMenu" nzTrigger="hover"
+                ><i nz-icon nzType="menu" (click)="optMenu(node)" nzTheme="outline"></i
+              ></a>
+            </span>
+          </span>
+
+          <nz-dropdown-menu #orgOptMenu="nzDropdownMenu">
+            <ul nz-menu>
+              <li nz-menu-item nzDisabled>编辑菜单: {{ optMenuName }}</li>
+              <li nz-menu-divider></li>
+              <li nz-menu-item (click)="menuOperation('edit', node)"><i nz-icon nzType="edit" nzTheme="outline"></i>修改</li>
+              <li nz-menu-item (click)="menuOperation('add', node)"><i nz-icon nzType="plus-circle" nzTheme="outline"></i>添加下级菜单</li>
+              <li nz-menu-item (click)="menuOperation('remove', node)"><i nz-icon nzType="delete" nzTheme="outline"></i>删除</li>
+            </ul>
+          </nz-dropdown-menu>
+        </span>
+      </ng-template>
+    </nz-card>
+  </div>
+
+  <div nz-col nzSpan="18">
+    <!--    <div nz-row>-->
+    <nz-card [nzTitle]="'页面权限资源 : ' + optMenuName" [nzExtra]="extraTemplate">
+      <st
+        #st
+        [data]="url"
+        [columns]="columns"
+        [req]="pageElementCustomRequest"
+        [page]="pageElementCustomPage"
+        ps="100"
+      ></st>
+    </nz-card>
+    <ng-template #extraTemplate>
+      <button nz-button nzType="primary" (click)="createPageElementResource()"><i nz-icon nzType="plus"></i>添加</button>
+    </ng-template>
+    <!--    </div>-->
+  </div>
+</div>

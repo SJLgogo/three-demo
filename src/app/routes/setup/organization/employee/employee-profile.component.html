@@ -1,0 +1,289 @@
+<!--<page-header [title]="'员工信息管理 - ' + employee.name" [breadcrumb]="breadcrumb" [content]="content">-->
+<!--  <ng-template #content><span>用户个人信息档案 </span></ng-template>-->
+<!--  <ng-template #breadcrumb>-->
+<!--    &lt;!&ndash;<span style="font-style: italic;">/系统设置/通讯录/员工信息管理</span>&ndash;&gt;-->
+<!--  </ng-template>-->
+<!--</page-header>-->
+
+<!--<nz-row [nzGutter]="24" class="py-lg">-->
+<!--  <nz-col [nzSpan]="4">-->
+<!--    <nz-card nzTitle="员工信息" class="ant-card__body-nopadding">-->
+<!--      <a (click)="active = 1" class="d-block py-sm px-md" [ngClass]="{ 'bg-primary-light text-white': active === 1 }">个人信息</a>-->
+<!--      <a (click)="active = 2" class="d-block py-sm px-md" [ngClass]="{ 'bg-primary-light text-white': active === 2 }">部门/岗位/职务</a>-->
+<!--      <a (click)="active = 3" class="d-block py-sm px-md" [ngClass]="{ 'bg-primary-light text-white': active === 3 }">权限信息</a>-->
+<!--    </nz-card>-->
+<!--    &lt;!&ndash;<nz-card nzTitle="扩展信息" class="ant-card__body-nopadding">&ndash;&gt;-->
+<!--    &lt;!&ndash;<a (click)="active = 4" class="d-block py-sm px-md" [ngClass]="{ 'bg-primary-light text-white': active === 7 }"&ndash;&gt;-->
+<!--    &lt;!&ndash;&gt;企业微信</a&ndash;&gt;-->
+<!--    &lt;!&ndash;&gt;&ndash;&gt;-->
+<!--    &lt;!&ndash;<a (click)="active = 5" class="d-block py-sm px-md" [ngClass]="{ 'bg-primary-light text-white': active === 8 }"&ndash;&gt;-->
+<!--    &lt;!&ndash;&gt;云之家</a&ndash;&gt;-->
+<!--    &lt;!&ndash;&gt;&ndash;&gt;-->
+<!--    &lt;!&ndash;<a (click)="active = 6" class="d-block py-sm px-md" [ngClass]="{ 'bg-primary-light text-white': active === 9 }"&ndash;&gt;-->
+<!--    &lt;!&ndash;&gt;钉钉</a&ndash;&gt;-->
+<!--    &lt;!&ndash;&gt;&ndash;&gt;-->
+<!--    &lt;!&ndash;</nz-card>&ndash;&gt;-->
+<!--  </nz-col>-->
+<!--  <nz-col [nzSpan]="20">-->
+<!--    &lt;!&ndash;个人信息&ndash;&gt;-->
+<!--    <nz-card nzTitle="个人信息" *ngIf="active === 1">-->
+<!--      <nz-row [nzGutter]="64">-->
+<!--        <nz-col [nzSpan]="18">-->
+<!--          <form nz-form [formGroup]="profileForm" (ngSubmit)="updateEmployeeProfile($event, profileForm.value)" [nzLayout]="'horizontal'">-->
+<!--            <nz-form-item>-->
+<!--              <nz-form-label [nzSpan]="4" nzFor="name" nzRequired>姓名</nz-form-label>-->
+<!--              <nz-form-control [nzSpan]="20" nzErrorTip="required, must match pattern [-_a-zA-Z0-9]">-->
+<!--                <nz-input-group [nzSuffix]="suffixTemplateInfo" style="width: 100%">-->
+<!--                  <input type="text" formControlName="name" id="name" nz-input />-->
+<!--                </nz-input-group>-->
+<!--              </nz-form-control>-->
+<!--            </nz-form-item>-->
+
+<!--            <nz-form-item>-->
+<!--              <nz-form-label [nzSpan]="4" nzFor="code" nzRequired>工号</nz-form-label>-->
+<!--              <nz-form-control [nzSpan]="20">-->
+<!--                <input nz-input formControlName="code" id="code" />-->
+<!--              </nz-form-control>-->
+<!--            </nz-form-item>-->
+
+<!--            <nz-form-item>-->
+<!--              <nz-form-label [nzSpan]="4" nzFor="gender" nzRequired>性别</nz-form-label>-->
+<!--              <nz-form-control [nzSpan]="20">-->
+<!--                <nz-input-group [nzSuffix]="suffixTemplateInfo" style="width: 100%">-->
+<!--                  <nz-select formControlName="gender" id="gender">-->
+<!--                    <nz-option [nzLabel]="'男'" [nzValue]="'MALE'"></nz-option>-->
+<!--                    <nz-option [nzLabel]="'女'" [nzValue]="'FEMALE'"></nz-option>-->
+<!--                  </nz-select>-->
+<!--                </nz-input-group>-->
+<!--              </nz-form-control>-->
+<!--            </nz-form-item>-->
+
+<!--            <nz-form-item>-->
+<!--              <nz-form-label [nzSpan]="4" nzFor="birthday" nzRequired>生日</nz-form-label>-->
+<!--              <nz-form-control [nzSpan]="20">-->
+<!--                <nz-date-picker formControlName="birthday" id="birthday" style="width: 100%"></nz-date-picker>-->
+<!--              </nz-form-control>-->
+<!--            </nz-form-item>-->
+
+<!--            <nz-form-item class="border-top-1 mt-md pt-md">-->
+<!--              <nz-form-label [nzSpan]="4" nzFor="email">邮箱</nz-form-label>-->
+<!--              <nz-form-control [nzSpan]="20">-->
+<!--                <nz-input-group [nzSuffix]="suffixTemplateInfo" style="width: 100%">-->
+<!--                  <input nz-input formControlName="email" id="email" />-->
+<!--                </nz-input-group>-->
+<!--              </nz-form-control>-->
+<!--            </nz-form-item>-->
+
+<!--            <nz-form-item>-->
+<!--              <nz-form-label [nzSpan]="4" nzFor="address">地址</nz-form-label>-->
+<!--              <nz-form-control [nzSpan]="20">-->
+<!--                <nz-input-group [nzSuffix]="suffixTemplateInfo" style="width: 100%">-->
+<!--                  <input nz-input formControlName="address" id="address" />-->
+<!--                </nz-input-group>-->
+<!--              </nz-form-control>-->
+<!--            </nz-form-item>-->
+
+<!--            <nz-form-item>-->
+<!--              <nz-form-label [nzSpan]="4" nzFor="mobilePhone">手机号码</nz-form-label>-->
+<!--              <nz-form-control [nzSpan]="20">-->
+<!--                <nz-input-group [nzSuffix]="suffixTemplateInfo" style="width: 100%">-->
+<!--                  <input nz-input formControlName="mobilePhone" id="mobilePhone" readonly />-->
+<!--                </nz-input-group>-->
+<!--              </nz-form-control>-->
+<!--            </nz-form-item>-->
+
+<!--            <nz-form-item>-->
+<!--              <nz-form-label [nzSpan]="4" nzFor="telephone">办公电话</nz-form-label>-->
+<!--              <nz-form-control [nzSpan]="20">-->
+<!--                <nz-input-group [nzSuffix]="suffixTemplateInfo" style="width: 100%">-->
+<!--                  <input nz-input formControlName="telephone" id="telephone" />-->
+<!--                </nz-input-group>-->
+<!--              </nz-form-control>-->
+<!--            </nz-form-item>-->
+
+<!--            <nz-form-item>-->
+<!--              <nz-form-label [nzSpan]="4" nzFor="entryDate" nzRequired>入职时间</nz-form-label>-->
+<!--              <nz-form-control [nzSpan]="20">-->
+<!--                <nz-date-picker formControlName="entryDate" id="entryDate"></nz-date-picker>-->
+<!--              </nz-form-control>-->
+<!--            </nz-form-item>-->
+
+<!--            <nz-form-item>-->
+<!--              <nz-form-label [nzSpan]="4" nzFor="employeeEnum">员工状态</nz-form-label>-->
+<!--              <nz-form-control [nzSpan]="20">-->
+<!--                <nz-select formControlName="employeeEnum" id="employeeEnum">-->
+<!--                  <nz-option [nzLabel]="'待入职'" [nzValue]="'WAIT_ENTRY_STATUS'"></nz-option>-->
+<!--                  <nz-option [nzLabel]="'试用期'" [nzValue]="'PROBATION_STATUS'"></nz-option>-->
+<!--                  <nz-option [nzLabel]="'正式员工'" [nzValue]="'OFFICIAL_STATUS'"></nz-option>-->
+<!--                  <nz-option [nzLabel]="'离职'" [nzValue]="'DIMISSION_STATUS'"></nz-option>-->
+<!--                </nz-select>-->
+<!--              </nz-form-control>-->
+<!--            </nz-form-item>-->
+
+<!--            <nz-form-item>-->
+<!--              <nz-form-label [nzSpan]="4" nzFor="remark">个人描述</nz-form-label>-->
+<!--              <nz-form-control [nzSpan]="20">-->
+<!--                <textarea nz-input formControlName="remark" id="remark" placeholder="填写员工的个人备注描述"></textarea>-->
+<!--              </nz-form-control>-->
+<!--            </nz-form-item>-->
+<!--            <nz-form-item>-->
+<!--              <nz-form-control [nzSpan]="6">-->
+<!--                <button nz-button [nzType]="'primary'" [disabled]="profileForm.invalid">更新个人信息</button>-->
+<!--              </nz-form-control>-->
+<!--            </nz-form-item>-->
+
+<!--            <ng-template #suffixTemplateInfo>-->
+<!--              <img src="../../../../../assets/wxcp_logo.png" style="width: 16px; height: 16px" />-->
+<!--            </ng-template>-->
+<!--          </form>-->
+<!--        </nz-col>-->
+<!--        <nz-col [nzSpan]="6">-->
+<!--          <img [_src]="employeeAvatar" style="width: 100%; height: 100%" />-->
+<!--          &lt;!&ndash;<nz-upload nzAction="https://jsonplaceholder.typicode.com/posts/" class="d-block mt-md text-center">&ndash;&gt;-->
+<!--          &lt;!&ndash;<button nz-button>上传照片</button>&ndash;&gt;-->
+<!--          &lt;!&ndash;</nz-upload>&ndash;&gt;-->
+<!--        </nz-col>-->
+<!--      </nz-row>-->
+<!--    </nz-card>-->
+
+<!--    &lt;!&ndash; 部门/岗位/职务 &ndash;&gt;-->
+<!--    <nz-card nzTitle="任职信息" *ngIf="active === 2">-->
+<!--      <div nz-row class="py-sm bg-grey-lighter-h point" [nzGutter]="8">-->
+<!--        <div nz-col [nzSpan]="12">-->
+<!--          <nz-card nzTitle="部门/岗位" class="ant-card__body-nopadding">-->
+<!--            <div-->
+<!--              nz-row-->
+<!--              [nzType]="'flex'"-->
+<!--              [nzJustify]="'center'"-->
+<!--              [nzAlign]="'middle'"-->
+<!--              class="py-sm bg-grey-lighter-h point"-->
+<!--              *ngFor="let postInfo of postList"-->
+<!--            >-->
+<!--              <div nz-col [nzSpan]="6" class="text-center">-->
+<!--                <nz-tag [nzColor]="'green'" *ngIf="postInfo.isPrincipal">责任岗位</nz-tag>-->
+<!--              </div>-->
+<!--              <div nz-col [nzSpan]="16">-->
+<!--                <strong>任职部门：{{ postInfo.organizationName }}</strong>-->
+<!--                <div>任职岗位：{{ postInfo.postName }}</div>-->
+<!--              </div>-->
+<!--              <div nz-col [nzSpan]="2" class="text-right pr-md">-->
+<!--                <i nz-dropdown [nzDropdownMenu]="menuTpl" nzPlacement="topRight" nz-icon nzType="ellipsis" class="rotate-90"></i>-->
+<!--                <nz-dropdown-menu #menuTpl="nzDropdownMenu">-->
+<!--                  <ul nz-menu>-->
+<!--                    <li nz-menu-item *ngIf="!postInfo.isPrincipal" (click)="setPrincipalPost(postInfo, true)">设为主要任职岗位</li>-->
+<!--                    <li nz-menu-item *ngIf="postInfo.isPrincipal" (click)="setPrincipalPost(postInfo, false)">取消主要任职岗位</li>-->
+<!--                    <li nz-menu-item (click)="removePost(postInfo)">删除</li>-->
+<!--                  </ul>-->
+<!--                </nz-dropdown-menu>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <button nz-button (click)="addPost()" [nzType]="'dashed'" nzBlock class="mb-sm">-->
+<!--              <i nz-icon nzType="plus"></i>-->
+<!--              <span>添加</span>-->
+<!--            </button>-->
+<!--          </nz-card>-->
+<!--        </div>-->
+
+<!--        <div nz-col [nzSpan]="12">-->
+<!--          <nz-card nzTitle="职务" class="ant-card__body-nopadding">-->
+<!--            <div-->
+<!--              nz-row-->
+<!--              [nzType]="'flex'"-->
+<!--              [nzJustify]="'center'"-->
+<!--              [nzAlign]="'middle'"-->
+<!--              class="py-sm bg-grey-lighter-h point"-->
+<!--              *ngFor="let jobInfo of jobList"-->
+<!--            >-->
+<!--              <div nz-col [nzSpan]="6" class="text-center">-->
+<!--                <nz-tag [nzColor]="'green'" *ngIf="jobInfo.isPrincipal">责任职务</nz-tag>-->
+<!--              </div>-->
+<!--              <div nz-col [nzSpan]="16">-->
+<!--                <strong>职务：{{ jobInfo.jobName }}</strong>-->
+<!--              </div>-->
+<!--              <div nz-col [nzSpan]="2" class="text-right pr-md">-->
+<!--                <i nz-dropdown [nzDropdownMenu]="menuTpl" nzPlacement="topRight" nz-icon nzType="ellipsis" class="rotate-90"></i>-->
+<!--                <nz-dropdown-menu #menuTpl="nzDropdownMenu">-->
+<!--                  <ul nz-menu>-->
+<!--                    <li nz-menu-item *ngIf="!jobInfo.isPrincipal" (click)="setPrincipalJob(jobInfo, true)">设为主要任职职务</li>-->
+<!--                    <li nz-menu-item *ngIf="jobInfo.isPrincipal" (click)="setPrincipalJob(jobInfo, false)">取消主要任职职务</li>-->
+<!--                    <li nz-menu-item (click)="removeJob(jobInfo)">删除</li>-->
+<!--                  </ul>-->
+<!--                </nz-dropdown-menu>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <button nz-button (click)="addJob()" [nzType]="'dashed'" nzBlock class="mb-sm">-->
+<!--              <i nz-icon nzType="plus"></i>-->
+<!--              <span>添加</span>-->
+<!--            </button>-->
+<!--          </nz-card>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </nz-card>-->
+
+<!--    &lt;!&ndash; 权限信息 &ndash;&gt;-->
+<!--    <nz-card nzTitle="权限信息" *ngIf="active === 3">-->
+<!--      <div nz-row [nzGutter]="6">-->
+<!--        <div nz-col [nzSpan]="4">-->
+<!--          <ul nz-list [nzDataSource]="roleList" nzBordered nzSize="small" [nzHeader]="roleHeader" [nzRenderItem]="defaultItem">-->
+<!--            <ng-template #defaultItem let-item>-->
+<!--              <li-->
+<!--                nz-list-item-->
+<!--                (click)="activeRole(item)"-->
+<!--                [class.active-tag]="selectedRole.id == item.id"-->
+<!--                [nzContent]="item.name"-->
+<!--                nzNoFlex-->
+<!--              ></li>-->
+<!--            </ng-template>-->
+<!--            <ng-template #roleHeader>-->
+<!--              <strong>角色信息</strong>-->
+<!--            </ng-template>-->
+<!--          </ul>-->
+<!--        </div>-->
+
+<!--        <div nz-col [nzSpan]="20">-->
+<!--          <nz-card>-->
+<!--            <div class="app-list">-->
+<!--              <div class="app" [class.active]="selectedApp.id == app.id" *ngFor="let app of appList" (click)="optAppPermission(app)">-->
+<!--                <div class="app-logo">-->
+<!--                  <img-->
+<!--                    style="width: 36px; height: 36px"-->
+<!--                    src="http://wework.qpic.cn/bizmail/hoew4PTXG3u0fJUZjw5uYrVYRc3tR2esphAa0nhZ6PR7SibQ9el4sKw/0"-->
+<!--                  />-->
+<!--                </div>-->
+<!--                <div class="app-content">-->
+<!--                  <span class="app-title">{{ app.name }}</span>-->
+<!--                  <span class="app-desc">{{ app.description }}</span>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+
+<!--            <nz-card>-->
+<!--              <nz-empty *ngIf="roleAppPermissions.length == 0"></nz-empty>-->
+
+<!--              <ng-container *ngIf="roleAppPermissions.length != 0">-->
+<!--                <div nz-row>-->
+<!--                  <h3>[{{ selectedApp.name }}] 权限项目列表</h3>-->
+<!--                </div>-->
+<!--                <div nz-row class="permission-list">-->
+<!--                  <div nz-col nzSpan="6" *ngFor="let permission of roleAppPermissions" style="margin-bottom: 5px">-->
+<!--                    <label-->
+<!--                      nz-checkbox-->
+<!--                      [nzValue]="permission.value"-->
+<!--                      [ngModel]="permission.checked"-->
+<!--                      (nzCheckedChange)="changeRolePermission(permission)"-->
+<!--                      >{{ permission.label }}</label-->
+<!--                    >-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                <div nz-row *ngIf="roleAppPermissions.length != 0" class="permission-operation">-->
+<!--                  &lt;!&ndash;<button nz-button nzType="primary" (click)="saveRolePermission()">保存</button>&ndash;&gt;-->
+<!--                  &lt;!&ndash;<button nz-button nzType="default" style="margin-right: 10px;">取消</button>&ndash;&gt;-->
+<!--                </div>-->
+<!--              </ng-container>-->
+<!--            </nz-card>-->
+<!--          </nz-card>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </nz-card>-->
+<!--  </nz-col>-->
+<!--</nz-row>-->

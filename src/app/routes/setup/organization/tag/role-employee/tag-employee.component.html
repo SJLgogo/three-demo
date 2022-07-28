@@ -1,0 +1,19 @@
+<div class="modal-header">
+  <div class="modal-title">选择标签信息</div>
+</div>
+<nz-spin *ngIf="false" class="modal-spin"></nz-spin>
+
+<div>
+  <st
+    #st
+    [data]="url"
+    [size]="'small'"
+    [columns]="columns"
+    [req]="employeeTableRequest"
+    (change)="change($event)"
+  ></st>
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">关闭</button>
+  <button nz-button type="submit" nzType="primary" (click)="save()">保存</button>
+</div>

@@ -33,7 +33,9 @@
               "src/styles.less",
               "node_modules/jsoneditor/dist/jsoneditor.min.css"
             ],
-            "scripts": [],
+            "scripts": [
+              "node_modules/clipboard/dist/clipboard.js"
+            ],
             "allowedCommonJsDependencies": [
               "ajv",
               "ajv-formats"
@@ -139,6 +141,7 @@
   },
   "defaultProject": "ng-alain",
   "cli": {
+    "analytics": "1d0228e2-cb87-4d4b-900f-142042bf6177",
     "packageManager": "yarn"
   }
 }

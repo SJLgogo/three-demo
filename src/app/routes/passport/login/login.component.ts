@@ -1,13 +1,30 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, Optional } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { StartupService } from '@core';
-import { ReuseTabService } from '@delon/abc/reuse-tab';
-import { DA_SERVICE_TOKEN, ITokenService, SocialOpenType, SocialService } from '@delon/auth';
-import { _HttpClient, SettingsService } from '@delon/theme';
-import { environment } from '@env/environment';
-import { NzTabChangeEvent } from 'ng-zorro-antd/tabs';
-import { finalize } from 'rxjs/operators';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Inject,
+  OnDestroy,
+  OnInit,
+  Optional
+} from '@angular/core';
+import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ActivatedRoute, Router} from '@angular/router';
+import {StartupService} from '@core';
+import {ReuseTabService} from '@delon/abc/reuse-tab';
+import {DA_SERVICE_TOKEN, ITokenService, SocialService} from '@delon/auth';
+import {_HttpClient, SettingsService} from '@delon/theme';
+import {NzTabChangeEvent} from 'ng-zorro-antd/tabs';
+import {finalize} from 'rxjs/operators';
+import {variable} from "../../../api/common-interface/common-interface";
+import {fn} from "../../../hz/select-person/select-project-person/department/department.interface";
+import {environment} from "@env/environment";
+import {NzMessageService} from "ng-zorro-antd/message";
+
+declare global {
+  interface Window {
+    WwLogin: any;
+  }
+}
 
 @Component({
   selector: 'passport-login',
@@ -16,22 +33,24 @@ import { finalize } from 'rxjs/operators';
   providers: [SocialService],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UserLoginComponent implements OnDestroy {
+export class UserLoginComponent implements OnInit, OnDestroy {
   constructor(
     fb: FormBuilder,
     private router: Router,
     private settingsService: SettingsService,
     private socialService: SocialService,
+    private activeRoute: ActivatedRoute,
     @Optional()
     @Inject(ReuseTabService)
     private reuseTabService: ReuseTabService,
     @Inject(DA_SERVICE_TOKEN) private tokenService: ITokenService,
     private startupSrv: StartupService,
     private http: _HttpClient,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private message: NzMessageService
   ) {
     this.form = fb.group({
-      userName: [null, [Validators.required, Validators.pattern(/^(admin|user)$/)]],
+      userName: [null, [Validators.required]],
       password: [null, [Validators.required]],
       mobile: [null, [Validators.required, Validators.pattern(/^1\d{10}$/)]],
       captcha: [null, [Validators.required]],
@@ -39,7 +58,11 @@ export class UserLoginComponent implements OnDestroy {
     });
   }
 
-  // #region fields
+  oauthLogin: boolean = true;
+  agentId: variable<string>;
+  corpId: variable<string>;
+  appId: variable<string>;
+  loginWay: variable<string>;
 
   get userName(): AbstractControl {
     return this.form.get('userName')!;
@@ -69,14 +92,24 @@ export class UserLoginComponent implements OnDestroy {
 
   // #endregion
 
-  switch({ index }: NzTabChangeEvent): void {
+  switch({index}: NzTabChangeEvent): void {
     this.type = index!;
+    if (this.type === 1) {
+      window.WwLogin({
+        id: 'wx_reg',
+        appid: this.corpId,
+        agentid: this.agentId,
+        redirect_uri: window.location.href,
+        state: `${this.randomState()}`,
+      });
+    }
   }
+
 
   getCaptcha(): void {
     if (this.mobile.invalid) {
-      this.mobile.markAsDirty({ onlySelf: true });
-      this.mobile.updateValueAndValidity({ onlySelf: true });
+      this.mobile.markAsDirty({onlySelf: true});
+      this.mobile.updateValueAndValidity({onlySelf: true});
       return;
     }
     this.count = 59;
@@ -97,6 +130,7 @@ export class UserLoginComponent implements OnDestroy {
       this.userName.updateValueAndValidity();
       this.password.markAsDirty();
       this.password.updateValueAndValidity();
+      this.loginWay = 'accountPassword'
       if (this.userName.invalid || this.password.invalid) {
         return;
       }
@@ -110,16 +144,93 @@ export class UserLoginComponent implements OnDestroy {
       }
     }
 
+    if (!this.appId) {
+      this.message.error('无效链接')
+    }
+
     // 默认配置中对所有HTTP请求都会强制 [校验](https://ng-alain.com/auth/getting-started) 用户 Token
     // 然一般来说登录请求不需要校验，因此可以在请求URL加上：`/login?_allow_anonymous=true` 表示不触发用户 Token 校验
     this.loading = true;
     this.cdr.detectChanges();
+    this.loginHttp()
+  }
+
+  // #endregion
+
+  ngOnDestroy(): void {
+    if (this.interval$) {
+      clearInterval(this.interval$);
+    }
+  }
+
+  async ngOnInit(): Promise<any> {
+    this.activeRoute.queryParams.subscribe((params: any) => {
+      const code = params.code;
+      const appId = params.appId;
+      if (code !== undefined && code !== '' && appId !== undefined && appId !== '') {
+        this.oauthLogin = false
+        console.log(this.oauthLogin);
+      }
+    });
+    await this.judgeScanQrCodeLogin()
+    const appId = await this.obtainUrlId()
+    await this.obtainCorpId(appId)
+  }
+
+  judgeScanQrCodeLogin(): void {
+    this.activeRoute.queryParams.subscribe((params: any) => {
+      console.log(params);
+      const code = params.code;
+      const appId = params.appId;
+      if (code !== undefined && code !== '' && appId !== undefined && appId !== '') {
+        this.scanQrCodeTechnologicalProcess(code, appId)
+      }
+    });
+  }
+
+  obtainUrlId(): Promise<string> {
+    return new Promise<string>(((resolve, reject) => {
+      if (!location.href.includes('appId=')) {
+        this.appId = localStorage.getItem('appId')
+      } else {
+        this.appId = location.href.split('appId=')[1].split('&')[0]
+        localStorage.setItem('appId', this.appId)
+      }
+      resolve((this.appId as string))
+    }))
+  }
+
+  obtainCorpId(appId: string): void {
+    if (!this.appId) {
+      return
+    }
+    this.http.get('service/portal/appId/' + appId + '?_allow_anonymous=true').subscribe(res => {
+      this.corpId = res.data.corpId
+      this.agentId = res.data.agentId
+    })
+  }
+
+
+  randomState(): string {
+    let text = '';
+    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    for (let i = 0; i < 5; i++) {
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return text;
+  }
+
+
+  async scanQrCodeTechnologicalProcess(authCode: string, appId: string): Promise<void> {
+    this.loginWay = 'scanCode'
+    await this.loginHttp(authCode, appId)
+  }
+
+
+  loginHttp(authCode?: string, appId?: string): void {
+    const post = this.postDataGet(authCode, appId)
     this.http
-      .post('/api/service/portal/login?_allow_anonymous=true', {
-        type: this.type,
-        userName: this.userName.value,
-        password: this.password.value
-      })
+      .post('/service/portal/login?_allow_anonymous=true', post)
       .pipe(
         finalize(() => {
           this.loading = true;
@@ -127,7 +238,6 @@ export class UserLoginComponent implements OnDestroy {
         })
       )
       .subscribe(res => {
-        console.log(res);
         if (res.code !== 200) {
           this.error = res.msg;
           this.cdr.detectChanges();
@@ -149,52 +259,23 @@ export class UserLoginComponent implements OnDestroy {
       });
   }
 
-  // #region social
-
-  open(type: string, openType: SocialOpenType = 'href'): void {
-    let url = ``;
-    let callback = ``;
-    if (environment.production) {
-      callback = `https://ng-alain.github.io/ng-alain/#/passport/callback/${type}`;
-    } else {
-      callback = `http://localhost:4200/#/passport/callback/${type}`;
+  postDataGet(authCode?: string, appId?: string): any {
+    const post: any = {
+      type: this.type,
+      account: this.userName.value,
+      password: this.password.value,
+      appId: this.appId,
+      loginWay: this.loginWay
     }
-    switch (type) {
-      case 'auth0':
-        url = `//cipchk.auth0.com/login?client=8gcNydIDzGBYxzqV0Vm1CX_RXH-wsWo5&redirect_uri=${decodeURIComponent(callback)}`;
-        break;
-      case 'github':
-        url = `//github.com/login/oauth/authorize?client_id=9d6baae4b04a23fcafa2&response_type=code&redirect_uri=${decodeURIComponent(
-          callback
-        )}`;
-        break;
-      case 'weibo':
-        url = `https://api.weibo.com/oauth2/authorize?client_id=1239507802&response_type=code&redirect_uri=${decodeURIComponent(callback)}`;
-        break;
+    if (authCode && appId) {
+      post.authCode = authCode
+      post.appId = appId
+      delete post.password
+      delete post.account
+      delete post.type
     }
-    if (openType === 'window') {
-      this.socialService
-        .login(url, '/', {
-          type: 'window'
-        })
-        .subscribe(res => {
-          if (res) {
-            this.settingsService.setUser(res);
-            this.router.navigateByUrl('/');
-          }
-        });
-    } else {
-      this.socialService.login(url, '/', {
-        type: 'href'
-      });
-    }
+    return post
   }
 
-  // #endregion
 
-  ngOnDestroy(): void {
-    if (this.interval$) {
-      clearInterval(this.interval$);
-    }
-  }
 }

@@ -2,9 +2,9 @@ import { Environment } from '@delon/theme';
 
 export const environment = {
   production: true,
-  useHash: true,
+  useHash: false,
   api: {
-    baseUrl: './',
+    baseUrl: './api/',
     refreshTokenEnabled: true,
     refreshTokenType: 'auth-refresh'
   }

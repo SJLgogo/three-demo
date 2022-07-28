@@ -1,0 +1,36 @@
+<page-header [action]="phActionTpl">
+  <ng-template #phActionTpl>
+  </ng-template>
+</page-header>
+
+<nz-card>
+  <div>
+    <button  nz-button nzType="primary" (click)="addPro()">添加公司</button>
+  </div>
+  <st #stPro [data]="urlPro" [columns]="columnsPro"></st>
+</nz-card>
+
+<nz-card>
+<!--  <p>项目名</p>-->
+  <div>
+    <button  nz-button nzType="primary" (click)="addApp()">添加应用</button>
+  </div>
+  <st #stApp [data]="urlApp" [columns]="columnsApp">
+    <ng-template st-row="renderAppAuthUrl" let-c let-column="column" let-item="item" let-index="index">
+      <label class="app-auth-url" title="{{c.url+ '?appId=' + c.id}}"
+             nz-tooltip
+             nzTooltipPlacement="topLeft"
+             nzTooltipTrigger="click"
+             nzTooltipTitle="已复制到粘贴板"
+             (click)="cpClickTrigger(c.url + '?appId=' + c.id)"
+      >
+        <i nz-icon nzType="copy" nzTheme="outline"></i>
+        {{c.url + '?appId=' + c.id}}
+      </label>
+    </ng-template>
+  </st>
+</nz-card>
+
+
+<button (click)="choosePerson()">选人</button>
+<div #cpTrigger class="cp-trigger"></div>
