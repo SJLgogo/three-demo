@@ -1,0 +1,74 @@
+<page-header title="班表查询" [action]="phActionTpl">
+  <ng-template #phActionTpl>
+    <button (click)="back()" nz-button nzType="primary">返回</button>
+  </ng-template>
+</page-header>
+<nz-card>
+  <sf #sf [button]="null" mode="search" [schema]="searchSchema">
+    <button (click)="searchSchedule()" nz-button nzType="primary">班表查询</button>
+    <button (click)="reset()" type="button" nz-button>重置</button>
+  </sf>
+  <!--  <st #st ></st>-->
+  <nz-table
+    #borderedTable
+    *ngIf="dataSet.length > 0"
+    [nzData]="dataSet"
+    [nzFrontPagination]="true"
+    [nzScroll]="{ x: '2256px' }"
+    virtualScroll
+    [nzTitle]="tableHeaderTemplate"
+    nzBordered
+    [nzTotal]="total"
+    nzBordered
+    [(nzPageIndex)]="page"
+    [(nzPageSize)]="pageSize"
+    style="margin-top: 10px"
+  >
+    <thead>
+      <tr>
+        <!--      <th nzLeft="0px" nzWidth="150px" rowspan="2">项目名称</th>-->
+        <!--      <th nzLeft="148px" nzWidth="150px" rowspan="2">班次信息</th>-->
+        <!--      <th nzLeft="298px" nzWidth="120px" rowspan="2">工班</th>-->
+        <th nzLeft="0px" nzWidth="120px" rowspan="2">员工编号</th>
+        <th nzLeft="120px" nzWidth="120px" rowspan="2">姓名</th>
+        <th nzLeft="240px" nzWidth="120px" rowspan="2">岗位</th>
+        <th nzLeft="360px" nzWidth="120px" rowspan="2">班组</th>
+        <ng-container *ngFor="let element of monthDays">
+          <th>{{ element }}</th>
+        </ng-container>
+      </tr>
+      <tr>
+        <ng-container *ngFor="let element of weekDays">
+          <th>{{ element }}</th>
+        </ng-container>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of borderedTable.data; let i = index">
+        <!--      <td *ngIf="i == 0" [rowSpan]="dataSet.length" class="custom-text" nzLeft="0px">{{ data.projectName }}</td>-->
+        <!--      <td *ngIf="i == 0" [rowSpan]="dataSet.length" class="custom-text" nzLeft="148px">{{ data.shiftContent }}</td>-->
+        <!--      <td *ngIf="data.show" [rowSpan]="data.classSize"-->
+        <!--          nzLeft="298px">{{ data.className }}</td>-->
+        <td nzLeft="0px">{{ data.workNo }}</td>
+        <td nzLeft="120px">{{ data.employeeName }}</td>
+        <td nzLeft="240px">{{ data.postName }}</td>
+        <td nzLeft="360px">{{ data.team }}</td>
+        <ng-container *ngFor="let item of data.workShifts; let entry = index">
+          <!--        <td  (click)="modifyTable(data.projectName,data.shiftContent,data.className,data.name,entry,data.ids[entry])">{{ item}}</td>-->
+          <td>{{ item }}</td>
+        </ng-container>
+      </tr>
+    </tbody>
+  </nz-table>
+
+  <nz-empty *ngIf="dataSet.length == 0" [nzNotFoundContent]="contentTpl" [nzNotFoundImage]="'assets/original.png'">
+    <ng-template #contentTpl>
+      <span> 请选择搜索条件查询数据</span>
+    </ng-template>
+  </nz-empty>
+</nz-card>
+<ng-template #tableHeaderTemplate>
+  <article nz-typography>
+    <h5 nz-title>{{ shiftName }}</h5>
+  </article>
+</ng-template>

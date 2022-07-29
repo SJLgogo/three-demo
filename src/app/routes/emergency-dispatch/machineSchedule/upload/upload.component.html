@@ -1,0 +1,12 @@
+<div class="modal-header">
+  <div class="modal-title">编辑换班信息</div>
+</div>
+<nz-spin *ngIf="!i" class="modal-spin"></nz-spin>
+<sf #sf  *ngIf="i" [formData]="i" [schema]="schema" [ui]="ui" button="none" mode="edit">
+  <div class="modal-footer">
+    <button (click)="close()" nz-button type="button">关闭</button>
+    <button  nz-button  (click)="save(sf.value)" [disabled]="!sf.valid" [nzLoading]="http.loading"nzType="primary" type="submit">
+      保存
+    </button>
+  </div>
+</sf>

@@ -1,0 +1,20 @@
+<!--<page-header title="应急标签设置" [action]="phActionTpl">-->
+<!--  <ng-template #phActionTpl>-->
+<!--    <button (click)="add()" nz-button nzType="primary">新建</button>-->
+<!--  </ng-template>-->
+<!--</page-header>-->
+<!--<nz-card>-->
+<!--  <sf mode="search"  (formSubmit)="st.reset($event)" (formReset)="st.reset($event)"></sf>-->
+
+<!--  <st #st [data]="url" [req]="customRequest" [page]="customPage" [res]="customResponse" [columns]="columns"></st>-->
+<!--</nz-card>-->
+
+<page-header title="应急管理系统" [action]="phActionTpl">
+  <ng-template #phActionTpl>
+    <button (click)="add()" nz-button nzType="primary">新建</button>
+  </ng-template>
+</page-header>
+<nz-card>
+  <!--  <sf mode="search" [schema]="searchSchema" (formSubmit)="st.reset($event)" (formReset)="st.reset($event)"></sf>-->
+  <st #st [bordered]="true" [data]="url" [req]="customRequest" [page]="customPage" [res]="customResponse" [columns]="columns"></st>
+</nz-card>

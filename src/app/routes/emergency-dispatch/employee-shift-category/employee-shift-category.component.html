@@ -1,0 +1,24 @@
+<page-header title="班次管理" [action]="phActionTpl">
+  <ng-template #phActionTpl>
+    <button
+      (click)="add()"
+      *ngIf="isPermission('emergency-shift-category:button:add', settingsService.app['identifiers'])"
+      nz-button
+      nzType="primary"
+    >
+      新建
+    </button>
+  </ng-template>
+</page-header>
+
+<nz-card>
+  <sf
+    mode="search"
+    *ngIf="isPermission('emergency-shift-category:button:search', settingsService.app['identifiers'])"
+    [schema]="searchSchema"
+    (formSubmit)="st.reset($event)"
+    (formReset)="st.reset($event)"
+  ></sf>
+
+  <st #st [data]="url" [req]="customRequest" [page]="customPage" [res]="customResponse" [columns]="columns" [multiSort]="true"></st>
+</nz-card>

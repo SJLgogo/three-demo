@@ -1,0 +1,133 @@
+<nz-card>
+  <p class="ongoing-title">应急物资仓库管理</p>
+  <nz-divider> </nz-divider>
+  <div class="point-set">
+    <div>
+      <sf #sf mode="search" [button]="null" [schema]="searchSchema"> </sf>
+    </div>
+    <div>
+      <button type="button" nz-button nzType="primary" (click)="fromSearch()">查询</button>
+      <button type="default" nz-button (click)="resetSearch()">重置</button>
+      <button (click)="openStore()" nz-button nzType="primary">新建</button>
+    </div>
+  </div>
+  <st
+    #st
+    [widthMode]="{ type: 'strict' }"
+    [data]="url"
+    [req]="customRequest"
+    [page]="customPage"
+    [res]="customResponse"
+    [columns]="columns"
+    [responsive]="false"
+    [bordered]="true"
+  >
+  </st>
+</nz-card>
+
+<nz-drawer [nzClosable]="true" [nzWidth]="600" [nzVisible]="visible" nzPlacement="right" (nzOnClose)="close()">
+  <!-- 新增仓库 -->
+  <span class="blod-title" *ngIf="!edit">新建仓库</span>
+  <span class="blod-title" *ngIf="edit">编辑仓库{{ newStoreName }}</span>
+  <nz-divider></nz-divider>
+  <div>
+    <div class="new-store-item">
+      资源类别:
+      <nz-select style="width: 200px" [(ngModel)]="selectResourceCategory">
+        <nz-option *ngFor="let item of resourceCategoryList" [nzValue]="item.id" [nzLabel]="item.name"></nz-option>
+      </nz-select>
+    </div>
+    <div class="new-store-item">
+      所属站点:
+      <nz-tree-select
+        style="width: 330px"
+        [disabled]="edit"
+        nzPlaceHolder="请选择"
+        [(ngModel)]="selectStation"
+        [nzNodes]="selectLineData"
+        [nzShowSearch]="true"
+        [nzAllowClear]="true"
+        [nzMultiple]="false"
+        [nzDropdownStyle]="{ 'max-height': '455px' }"
+      >
+      </nz-tree-select>
+    </div>
+    <div class="new-store-item">
+      仓库名称:
+      <input [disabled]="edit" style="width: 330px" nz-input placeholder="请输入仓库名称" [(ngModel)]="newStoreName" />
+    </div>
+    <!-- 新增电话人员 -->
+    <div style="margin: 20px 0">
+      <span class="blod-title" style="font-size: 16px">新增保管人员</span>
+      <div class="check-option-list" style="margin-top: 10px">
+        <!-- 审核人员头像 -->
+        <div class="head-img" *ngFor="let item of keepers; let i = index">
+          <img [src]="item.avatar" *ngIf="item.avatar" />
+          <nz-avatar [nzShape]="'square'" [nzSize]="50" [nzIcon]="'user'" *ngIf="!item.avatar"></nz-avatar>
+          <img class="close" src="assets/img/icon-close.png" (click)="phoneDelete(i)" />
+          <p style="margin-top: 10px">{{ item.employeeName }}</p>
+        </div>
+        <div class="add-img" *ngIf='!(keepers&&keepers.length>0)' (click)="addUser()">
+          <img src="assets/img/add.png" />
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--  &lt;!&ndash; 配置仓库信息 &ndash;&gt;-->
+  <!--  <span class="blod-title">仓库名称</span>-->
+  <!--  <nz-divider></nz-divider>-->
+  <!--  <div class="search-item">-->
+  <!--    <div class="search">-->
+  <!--      <nz-input-group [nzSuffix]="suffixIconSearch">-->
+  <!--        <input type="text" nz-input placeholder="请输入" />-->
+  <!--      </nz-input-group>-->
+  <!--      <ng-template #suffixIconSearch>-->
+  <!--        <i nz-icon nzType="search"></i>-->
+  <!--      </ng-template>-->
+  <!--    </div>-->
+  <!--    <button nz-button nzType="primary">查询</button>-->
+  <!--  </div>-->
+  <!--  <div class="division"></div>-->
+  <!--  <div style="margin: 20px 0">-->
+  <!--    <nz-table #editRowTable [(nzData)]="storeData" [nzShowPagination]="false" [nzScroll]="{ y: '640px' }" [nzFrontPagination]="false">-->
+  <!--      <thead>-->
+  <!--        <tr>-->
+  <!--          <th nzWidth="50%">物资场景属性标签</th>-->
+  <!--          <th>操作</th>-->
+  <!--        </tr>-->
+  <!--      </thead>-->
+  <!--      <tbody>-->
+  <!--        <tr *ngFor="let data of editRowTable.data">-->
+  <!--          <td>-->
+  <!--            <ng-container *ngIf="!editStoreCache[data.id].edit; else nameInputTpl">-->
+  <!--              {{ data.name }}-->
+  <!--            </ng-container>-->
+  <!--            <ng-template #nameInputTpl>-->
+  <!--              <input type="text" nz-input [(ngModel)]="editStoreCache[data.id].data.name" />-->
+  <!--            </ng-template>-->
+  <!--          </td>-->
+  <!--          <td>-->
+  <!--            <div class="editable-row-operations">-->
+  <!--              <ng-container *ngIf="!editStoreCache[data.id].edit; else saveTpl">-->
+  <!--                <a style="margin-right: 5px" nz-popconfirm nzPopconfirmTitle="确认删除吗?" (nzOnConfirm)="deleteRow(data.id)">删除</a>-->
+  <!--                <a (click)="startEdit(data.id)">编辑</a>-->
+  <!--              </ng-container>-->
+  <!--              <ng-template #saveTpl>-->
+  <!--                <a style="margin-right: 5px" (click)="saveEdit(data.id)">保存</a>-->
+  <!--                <a nz-popconfirm nzPopconfirmTitle="确认取消吗?" (nzOnConfirm)="cancelEdit(data.id)">取消</a>-->
+  <!--              </ng-template>-->
+  <!--            </div>-->
+  <!--          </td>-->
+  <!--        </tr>-->
+  <!--      </tbody>-->
+  <!--    </nz-table>-->
+  <!--  </div>-->
+  <!--  <div>-->
+  <!--    <img src="assets/img/icon-add-blue.png" />-->
+  <!--    <span class="add-row" (click)="addRow()">添加</span>-->
+  <!--  </div>-->
+
+  <div class="footer">
+    <button nz-button nzType="primary" (click)="confirm()">确定</button>
+  </div>
+</nz-drawer>

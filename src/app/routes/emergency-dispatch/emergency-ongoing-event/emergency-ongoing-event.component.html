@@ -1,0 +1,1374 @@
+<nz-card>
+  <p class="ongoing-title">正在进行的事件</p>
+  <nz-divider></nz-divider>
+  <div class="card-form">
+    <div>
+      <sf #sf mode="search" [button]="null" [schema]="searchSchema" (formChange)="formChange($event)"> </sf>
+    </div>
+    <div style="float: right">
+      <button type="button" nz-button nzType="primary" (click)="exportExcel()">导出</button>
+      <button type="default" nz-button (click)="resetSearch($event)">重置</button>
+      <button type="button" nz-button nzType="primary" (click)="fromSearch()">查询</button>
+    </div>
+  </div>
+</nz-card>
+<nz-card>
+  <st
+    #st
+    [widthMode]="{ type: 'strict' }"
+    [data]="url"
+    [req]="customRequests"
+    [page]="customPage"
+    [res]="customResponse"
+    [columns]="columns"
+    [responsive]="false"
+    [bordered]="true"
+  >
+  </st>
+</nz-card>
+
+<nz-drawer [nzClosable]="true" [nzWidth]="880" [nzVisible]="visible" (nzOnClose)="close()">
+  <div class="fixation">
+    <div style="margin: 20px 0 0 20px">
+      <span class="blod-title">{{ basicInfo.emergencyTitle }}</span>
+      <button nz-button nzType="primary" style="float: right; margin-right: 60px" (click)="refreshData()">点击刷新</button>
+    </div>
+    <nz-divider style="margin-bottom: 0"></nz-divider>
+  </div>
+  <div style="margin-top: 80px; position: relative">
+    <div style="display: flex; align-items: baseline">
+      <div class="content-item" style="margin-right: 34px">
+        <div class="item-title must">发生时间</div>
+        <div class="item-content">{{ basicInfo.eventTime }}</div>
+      </div>
+      <div class="address">
+        <div class="item-title must">发生地点</div>
+        <div class="item-content" *ngIf="!isChange">
+          <nz-tag *ngFor="let item of siteNameTag">{{ item }}</nz-tag>
+        </div>
+        <div *ngIf="isChange">
+          <div *ngIf="!isAreaEmergency">
+            站点：
+            <nz-tree-select
+              *ngIf="!isAreaEmergency"
+              style="width: 330px"
+              nzPlaceHolder="请选择"
+              [(ngModel)]="siteValue"
+              [nzNodes]="selectLineData"
+              [nzAllowClear]="true"
+              [nzMultiple]="true"
+              (ngModelChange)="onLineChange()"
+              [nzDropdownStyle]="{ 'max-height': '455px' }"
+            >
+            </nz-tree-select>
+          </div>
+          <div *ngIf="!isAreaEmergency">
+            区间：
+            <nz-tree-select
+              *ngIf="!isAreaEmergency"
+              style="width: 330px"
+              nzPlaceHolder="请选择"
+              [(ngModel)]="sectionValue"
+              [nzNodes]="selectLineSectionData"
+              [nzAllowClear]="true"
+              [nzMultiple]="true"
+              (ngModelChange)="onLineChange()"
+              [nzDropdownStyle]="{ 'max-height': '455px' }"
+            >
+            </nz-tree-select>
+          </div>
+          <div *ngIf="isAreaEmergency">
+            区域：
+            <nz-tree-select
+              *ngIf="isAreaEmergency"
+              style="width: 330px"
+              nzPlaceHolder="请选择"
+              [(ngModel)]="areaValue"
+              [nzNodes]="allAreaData"
+              (ngModelChange)="onAreaChange($event)"
+              [nzAllowClear]="true"
+              [nzMultiple]="true"
+              [nzDropdownStyle]="{ 'max-height': '455px' }"
+            >
+            </nz-tree-select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="content-item">
+      <div class="item-title">发起人</div>
+      <div class="item-content">{{ basicInfo.submitEmployeeName }}</div>
+    </div>
+    <div class="content-item" style="width: 400px">
+      <div class="item-title">事件大类</div>
+      <div class="item-content">
+        <div *ngIf="!isChange">{{ editEventCategoryData }}</div>
+        <div class="item-content" *ngIf="isChange">
+          <nz-checkbox-group [(ngModel)]="eventCategoryData" (ngModelChange)="categoryChange($event)"> </nz-checkbox-group>
+        </div>
+      </div>
+    </div>
+    <div class="done-btn" *ngIf="isShowReNotice">
+      <click-button (click)="changeEvent()" *ngIf="!isChange">
+        <img btnimg src="assets/img/edit-blue.png" style="margin-right: 5px" />
+        <span btntext>事件变更</span>
+      </click-button>
+      <span class="save-change" *ngIf="isChange" (click)="saveChange()">保存变更</span>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <!-- 查看状态下应对专业 -->
+  <div class="content-item middle" *ngIf="!isChange">
+    <div class="item-title">应对专业</div>
+    <div class="item-content">
+      <nz-checkbox-group *ngIf="showMajorData" nzDisabled="checkbox" [(ngModel)]="editMajorData"> </nz-checkbox-group>
+    </div>
+  </div>
+  <!-- 编辑状态下 选择相关专业-->
+  <div class="content-item middle" *ngIf="isChange">
+    <div class="item-title">选择相关专业</div>
+    <div class="item-content edit-content">
+      <nz-checkbox-group *ngIf="showMajorData" [(ngModel)]="majorData" (ngModelChange)="majorChange($event)"> </nz-checkbox-group>
+    </div>
+  </div>
+  <!-- 查看状态下选择事件类型 -->
+  <div class="content-item middle" *ngIf="!isChange">
+    <div class="item-title">选择事件类型</div>
+    <div class="item-content">
+      <nz-checkbox-group *ngIf="showEventData" nzDisabled="checkbox" [(ngModel)]="editEventData"> </nz-checkbox-group>
+    </div>
+  </div>
+  <!-- 编辑状态下选择事件类型 -->
+  <div class="content-item middle" *ngIf="isChange">
+    <div class="item-title">选择事件类型</div>
+    <div class="item-content edit-content">
+      <nz-checkbox-group *ngIf="showEventData" [(ngModel)]="eventData" (ngModelChange)="eventChange(eventData)"> </nz-checkbox-group>
+    </div>
+  </div>
+  <!-- 查看状态下选择事件等级 -->
+  <div class="content-item middle" *ngIf="!isChange">
+    <div class="item-title">选择事件等级</div>
+    <div class="item-content">
+      <nz-tag *ngFor="let item of editLevelData">{{ item }}</nz-tag>
+    </div>
+  </div>
+  <!-- 编辑状态下选择事件等级 -->
+  <div class="content-item middle" *ngIf="isChange">
+    <div class="item-title">选择事件等级</div>
+    <div class="item-content edit-content">
+      <nz-checkbox-group [(ngModel)]="eventLevelData" (ngModelChange)="levelChange(eventLevelData)"></nz-checkbox-group>
+    </div>
+  </div>
+
+  <div class="item-title must" style="width: 170px; margin-top: 20px">事件概况及处理要求</div>
+  <!-- 事件概括及处理要求 -->
+  <div style="margin: 12px 0 15px 0">
+    <nz-form-item>
+      <nz-form-control [nzSpan]="24" nzErrorTip="请输入处理结果">
+        <textarea
+          nz-input
+          [disabled]="!isChange"
+          rows="5"
+          [(ngModel)]="submitEventVO.overviewAndRequirements"
+          (ngModelChange)="textareaChange()"
+          placeholder="请输入事件概况及处置要求，确保事件概况简明扼要，提升语音电话通知效率，填写文字请勿超过100字"
+        ></textarea>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <!-- 应急预案 -->
+  <div class="item-title title-change" style="margin: 15px 0 18px">
+    <span>应急预案</span>
+    <click-button (click)="openEmergencyPlanFile()" *ngIf="isChange">
+      <span btntext style="font-weight: 400">选择</span>
+    </click-button>
+  </div>
+
+  <nz-modal [(nzVisible)]="isShowDownload" nzTitle="" (nzOnCancel)="downloadCancel()">
+    <div *nzModalContent>
+      <p style="font-size: 18px; margin: 0">是否下载该文件？</p>
+    </div>
+    <div *nzModalFooter>
+      <button nz-button nzType="default" (click)="downloadCancel()">取消</button>
+      <button
+        nz-button
+        down-file
+        nzType="primary"
+        [http-url]="fileDownloadUrl"
+        [file-name]="fileName"
+        class="mr-sm"
+        (success)="downloadOk($event)"
+        (error)="downloadFail($event)"
+      >
+        下载
+      </button>
+    </div>
+  </nz-modal>
+
+  <!-- 预案列表 -->
+  <div>
+    <div class="download" *ngFor="let item of submitEventVO.eventPlanVOS; let i = index" (click)="downloadFile(item)">
+      <div>
+        <img [src]="judgeFile(item.fileUrl)" />
+        <span style="vertical-align: middle">{{ item.title }}</span>
+      </div>
+      <img src="assets/img/icon-close.png" (click)="emergencyPlanFileDelete(i)" *ngIf="isChange" />
+    </div>
+  </div>
+  <!-- 附件 -->
+  <div class="item-title title-change" style="margin: 15px 0 18px">
+    <span>附件</span>
+    <nz-upload [(nzFileList)]="fileList" [nzShowUploadList]="false" [nzBeforeUpload]="beforeUpload">
+      <click-button style="font-weight: 400" *ngIf="isChange">
+        <span btntext>上传附件</span>
+      </click-button>
+    </nz-upload>
+  </div>
+  <nz-divider style="margin: 0"></nz-divider>
+  <div class="accessory" *ngFor="let item of submitEventVO.eventAttachmentFiles; let i = index" (click)="downloadAccessory(item)">
+    <div>
+      <img [src]="judgeFile(item.url)" />
+      <span style="vertical-align: middle">{{ item.fileName }}</span>
+    </div>
+    <img src="assets/img/icon-close.png" (click)="deleteAttachmentFiles(i)" *ngIf="isChange" />
+  </div>
+  <nz-divider style="margin: 0"></nz-divider>
+  <!-- 应急发布 -->
+  <div class="inquire">
+    <span class="inquire-publish">应急发布</span>
+    <div style="display: flex; align-items: center">
+      <div>
+        <img
+          src="assets/img/icon-edit.png"
+          style="margin-right: 15px"
+          (click)="editEmergency()"
+          *ngIf="!isEditEmergency && isShowReNotice"
+        />
+        <div class="measure-button" *ngIf="isEditEmergency">
+          <span (click)="sendEmergency()">保存</span>
+          <span (click)="cancelEmergency()">取消</span>
+        </div>
+      </div>
+      <click-button (click)="openEmergencyHistory()">
+        <span btntext>应急发布历史查询</span>
+      </click-button>
+    </div>
+  </div>
+  <!-- 应急发布内容 -->
+  <div style="margin: 12px 0 15px 0">
+    <nz-form-item>
+      <nz-form-control [nzSpan]="24" nzErrorTip="请输入处理结果">
+        <textarea
+          nz-input
+          [(ngModel)]="emergencyReleaseVO.emergencyReleaseValue"
+          [disabled]="!isChangeEmergency"
+          rows="5"
+          placeholder="暂无应急发布"
+        ></textarea>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+<!--   审核人员设置 -->
+  <div class="check-option">
+    <div class="option-head">
+      <span>应急要点</span>
+      <span class="check-btn" (click)="openCheck()" >应急要点查看</span>
+    </div>
+    <nz-divider style="margin: 16px 0 0 0"></nz-divider>
+<!--    <div class="check-option-list">-->
+<!--      &lt;!&ndash; 审核人员头像 &ndash;&gt;-->
+<!--      <div class="head-img" *ngFor="let item of submitEventVO.checkUsers; let i = index">-->
+<!--        <img [src]="item.avatar" *ngIf="item.avatar" />-->
+<!--        <nz-avatar [nzSize]="50" [nzShape]="'square'" [nzIcon]="'user'" *ngIf="!item.avatar"></nz-avatar>-->
+<!--        <img class="close" src="assets/img/icon-close.png" (click)="deleteCheckUser(i)" *ngIf="isShowReNotice" />-->
+<!--        <p>{{ item.employeeName }}</p>-->
+<!--      </div>-->
+<!--      <div class="add-img" (click)="addCheckUser()" *ngIf="submitEventVO.checkUsers.length == 0">-->
+<!--        <img src="assets/img/add.png" />-->
+<!--      </div>-->
+<!--    </div>-->
+  </div>
+
+  <div class="response-title">
+    <span style="font-size: 16px; font-weight: 700">应急响应情况</span>
+    <div class="response-title-right" (click)="changeResponseDetail()">
+      <span style="color: #999999; margin-right: 11px">收起详情</span>
+      <div class="icon-up">
+        <img src="assets/img/icon-up.png" />
+      </div>
+    </div>
+  </div>
+  <nz-divider style="margin: 0"></nz-divider>
+  <!-- 饼状图 -->
+  <div class="response">
+    <chart-pie
+      style="margin-right: 30px"
+      *ngFor="let item of responseData; let i = index"
+      class="response-chart"
+      [chartPieData]="item.chartPieData"
+      [color]="colorList[i]"
+      [ngClass]="{
+        'choose-chart': i == listIndex,
+        bg1: listIndex == 0 && i == 0,
+        bg2: listIndex == 1 && i == 1,
+        bg3: listIndex == 2 && i == 2,
+        bg4: listIndex == 3 && i == 3
+      }"
+      (click)="clickChart(i)"
+    >
+      <p>{{ item.title }}</p>
+    </chart-pie>
+  </div>
+  <!-- 消息阅读情况详情 -->
+  <div *ngIf="listIndex == 1">
+    <p class="message-title">消息阅读情况</p>
+    <nz-divider style="margin: 0"></nz-divider>
+    <div *ngIf="!this.showResponseDetail">
+      <p style="color: #000000; margin-top: 10px">未读人员({{ notReadData.number }})</p>
+      <div class="message" id="notRead">
+        <!--  消息列表-->
+        <div id="notReadList">
+          <div class="message-list" *ngFor="let item of responseList.notRead">
+            <img [src]="item.avatar" *ngIf="item.avatar" />
+            <nz-avatar [nzSize]="40" [nzIcon]="'user'" *ngIf="!item.avatar" style="margin-right: 16px"></nz-avatar>
+            <div class="list-detail">
+              <p>{{ item.name }}</p>
+              <p>{{ item.deptName }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="loadMore" *ngIf="notReadData.isLoading" (click)="openModalTable(notReadData.modalTableParams, 1)">点击查看更多</div>
+      </div>
+      <p style="color: #000000; margin-top: 10px">已读人员({{ readData.number }})</p>
+      <div class="message" id="read">
+        <!-- 消息列表 -->
+        <div id="readList">
+          <div class="message-list" *ngFor="let item of responseList.read">
+            <img [src]="item.avatar" *ngIf="item.avatar" />
+            <nz-avatar [nzSize]="40" [nzIcon]="'user'" *ngIf="!item.avatar" style="margin-right: 16px"></nz-avatar>
+            <div class="list-detail">
+              <p>{{ item.name }}</p>
+              <p>{{ item.deptName }}</p>
+            </div>
+          </div>
+          <div class="loadMore" *ngIf="readData.isLoading" (click)="openModalTable(readData.modalTableParams, 1)">点击查看更多</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 电话通知情况详情 -->
+  <div *ngIf="listIndex == 0">
+    <p class="message-title">电话通知情况</p>
+    <nz-divider style="margin: 0"></nz-divider>
+    <div *ngIf="!this.showResponseDetail">
+      <div class="message-phone">
+        <span>未接通人员({{ notCallData.number }})</span>
+        <div class="phone-reset" (click)="recall()" *ngIf="isShowReNotice && responseList.notCall.length">
+          <img src="assets/img/icon-phone-call.png" />
+          <span style="color: #00b168">重新拨打</span>
+        </div>
+      </div>
+      <!-- 未接通消息列表 -->
+      <div class="message" id="notCall">
+        <!--  消息列表-->
+        <div id="notCallList">
+          <div class="message-list" *ngFor="let item of responseList.notCall">
+            <img [src]="item.avatar" *ngIf="item.avatar" />
+            <nz-avatar [nzSize]="40" [nzIcon]="'user'" *ngIf="!item.avatar" style="margin-right: 16px"></nz-avatar>
+            <div class="list-detail">
+              <p>{{ item.name }}</p>
+              <p>{{ item.deptName }}</p>
+            </div>
+            <div class="list-detail-right">
+              <p>{{ item.phoneTurnOnTime }}</p>
+            </div>
+          </div>
+          <div class="loadMore" *ngIf="notCallData.isLoading" (click)="openModalTable(notCallData.modalTableParams, 1)">点击查看更多</div>
+        </div>
+      </div>
+      <p style="color: #000000; margin-top: 10px">已接通人员({{ callData.number }})</p>
+      <!-- 已接通列表 -->
+      <div class="message" id="call">
+        <!-- 消息列表 -->
+        <div id="callList">
+          <div class="message-list" *ngFor="let item of responseList.call">
+            <img [src]="item.avatar" *ngIf="item.avatar" />
+            <nz-avatar [nzSize]="40" [nzIcon]="'user'" *ngIf="!item.avatar" style="margin-right: 16px"></nz-avatar>
+            <div class="list-detail">
+              <p>{{ item.name }}</p>
+              <p>{{ item.deptName }}</p>
+            </div>
+            <div class="list-detail-right" style="flex-direction: column">
+              <p style="color: #d8a10d">{{ item.callTime }}秒</p>
+              <p>{{ item.phoneTurnOnTime }}</p>
+            </div>
+          </div>
+          <div class="loadMore" *ngIf="callData.isLoading" (click)="openModalTable(callData.modalTableParams, 1)">点击查看更多</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 人员签到情况 -->
+  <div *ngIf="listIndex == 2">
+    <p class="message-title">人员签到情况</p>
+    <nz-divider style="margin: 0"></nz-divider>
+    <div *ngIf="!this.showResponseDetail">
+      <div style="color: #000000; margin: 10px 0 14px">
+        <span>未打卡人员({{ notSignData.number }})</span>
+      </div>
+      <div class="message" id="notSign">
+        <!--  消息列表-->
+        <div id="notSignList">
+          <div class="message-list" *ngFor="let item of responseList.notSign">
+            <img [src]="item.avatar" *ngIf="item.avatar" />
+            <nz-avatar [nzSize]="40" [nzIcon]="'user'" *ngIf="!item.avatar" style="margin-right: 16px"></nz-avatar>
+            <div class="list-detail">
+              <p>{{ item.name }}</p>
+              <p>{{ item.deptName }}</p>
+            </div>
+          </div>
+          <div class="loadMore" *ngIf="notSignData.isLoading" (click)="openModalTable(notSignData.modalTableParams, 1)">点击查看更多</div>
+        </div>
+      </div>
+      <p style="color: #000000; margin-top: 10px">已打卡人员({{ signData.number }})</p>
+      <div class="message" id="sign">
+        <!-- 消息列表 -->
+        <div id="signList">
+          <div class="message-list" *ngFor="let item of responseList.sign">
+            <img [src]="item.avatar" *ngIf="item.avatar" />
+            <nz-avatar [nzSize]="40" [nzIcon]="'user'" *ngIf="!item.avatar" style="margin-right: 16px"></nz-avatar>
+            <div class="list-detail">
+              <div>
+                <span>{{ item.name }}</span>
+                <span class="clock-manual clock" *ngIf="item.manualSignIn">手动打卡</span>
+                <span class="clock-auto clock" *ngIf="!item.manualSignIn">自动打卡</span>
+                <span class="arrive clock" *ngIf="item.arrivedScene">已到达</span>
+                <span class="action clock" *ngIf="!item.arrivedScene">应急行动中</span>
+              </div>
+              <p>{{ item.deptName }}</p>
+            </div>
+            <div class="list-detail-right" style="flex-direction: column">
+              <p style="color: #d8a10d">{{ item.latestSignInSite }}</p>
+              <p>{{ item.signTime }}</p>
+            </div>
+          </div>
+          <div class="loadMore" *ngIf="signData.isLoading" (click)="openModalTable(signData.modalTableParams, 1)">点击查看更多</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 物资运输情况 -->
+  <div *ngIf="listIndex == 3">
+    <p class="message-title">物资运输情况</p>
+    <div *ngIf="!this.showResponseDetail">
+      <div class="message-phone nav">
+        <span [ngClass]="{ 'nav-choose': navchoose == 0 }" (click)="navChoose(0)">物资筹备({{tagNum.preparation}})</span>
+        <span [ngClass]="{ 'nav-choose': navchoose == 1 }" (click)="navChoose(1)">物资运输中({{tagNum.transport}})</span>
+        <span [ngClass]="{ 'nav-choose': navchoose == 2 }" (click)="navChoose(2)">物资使用中({{tagNum.user}})</span>
+      </div>
+      <!-- 物资运输中列表 -->
+      <div class="message" *ngIf="navchoose == 0" style="height: 750px">
+        <!--  消息列表-->
+        <div class="message-list" *ngFor="let item of goodsTransportList">
+          <img src="{{item.sourceEmployeeAvatar}}" />
+          <div class="list-detail">
+            <p>{{item.sourceEmployeeName}}</p>
+<!--            <p>车辆设备分部</p>-->
+          </div>
+<!--          <div class="goods-list-right">-->
+<!--            <img src="assets/img/icon-site.png" />-->
+<!--            <span style="vertical-align: text-top">当前站点：前梅</span>-->
+<!--          </div>-->
+          <div class="goods-list-bot">
+            <span style="padding-right: 20px; border-right: 1px solid #666666">运送物资：{{item.goodsName}}</span>
+            <span style="padding: 0 20px; border-right: 1px solid #666666">运送数量：{{item.goodsNumber}}</span>
+            <span style="padding-left: 20px">运送终点：{{item.stationName}}</span>
+          </div>
+        </div>
+      </div>
+      <!-- 物资筹备中列表 -->
+      <div class="message" *ngIf="navchoose == 1" style="height: 750px">
+        <!--  消息列表-->
+        <div class="message-list" *ngFor="let item of goodsTransportList">
+          <img src="assets/img/icon-add-people.png" />
+          <div class="list-detail">
+            <p>{{item.transportEmployeeName}}</p>
+<!--            <p>车辆设备分部</p>-->
+          </div>
+          <div class="goods-list-right" *ngIf="item.latestSignInSite">
+            <img src="assets/img/icon-site.png"/>
+            <span style="vertical-align: text-top">当前站点：{{item.latestSignInSite}}</span>
+          </div>
+          <div class="goods-list-bot">
+            <span style="padding-right: 20px; border-right: 1px solid #666666">运送物资：{{item.goodsName}}</span>
+            <span style="padding: 0 20px; border-right: 1px solid #666666">运送数量：{{item.goodsNumber}}</span>
+            <span style="padding-left: 20px">运送终点：{{item.stationName}}</span>
+          </div>
+        </div>
+      </div>
+      <!-- 物资使用中列表 -->
+      <div class="message" *ngIf="navchoose == 2" style="height: 750px">
+        <!--  消息列表-->
+        <div class="message-list" *ngFor="let item of goodsTransportList">
+          <img src="assets/img/icon-add-people.png" />
+          <div class="list-detail">
+            <p>{{item.recipientEmployeeName}}</p>
+<!--            <p>车辆设备分部</p>-->
+          </div>
+          <div class="goods-list-right">
+            <div style="margin-bottom: 15px">
+              <img src="assets/img/icon-site.png" />
+              <span style="vertical-align: text-top">当前站点：{{item.stationName}}</span>
+            </div>
+
+<!--            <click-button (click)="showModal(item)">-->
+<!--              <span btntext>物资反馈情况</span>-->
+<!--            </click-button>-->
+          </div>
+          <div class="goods-list-bot">
+            <span style="padding-right: 20px; border-right: 1px solid #666666">运送物资：{{item.goodsName}}</span>
+            <span style="padding: 0 20px; border-right: 1px solid #666666">运送数量：{{item.goodsNumber}}</span>
+            <span style="padding-left: 20px">运送终点：{{item.stationName}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 物资反馈情况弹窗 -->
+  <nz-modal
+    class="modal"
+    [(nzVisible)]="isShowModal"
+    nzTitle="物资反馈情况"
+    (nzOnCancel)="handleCancel()"
+    (nzOnOk)="handleOk()"
+    [nzOkText]="null"
+  >
+    <p>物资名称：防火面罩</p>
+    <p>调用数量：12</p>
+    <p>已归还数量：0</p>
+    <p>物资原保管人：李思琪</p>
+    <p>物资原保管人电话：18823457645</p>
+    <p>备注：</p>
+    <p>物资已使用完毕归还</p>
+  </nz-modal>
+
+  <!-- 关闭事件弹窗 -->
+  <nz-modal class="modal" [(nzVisible)]="isShowEventModal" nzTitle="关闭事件" (nzOnCancel)="eventCancel()" [nzFooter]="modalFooter">
+    <div>
+      <span style="margin-right: 96px">处理时间：{{ closeEventVO.closeProcessingTime }}</span>
+      <span>参与部门：{{ closeEventVO.closePartyInOrganizationSize }}个</span>
+    </div>
+    <p>参与人数：{{ closeEventVO.closePartyInEmployeeSize }}人</p>
+    <p class="modal-result">处理结果</p>
+    <nz-form-item>
+      <nz-form-control [nzSpan]="24" nzErrorTip="处理结果不能为空" [nzValidateStatus]="resultStatus">
+        <textarea [(ngModel)]="result" (ngModelChange)="resultChange()" nz-input rows="5" placeholder="请输入处理结果"></textarea>
+      </nz-form-control>
+    </nz-form-item>
+    <ng-template #modalFooter>
+      <button nz-button nzType="default" (click)="eventCancel()" style="width: 88px">取消</button>
+      <button nz-button nzType="primary" (click)="eventOk()" >确认关闭</button>
+    </ng-template>
+  </nz-modal>
+
+  <personnel-info [personnelInfoData]="personnelInfoData">
+    <click-button btn-inquire (click)="openCommandHistory()">
+      <span btntext>指挥记录查询</span>
+    </click-button>
+  </personnel-info>
+  <category-choose (categoryStatus)="categoryStatus($event)"></category-choose>
+  <!-- 最新处置措施 -->
+  <div class="measure" *ngIf="!showClassify">
+    <measure-item *ngFor="let item of itemDetail" [itemDetail]="item" (deleteItem)="deleteItem($event)"></measure-item>
+  </div>
+  <!-- 应急全貌 -->
+  <div class="emergency-all" *ngIf="showClassify">
+    <emergency-item *ngFor="let item of emergencyItemList; let i = index" [itemDetail]="item" (click)="openEmengencyItem(i)">
+    </emergency-item>
+  </div>
+  <div style="height: 60px"></div>
+  <div class="footer">
+    <div class="footer-left">
+      <click-button (click)="openChildren()" *ngIf="isShowReNotice">
+        <span btntext>事件相关人员重新通知</span>
+      </click-button>
+      <click-button (click)="openEventChangeHistory()">
+        <span btntext>事件变更历史</span>
+      </click-button>
+    </div>
+    <button type="button" (click)="openModal()" class="ant-btn ant-btn-primary"><span>关闭事件</span></button>
+  </div>
+  <nz-drawer [nzClosable]="true" [nzWidth]="drawerWidth" [nzVisible]="childrenVisible" (nzOnClose)="closeChildren()">
+    <!-- 事件相关人员重新通知页面 -->
+    <div *ngIf="pageChoose == 0">
+      <p class="blod-title">事件相关人员重新通知</p>
+      <nz-divider style="margin: 10px 0"></nz-divider>
+      <p class="blod-title">{{ basicInfo.emergencyTitle }}</p>
+      <div class="content-item children-middle">
+        <div class="item-title">发生时间</div>
+        <div class="item-content">{{ basicInfo.eventTime }}</div>
+      </div>
+      <div class="content-item children-middle">
+        <div class="item-title">事件区域</div>
+        <div class="content-tag">
+          <div class="item-content">
+            <nz-tag *ngFor="let item of siteNameTag">{{ item }}</nz-tag>
+          </div>
+        </div>
+      </div>
+      <div class="content-item children-middle">
+        <div class="item-title">发起人</div>
+        <div class="item-content">{{ basicInfo.submitEmployeeName }}</div>
+      </div>
+      <div class="content-item children-middle">
+        <div class="item-title">事件大类</div>
+        <div class="item-content">
+          <label nz-radio [ngModel]="true" *ngFor="let item of eventCategoryData">{{ item.label }}</label>
+        </div>
+      </div>
+      <div class="content-item children-middle">
+        <div class="item-title">应对专业</div>
+        <div class="item-content">
+          <nz-checkbox-group nzDisabled="checkbox" [(ngModel)]="editMajorData"> </nz-checkbox-group>
+        </div>
+      </div>
+      <div class="content-item children-middle">
+        <div class="item-title">选择事件类型</div>
+        <div class="item-content">
+          <nz-checkbox-group nzDisabled="checkbox" [(ngModel)]="editEventData"> </nz-checkbox-group>
+        </div>
+      </div>
+      <!-- 选择事件等级 -->
+      <div class="content-item children-middle">
+        <div class="item-title">选择事件等级</div>
+        <div class="item-content">
+          <nz-tag *ngFor="let item of editLevelData">{{ item }}</nz-tag>
+        </div>
+      </div>
+      <!-- 通知范围 -->
+      <div class="children-middle inform-range">
+        <div style="display: flex; align-items: center">
+          <div class="item-title">通知范围</div>
+          <div class="item-content">
+            <nz-radio-group [(ngModel)]="fullPushStatus">
+              <label nz-radio nzValue="false">事件初始化通知范围</label>
+              <label nz-radio nzValue="true">全员通知</label>
+            </nz-radio-group>
+          </div>
+        </div>
+        <div style="display: flex; align-items: center; margin-top: 15px">
+          <div class="item-title">仅消息推送</div>
+          <div class="item-content">
+            <nz-switch [(ngModel)]="reNotice.onlyMessagePush"></nz-switch>
+          </div>
+        </div>
+      </div>
+      <p class="children-btn" (click)="tagSearch()">查询</p>
+      <span class="blod-title" style="font-size: 16px">事件变更后拟电话通知人员</span>
+      <div style="margin: 10px 0 12px; padding-bottom: 18px; border-bottom: 1px solid #dddddd">
+        <label nz-checkbox [(ngModel)]="reNotice.unrepeated">是否需要与初次通知人员去重</label>
+      </div>
+      <p class="blod-title" style="font-size: 16px; margin: 0 0 16px 0">应急预案预设应急人员</p>
+      <div class="emergency-tag-list" *ngFor="let item of reNotice.tagVOS; let i = index">
+        <div>
+          <span style="margin-right: 15px; color: #429eff">标签名称</span>
+          <nz-tag nzMode="closeable" (nzOnClose)="tagClose(i)">{{ item.tagName }}</nz-tag>
+          <div class="icon-up" (click)="showTag(i)">
+            <img src="assets/img/icon-up.png" />
+          </div>
+        </div>
+        <div style="margin: 10px 0 0 0" *ngIf="!showTagVOS[i].isShow">
+          <div class="head-img" *ngFor="let items of item.tagUsers; let a = index">
+            <img [src]="items.avatar" *ngIf="items.avatar" />
+            <nz-avatar [nzShape]="'square'" [nzSize]="50" [nzIcon]="'user'" *ngIf="!items.avatar"></nz-avatar>
+            <img class="close" src="assets/img/icon-close.png" (click)="tagUserDelete(i, a)" />
+            <p>{{ items.name }}</p>
+          </div>
+        </div>
+        <nz-divider style="margin: 10px 0 0 0"></nz-divider>
+      </div>
+      <div class="division"></div>
+      <!-- 新增电话人员 -->
+      <div style="margin: 20px 0" *ngIf="!reNotice.onlyMessagePush">
+        <span class="blod-title" style="font-size: 16px">新增电话人员</span>
+        <div class="check-option-list" style="margin-top: 10px">
+          <!-- 审核人员头像 -->
+          <div class="head-img" *ngFor="let item of reNotice.temCallThirdUsers; let i = index">
+            <img [src]="item.avatar" *ngIf="item.avatar" />
+            <nz-avatar [nzShape]="'square'" [nzSize]="50" [nzIcon]="'user'" *ngIf="!item.avatar"></nz-avatar>
+            <img class="close" src="assets/img/icon-close.png" (click)="temCallDelete(i)" />
+            <p>{{ item.name }}</p>
+          </div>
+          <div class="add-img" (click)="addUser()">
+            <img src="assets/img/add.png" />
+          </div>
+        </div>
+        <div class="division" style="margin-top: 20px"></div>
+      </div>
+
+      <!-- 新增标签组 -->
+      <div class="point-set">
+        <span class="item-title" style="width: 200px">新增应急标签组</span>
+        <click-button (click)="chooseTag()">
+          <span btntext>选择</span>
+        </click-button>
+      </div>
+      <!-- 标签组列表 -->
+      <div class="emergency-tag-list" *ngFor="let item of reNotice.tagGroupVO; let i = index">
+        <div>
+          <span style="margin-right: 15px; color: #429eff">标签名称</span>
+          <nz-tag nzMode="closeable" (nzOnClose)="tagGroupClose(i)">{{ item.tagName }}</nz-tag>
+          <div class="icon-up" (click)="showTagGroup(i)">
+            <img src="assets/img/icon-up.png" />
+          </div>
+        </div>
+        <div style="margin: 10px 0 0 0" *ngIf="!showTagGroupVOS[i].isShow">
+          <div class="head-img" *ngFor="let list of item.tagUsers; let a = index">
+            <img [src]="list.avatar" *ngIf="list.avatar" />
+            <nz-avatar [nzShape]="'square'" [nzSize]="50" [nzIcon]="'user'" *ngIf="!list.avatar"></nz-avatar>
+            <img class="close" src="assets/img/icon-close.png" (click)="tagUserClose(i, a)" />
+            <p style="margin-top: 10px">{{ list.name }}</p>
+          </div>
+        </div>
+        <nz-divider style="margin: 10px 0 0 0"></nz-divider>
+      </div>
+      <div class="division"></div>
+      <div style="height: 100px"></div>
+      <div class="children-footer">
+        <button type="button" (click)="closeChildren()" class="ant-btn" style="margin-right: 8px">
+          <span>取消</span>
+        </button>
+        <button nz-button type="button" [nzLoading]="isLoadingNotice" (click)="confirmNotice()" class="ant-btn ant-btn-primary">
+          <span>确认通知</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 选择标签组页面 -->
+    <div *ngIf="pageChoose == 6">
+      <span class="blod-title">应急通知标签组</span>
+      <nz-divider></nz-divider>
+      <!-- 标签搜索 -->
+      <div style="width: 280px; margin-bottom: 14px">
+        <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+          <input type="text" nz-input [(ngModel)]="tagGroupQuery.name" placeholder="请输入标签名称" />
+        </nz-input-group>
+        <ng-template #suffixIconButton>
+          <button nz-button nzType="primary" nzSearch (click)="searchTagGroup()"><i nz-icon nzType="search"></i></button>
+        </ng-template>
+      </div>
+      <!-- 应急标签组列表 -->
+      <div>
+        <st
+          #st3
+          [widthMode]="{ type: 'strict' }"
+          [data]="tagUrl"
+          [req]="customRequest"
+          [page]="customPage"
+          [res]="customResponse"
+          [columns]="tagColumns"
+          [responsive]="false"
+          (change)="tagStChange($event)"
+        >
+        </st>
+      </div>
+    </div>
+
+    <!-- 事件变更日志页面 -->
+    <div *ngIf="pageChoose == 1">
+      <p class="blod-title">事件变更日志</p>
+      <nz-divider style="margin: 10px 0"></nz-divider>
+      <p class="blod-title">{{ basicInfo.emergencyTitle }}</p>
+      <!-- <div class="content-item">
+        <div class="item-title">分类</div>
+        <nz-select nzAllowClear nzPlaceHolder="请选择">
+          <nz-option *ngFor="let option of optionList" [nzValue]="option" [nzLabel]="option.label"> </nz-option>
+        </nz-select>
+      </div> -->
+      <div class="division" style="width: 540px"></div>
+      <!-- 日志列表 -->
+      <div class="log-list" *ngFor="let item of eventChangeLog">
+        <div class="blod-title2">
+          <span style="margin-right: 10px">{{ item.createdTime }}</span
+          ><span>{{ item.operationEmployeeName }}</span>
+        </div>
+        <div>
+          <div style="display: inline-block; vertical-align: top">类型：</div>
+          <div style="display: inline-block; width: 75%">{{ item.operationDetail }}</div>
+        </div>
+        <div>
+          <div style="display: inline-block; vertical-align: top">变更前：</div>
+          <div style="display: inline-block; width: 75%">{{ item.elementHistoryName }}</div>
+        </div>
+        <div>
+          <div style="display: inline-block; vertical-align: top">变更后：</div>
+          <div style="display: inline-block; width: 75%">{{ item.elementNowName }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 应急发布记录页面 -->
+    <div *ngIf="pageChoose == 2">
+      <p class="blod-title">应急发布记录</p>
+      <nz-divider style="margin: 10px 0"></nz-divider>
+      <div class="log-list" *ngFor="let item of emergengcyReleaseLog">
+        <p class="blod-title2">{{ item.time }}</p>
+        <p>{{ item.content }}</p>
+      </div>
+    </div>
+
+    <!-- 应急指挥记录 -->
+    <div *ngIf="pageChoose == 3">
+      <p class="blod-title">应急指挥记录</p>
+      <nz-divider style="margin: 10px 0"></nz-divider>
+      <div class="log-list" *ngFor="let item of commandLog">
+        <p class="blod-title">{{ item.time }}</p>
+        <p>{{ item.content }}</p>
+      </div>
+    </div>
+
+    <!-- 应急要点审核 -->
+    <div *ngIf="pageChoose == 4">
+      <p class="blod-title">应急要点查看</p>
+      <nz-divider style="margin: 10px 0"></nz-divider>
+      <!-- 应急处置要点选择 -->
+      <div class="content-item">
+        <div class="item-title" style="width: 160px">应急处置要案要点选择</div>
+        <nz-select [(ngModel)]="selectPoint" (ngModelChange)="choosePoint($event)" nzAllowClear nzPlaceHolder="请选择" style="width: 200px">
+          <nz-option *ngFor="let option of pointList" [nzValue]="option" [nzLabel]="option.label"> </nz-option>
+        </nz-select>
+      </div>
+      <div class="content-item" style="display: flex">
+        <div class="item-title" style="width: 162px">总进度</div>
+        <div style="width: 300px">
+          <nz-progress [nzPercent]="pointRate"></nz-progress>
+        </div>
+      </div>
+      <!-- 应急角色选择 -->
+      <div class="content-item">
+        <div class="item-title" style="width: 160px">应急角色选择</div>
+        <nz-select [(ngModel)]="selectRole" (ngModelChange)="chooseRole($event)" nzAllowClear nzPlaceHolder="请选择" style="width: 200px">
+          <nz-option *ngFor="let option of roleList" [nzValue]="option" [nzLabel]="option.label"> </nz-option>
+        </nz-select>
+      </div>
+      <div class="content-item" style="display: flex">
+        <div class="item-title" style="width: 162px">当前角色处理进度</div>
+        <div style="width: 300px">
+          <nz-progress [nzPercent]="roleRate"></nz-progress>
+        </div>
+      </div>
+      <!-- 应急要点状态 -->
+      <div class="point-nav">
+        <span [ngClass]="{ 'point-choose': isShow == 0 }" (click)="pointChoose1()">全部要点</span>
+        <span [ngClass]="{ 'point-choose': isShow == 1 }" (click)="pointChoose2()">已完成</span>
+        <span [ngClass]="{ 'point-choose': isShow == 2 }" (click)="pointChoose3()">无反馈</span>
+      </div>
+      <!-- 全部要点 -->
+      <div *ngIf="isShow == 0" style="background-color: #f2f2f4">
+        <div class="point-detail" *ngFor="let item of allEmergencyPointData; let i = index">
+          <div *ngIf="allEmergencyPointData.length != 0">
+            <div class="point-detail-title">
+              <span class="point-name">处置要点{{ i + 1 }}</span>
+              <span class="point-status point-done" *ngIf="item.status == 1"> 已完成 </span>
+              <span class="point-status point-undone" *ngIf="item.status == -1"> 未完成 </span>
+              <span class="point-status point-unknown" *ngIf="item.status == 0"> 未明确 </span>
+            </div>
+            <div class="point-detail-content">
+              <div style="margin-bottom: 40px">{{ item.content }}</div>
+              <p style="margin-top: 22px">应急物资参考</p>
+              <div style="margin-bottom: 30px">{{ item.materialReference }}</div>
+            </div>
+            <div class='up-point-btn' (click)='openFeedback(item)'>
+              提交反馈
+            </div>
+            <div *ngIf='item.showFeedBack'>
+              <textarea
+                maxlength="100"
+                nz-input
+                rows="5"
+                placeholder="应急要点反馈信息"
+                [(ngModel)]="feedbackData.content"
+                (ngModelChange)="textareaChange()"
+              ></textarea>
+              <nz-upload
+                nzListType="picture-card"
+                [(nzFileList)]="pointImageList"
+                [nzShowButton]="pointImageList.length < 3"
+                [nzFileType]="'image/png,image/jpeg,image/gif,image/bmp'"
+                [nzPreview]="handlePreview"
+                [nzCustomRequest]="crimeUpLoad"
+                [nzRemove]="editCrime"
+              >
+                <div>
+                  <i nz-icon nzType="plus"></i>
+                  <div style="margin-top: 8px">上传图片</div>
+                </div>
+              </nz-upload>
+              <nz-modal
+                [nzVisible]="previewVisible"
+                [nzContent]="modalContent"
+                [nzFooter]="null"
+                (nzOnCancel)="previewVisible = false"
+              >
+                <ng-template #modalContent>
+                  <img [src]="previewImage" [ngStyle]="{ width: '100%' }" />
+                </ng-template>
+              </nz-modal>
+              <div class='up-point-btn' (click)='feedback(item)' style='margin: auto'>
+                提交
+              </div>
+            </div>
+            <div class="feedback" (click)="item.hidden = !item.hidden">
+              <span style="vertical-align: middle; margin-right: 15px">反馈人数：{{ item.reportNumber }}人</span>
+              <img src="assets/img/icon-up-black.png" *ngIf="!item.hidden" />
+              <img src="assets/img/icon-down-black.png" *ngIf="item.hidden" />
+            </div>
+            <!-- 反馈内容详情 -->
+            <div *ngIf="!item.hidden">
+              <div class="point-detail-content" *ngFor="let list of item.reportItem">
+                <div class="point-detail-title">
+                  <span style="font-weight: 700">{{ list.deptName }}</span>
+                </div>
+                <div style="margin-top: 15px" *ngFor="let pointList of list.reportEmployeeList">
+                  <div class="feedback-content">{{ pointList.content }}</div>
+                  <div class="content-img">
+                    <img nz-image width="200px" [nzSrc]="img" *ngFor="let img of pointList.resources" />
+                  </div>
+                  <div class="point-detail-title" style="margin: 20px 0 10px">
+                    <span>反馈人员：{{ pointList.name }}</span>
+                    <span>{{ pointList.time }}</span>
+                  </div>
+                  <nz-divider></nz-divider>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 已完成 -->
+      <div *ngIf="isShow == 1" style="background-color: #f2f2f4">
+        <div class="point-detail" *ngFor="let item of doneEmergencyPointData; let i = index">
+          <div class="point-detail-title">
+            <span class="point-name">处置要点{{ i + 1 }}</span>
+            <span class="point-status point-done" *ngIf="item.status == 1"> 已完成 </span>
+            <span class="point-status point-undone" *ngIf="item.status == -1"> 未完成 </span>
+            <span class="point-status point-unknown" *ngIf="item.status == 0"> 未明确 </span>
+          </div>
+          <div class="point-detail-content">
+            <div style="margin-bottom: 40px">{{ item.content }}</div>
+            <p style="margin-top: 22px">应急物资参考</p>
+            <div style="margin-bottom: 30px">{{ item.materialReference }}</div>
+          </div>
+          <div class="feedback" (click)="item.hidden = !item.hidden">
+            <span style="vertical-align: middle; margin-right: 15px">反馈人数：{{ item.reportNumber }}人</span>
+            <img src="assets/img/icon-up-black.png" *ngIf="!item.hidden" />
+            <img src="assets/img/icon-down-black.png" *ngIf="item.hidden" />
+          </div>
+          <!-- 反馈内容详情 -->
+          <div *ngIf="!item.hidden">
+            <div class="point-detail-content" *ngFor="let list of item.reportItem">
+              <div class="point-detail-title">
+                <span style="font-weight: 700">{{ list.deptName }}</span>
+              </div>
+              <div *ngFor="let pointList of list.reportEmployeeList">
+                <div class="feedback-content">{{ pointList.content }}</div>
+                <div class="content-img">
+                  <img [src]="img" *ngFor="let img of pointList.resources" />
+                </div>
+                <div class="point-detail-title" style="margin: 20px 0 10px">
+                  <span>审核人员：{{ pointList.name }}</span>
+                  <span>{{ pointList.time }}</span>
+                </div>
+                <nz-divider></nz-divider>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 未完成 -->
+      <div *ngIf="isShow == 2" style="background-color: #f2f2f4">
+        <div class="point-detail" *ngFor="let item of undoneEmergencyPointData; let i = index">
+<!--          <div style="margin-bottom: 20px" *ngIf="item.isPublish">-->
+<!--            <div class="alert-warnning">-->
+<!--              <img src="assets/img/icon-warnning.png" />-->
+<!--              <span style="vertical-align: middle; margin-left: 7px">请确认该要点已完成并发布?</span>-->
+<!--            </div>-->
+<!--          </div>-->
+          <div class="point-detail-title">
+            <span class="point-name">处置要点{{ i + 1 }}</span>
+            <span class="point-status point-done" *ngIf="item.status == 1"> 已完成 </span>
+<!--            <span class="point-status point-publish" *ngIf="!item.isPublish" (click)="item.isPublish = true">发布</span>-->
+<!--            <div *ngIf="item.isPublish">-->
+<!--              <span class="point-status point-cancel" (click)="item.isPublish = false">取消</span>-->
+<!--              <span class="point-status point-publish" (click)="confirmPublish(i, item.reportNumber)">确认发布</span>-->
+<!--            </div>-->
+          </div>
+          <div class="point-detail-content">
+            <div style="margin-bottom: 40px">{{ item.content }}</div>
+            <p style="margin-top: 22px">应急物资参考</p>
+            <div style="margin-bottom: 30px">{{ item.materialReference }}</div>
+          </div>
+          <div>
+            <div class="feedback" (click)="item.hidden = !item.hidden">
+              <span style="vertical-align: middle; margin-right: 15px">反馈人数：{{ item.reportNumber }}人</span>
+              <img src="assets/img/icon-up-black.png" *ngIf="!item.hidden" />
+              <img src="assets/img/icon-down-black.png" *ngIf="item.hidden" />
+            </div>
+            <div>
+              汇报信息
+            </div>
+          </div>
+          <!-- 反馈内容详情 -->
+          <div *ngIf="!item.hidden">
+            <div class="point-detail-content" *ngFor="let list of item.reportItem">
+              <div class="point-detail-title">
+                <span style="font-weight: 700">{{ list.deptName }}</span>
+              </div>
+              <div *ngFor="let pointList of list.reportEmployeeList">
+                <div class="feedback-content">{{ pointList.content }}</div>
+                <div class="content-img">
+                  <img [src]="img" *ngFor="let img of pointList.resources" />
+                </div>
+                <div class="point-detail-title" style="margin: 20px 0 10px">
+                  <span>反馈人员：{{ pointList.name }}</span>
+                  <span>{{ pointList.time }}</span>
+                </div>
+                <nz-divider></nz-divider>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 应急规章制度关联 -->
+    <div *ngIf="pageChoose == 5">
+      <span class="blod-title">应急规章制度关联选择</span>
+      <nz-divider></nz-divider>
+      <div class="search-item">
+        <div class="search-item-title">规章制度类型筛选</div>
+        <div style="font-weight: 400">
+          <nz-select
+            [(ngModel)]="planFileType"
+            (ngModelChange)="emergencyPlanFileTypeChange($event)"
+            nzAllowClear
+            nzPlaceHolder="请选择"
+            style="width: 410px"
+          >
+            <nz-option *ngFor="let option of searchTypeList" [nzValue]="option" [nzLabel]="option.label"> </nz-option>
+          </nz-select>
+        </div>
+      </div>
+      <div class="search-item">
+        <div class="search-item-title">规章制度类别筛选</div>
+        <div style="font-weight: 400">
+          <nz-select
+            [nzDisabled]="!planFileType"
+            [(ngModel)]="planFileCategory"
+            (ngModelChange)="emergencyPlanFileCategoryChange($event)"
+            nzAllowClear
+            nzPlaceHolder="请选择"
+            style="width: 410px"
+          >
+            <nz-option *ngFor="let option of searchCategoryList" [nzValue]="option" [nzLabel]="option.label"> </nz-option>
+          </nz-select>
+        </div>
+      </div>
+      <div class="search-item">
+        <div class="search-item-title">规章制度名称</div>
+        <div>
+          <input style="width: 410px" nz-input placeholder="请输入" [(ngModel)]="emergencyPlanFileQuery.name" />
+        </div>
+      </div>
+      <div style="text-align: right">
+        <button nz-button nzType="primary" (click)="searchEmergencyPlan()">查询</button>
+      </div>
+      <div class="item-title">查询结果</div>
+      <nz-divider></nz-divider>
+      <!-- 应急规章制度列表 -->
+      <div>
+        <st
+          #st2
+          [widthMode]="{ type: 'strict' }"
+          [data]="planUrl"
+          [req]="fileCustomRequest"
+          [page]="customPage"
+          [res]="customResponse"
+          [columns]="planColumns"
+          [responsive]="false"
+          (change)="stChange($event)"
+        >
+        </st>
+      </div>
+      <div style="height: 100px"></div>
+    </div>
+
+    <!-- 应急全貌详情页面 -->
+    <div *ngIf="pageChoose == 7">
+      <p class="blod-title">应急全貌</p>
+      <nz-divider style="margin: 10px 0"></nz-divider>
+      <p style="font-size: 16px; font-weight: 700; margin: 0">应急响应情况</p>
+      <div class="response">
+        <chart-pie
+          style="margin-right: 30px"
+          *ngFor="let item of responseData2; let i = index"
+          class="response-chart"
+          [chartPieData]="item.chartPieData"
+          [color]="colorList2[i]"
+          [ngClass]="{
+            'choose-chart': i == emergencyListIndex,
+            bg1: emergencyListIndex == 0 && i == 0,
+            bg2: emergencyListIndex == 1 && i == 1,
+            bg3: emergencyListIndex == 2 && i == 2,
+            bg4: emergencyListIndex == 3 && i == 3
+          }"
+          (click)="emergencyClickChart(i)"
+        >
+          <p>{{ item.title }}</p>
+        </chart-pie>
+      </div>
+      <!-- 消息阅读情况详情 -->
+      <div *ngIf="emergencyListIndex == 1">
+        <p class="message-title">消息阅读情况</p>
+        <nz-divider style="margin: 0"></nz-divider>
+        <div *ngIf="!this.showResponseDetail">
+          <p style="color: #000000; margin-top: 10px">未读人员({{ childNotReadData.number }})</p>
+          <div class="message" id="childNotRead">
+            <!--  消息列表-->
+            <div id="childNotReadList">
+              <div class="message-list" *ngFor="let item of emergencyResponseList.notRead">
+                <img [src]="item.avatar" *ngIf="item.avatar" />
+                <nz-avatar [nzSize]="40" [nzIcon]="'user'" *ngIf="!item.avatar" style="margin-right: 16px"></nz-avatar>
+                <div class="list-detail">
+                  <p>{{ item.name }}</p>
+                  <p>{{ item.deptName }}</p>
+                </div>
+              </div>
+              <div class="loadMore" *ngIf="childNotReadData.isLoading" (click)="openModalTable(childNotReadData.modalTableParams, 0)">
+                点击查看更多
+              </div>
+            </div>
+          </div>
+          <p style="color: #000000; margin-top: 10px">已读人员({{ childReadData.number }})</p>
+          <div class="message" id="childRead">
+            <!-- 消息列表 -->
+            <div id="childReadList">
+              <div class="message-list" *ngFor="let item of emergencyResponseList.read">
+                <img [src]="item.avatar" *ngIf="item.avatar" />
+                <nz-avatar [nzSize]="40" [nzIcon]="'user'" *ngIf="!item.avatar" style="margin-right: 16px"></nz-avatar>
+                <div class="list-detail">
+                  <p>{{ item.name }}</p>
+                  <p>{{ item.deptName }}</p>
+                </div>
+              </div>
+              <div class="loadMore" *ngIf="childReadData.isLoading" (click)="openModalTable(childReadData.modalTableParams, 0)">
+                点击查看更多
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 电话通知情况详情 -->
+      <div *ngIf="emergencyListIndex == 0">
+        <p class="message-title">电话通知情况</p>
+        <nz-divider style="margin: 0"></nz-divider>
+        <div *ngIf="!this.showResponseDetail">
+          <div class="message-phone">
+            <span>未接通人员({{ childNotCallData.number }})</span>
+            <div class="phone-reset" (click)="recall()" *ngIf="isShowReNotice && responseList.notCall.length">
+              <img src="assets/img/icon-phone-call.png" />
+              <span style="color: #00b168">重新拨打</span>
+            </div>
+          </div>
+          <!-- 未接通消息列表 -->
+          <div class="message" id="childNotCall">
+            <!--  消息列表-->
+            <div id="childNotCallList">
+              <div class="message-list" *ngFor="let item of emergencyResponseList.notCall">
+                <img [src]="item.avatar" *ngIf="item.avatar" />
+                <nz-avatar [nzSize]="40" [nzIcon]="'user'" *ngIf="!item.avatar" style="margin-right: 16px"></nz-avatar>
+                <div class="list-detail">
+                  <p>{{ item.name }}</p>
+                  <p>{{ item.deptName }}</p>
+                </div>
+                <div class="list-detail-right">
+                  <p>{{ item.phoneTurnOnTime }}</p>
+                </div>
+              </div>
+              <div class="loadMore" *ngIf="childNotCallData.isLoading" (click)="openModalTable(childNotCallData.modalTableParams, 0)">
+                点击查看更多
+              </div>
+            </div>
+          </div>
+          <p style="color: #000000; margin-top: 10px">已接通人员({{ childCallData.number }})</p>
+          <!-- 已接通列表 -->
+          <div class="message" id="childCall">
+            <!-- 消息列表 -->
+            <div id="childCallList">
+              <div class="message-list" *ngFor="let item of emergencyResponseList.call">
+                <img [src]="item.avatar" *ngIf="item.avatar" />
+                <nz-avatar [nzSize]="40" [nzIcon]="'user'" *ngIf="!item.avatar" style="margin-right: 16px"></nz-avatar>
+                <div class="list-detail">
+                  <p>{{ item.name }}</p>
+                  <p>{{ item.deptName }}</p>
+                </div>
+                <div class="list-detail-right" style="flex-direction: column">
+                  <p style="color: #d8a10d">{{ item.callTime }}秒</p>
+                  <p>{{ item.phoneTurnOnTime }}</p>
+                </div>
+              </div>
+              <div class="loadMore" *ngIf="childCallData.isLoading" (click)="openModalTable(childCallData.modalTableParams, 0)">
+                点击查看更多
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 人员签到情况 -->
+      <div *ngIf="emergencyListIndex == 2">
+        <p class="message-title">人员签到情况</p>
+        <nz-divider style="margin: 0"></nz-divider>
+        <div *ngIf="!this.showResponseDetail">
+          <div style="color: #000000; margin: 10px 0 14px">
+            <span>未打卡人员({{ childNotSignData.number }})</span>
+          </div>
+          <div class="message" id="childNotSign">
+            <!--  消息列表-->
+            <div id="childNotSignList">
+              <div class="message-list" *ngFor="let item of emergencyResponseList.notSign">
+                <img [src]="item.avatar" *ngIf="item.avatar" />
+                <nz-avatar [nzSize]="40" [nzIcon]="'user'" *ngIf="!item.avatar" style="margin-right: 16px"></nz-avatar>
+                <div class="list-detail">
+                  <p>{{ item.name }}</p>
+                  <p>{{ item.deptName }}</p>
+                </div>
+              </div>
+              <div class="loadMore" *ngIf="childNotSignData.isLoading" (click)="openModalTable(childNotSignData.modalTableParams, 0)">
+                点击查看更多
+              </div>
+            </div>
+          </div>
+          <p style="color: #000000; margin-top: 10px">已打卡人员({{ childSignData.number }})</p>
+          <div class="message" id="childSign">
+            <!-- 消息列表 -->
+            <div id="childSignList">
+              <div class="message-list" *ngFor="let item of emergencyResponseList.sign">
+                <img [src]="item.avatar" *ngIf="item.avatar" />
+                <nz-avatar [nzSize]="40" [nzIcon]="'user'" *ngIf="!item.avatar" style="margin-right: 16px"></nz-avatar>
+                <div class="list-detail">
+                  <div>
+                    <span>{{ item.name }}</span>
+                    <span class="clock-manual clock" *ngIf="item.manualSignIn">手动打卡</span>
+                    <span class="clock-auto clock" *ngIf="!item.manualSignIn">自动打卡</span>
+                    <span class="arrive clock" *ngIf="item.arrivedScene">已到达</span>
+                    <span class="action clock" *ngIf="!item.arrivedScene">应急行动中</span>
+                  </div>
+                  <p>{{ item.deptName }}</p>
+                </div>
+                <div class="list-detail-right" style="flex-direction: column">
+                  <p style="color: #d8a10d">{{ item.latestSignInSite }}</p>
+                  <p>{{ item.signTime }}</p>
+                </div>
+                <!--  <div class="imglist" *ngIf="item.imgList.length !== 0">
+              <img *ngFor="let img of item.imgList" [src]="img" />
+            </div> -->
+              </div>
+              <div class="loadMore" *ngIf="childSignData.isLoading" (click)="openModalTable(childSignData.modalTableParams, 0)">
+                点击查看更多
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 物资运输情况 -->
+      <div *ngIf="emergencyListIndex == 3">
+        <p class="message-title">物资运输情况</p>
+        <div *ngIf="!this.showResponseDetail">
+          <div class="message-phone nav">
+            <span [ngClass]="{ 'nav-choose': navchoose == 0 }" >物资运输中(12)</span>
+            <span [ngClass]="{ 'nav-choose': navchoose == 1 }" >物资筹备(23)</span>
+            <span [ngClass]="{ 'nav-choose': navchoose == 2 }" >物资使用中(21)</span>
+          </div>
+          <!-- 物资运输中列表 -->
+          <div class="message" *ngIf="navchoose == 0" style="height: 750px">
+            <!--  消息列表-->
+            <div class="message-list" *ngFor="let item of [0, 1, 2, 3, 4, 5, 6, 7]">
+              <img src="assets/img/peng.jpg" />
+              <div class="list-detail">
+                <p>彭于晏</p>
+                <p>车辆设备分部</p>
+              </div>
+              <div class="goods-list-right">
+                <img src="assets/img/icon-site.png" />
+                <span style="vertical-align: text-top">当前站点：前梅</span>
+              </div>
+              <div class="goods-list-bot">
+                <span style="padding-right: 20px; border-right: 1px solid #666666">运送物资：防火面罩</span>
+                <span style="padding: 0 20px; border-right: 1px solid #666666">运送数量：20</span>
+                <span style="padding-left: 20px">运送终点：北京</span>
+              </div>
+            </div>
+          </div>
+          <!-- 物资筹备中列表 -->
+          <div class="message" *ngIf="navchoose == 1" style="height: 750px">
+            <!--  消息列表-->
+            <div class="message-list" *ngFor="let item of [0, 1, 2, 3, 4, 5, 6, 7]">
+              <img src="assets/img/peng.jpg" />
+              <div class="list-detail">
+                <p>彭于晏</p>
+                <p>车辆设备分部</p>
+              </div>
+              <div class="goods-list-bot">
+                <span style="padding-right: 20px; border-right: 1px solid #666666">运送物资：防火面罩</span>
+                <span style="padding: 0 20px; border-right: 1px solid #666666">运送数量：20</span>
+                <span style="padding-left: 20px">运送终点：衙前</span>
+              </div>
+            </div>
+          </div>
+          <!-- 物资使用中列表 -->
+          <div class="message" *ngIf="navchoose == 2" style="height: 750px">
+            <!--  消息列表-->
+            <div class="message-list" *ngFor="let item of [0, 1, 2, 3, 4, 5, 6, 7]">
+              <img src="assets/img/peng.jpg" />
+              <div class="list-detail">
+                <p>彭于晏</p>
+                <p>车辆设备分部</p>
+              </div>
+              <div class="goods-list-right">
+                <div style="margin-bottom: 15px">
+                  <img src="assets/img/icon-site.png" />
+                  <span style="vertical-align: text-top">当前站点：前梅</span>
+                </div>
+
+                <click-button (click)="showModal({})">
+                  <span btntext>物资反馈情况</span>
+                </click-button>
+              </div>
+              <div class="goods-list-bot">
+                <span style="padding-right: 20px; border-right: 1px solid #666666">运送物资：防火面罩</span>
+                <span style="padding: 0 20px; border-right: 1px solid #666666">运送数量：20</span>
+                <span style="padding-left: 20px">运送终点：衙前</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="children-footer" *ngIf="pageChoose == 5 || pageChoose == 6">
+      <div class="children-footer-btn">
+        <span (click)="childrenCancel()">取消</span>
+        <span (click)="childrenConfirm()" style="background-color: #4c83e5">确认</span>
+      </div>
+    </div>
+  </nz-drawer>
+</nz-drawer>

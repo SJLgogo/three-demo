@@ -1,0 +1,50 @@
+<page-header title="班表信息管理" [action]="phActionTpl">
+  <ng-template #phActionTpl>
+    <!--    <button nz-button  *ngIf="isPermission('emergency-shift:button:add',settingsService.app['identifiers'])"-->
+    <!--            down-file [http-data]="data" http-url="{{downUrl}}" file-name="下载班表模版">下载班表模版</button>-->
+
+    <!--    <a href="{{downUrl}}" >-->
+    <!--      <button nz-button nzType="primary" >-->
+    <!--        <i nz-icon theme="outline" type="cloud-download"></i>a模版下载-->
+    <!--      </button>-->
+    <!--    </a>-->
+
+    <button (click)="down()" *ngIf="isPermission('emergency-shift:button:add', settingsService.app['identifiers'])" nz-button nzType="primary">
+      下载班表模版
+    </button>
+
+    <button (click)="add()" *ngIf="isPermission('emergency-shift:button:add', settingsService.app['identifiers'])" nz-button nzType="primary">
+      新建
+    </button>
+  </ng-template>
+</page-header>
+<nz-card>
+  <sf #sf [button]="null" mode="search" [schema]="searchSchema" (formSubmit)="st.reset($event)" (formReset)="st.reset($event)">
+    <button
+      *ngIf="isPermission('emergency-shift:button:search', settingsService.app['identifiers'])"
+      type="submit"
+      nzType="primary"
+      nz-button
+      [disabled]="!sf.valid"
+    >
+      搜索
+    </button>
+    <button
+      *ngIf="isPermission('emergency-shift:button:search', settingsService.app['identifiers'])"
+      (click)="sf.reset()"
+      type="button"
+      nz-button
+    >
+      重置
+    </button>
+    <button
+      *ngIf="isPermission('emergency-shift:button:search', settingsService.app['identifiers'])"
+      (click)="viewSchedule()"
+      nz-button
+      nzType="primary"
+    >
+      班表查询
+    </button>
+  </sf>
+  <st #st [data]="url" [req]="customRequest" [page]="customPage" [res]="customResponse" [columns]="columns"></st>
+</nz-card>

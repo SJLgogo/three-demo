@@ -1,0 +1,172 @@
+.ongoing-title {
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 32px;
+}
+.point-set {
+  display: flex;
+  justify-content: space-between;
+}
+:host ::ng-deep .ant-form-inline .ant-form-item {
+  margin: 0 50px 0 0;
+}
+.blod-title {
+  font-weight: 600;
+  font-size: 20px;
+}
+.input {
+  display: flex;
+  align-items: center;
+}
+.input-content {
+  display: inline-block;
+  margin-left: 22px;
+  width: 220px;
+}
+.division {
+  position: relative;
+  left: -24px;
+  width: 794px;
+  height: 10px;
+  background-color: #eee;
+}
+.title {
+  font-size: 16px;
+  font-weight: 700;
+  width: 140px;
+  margin: 28px 0 0 0;
+}
+.role {
+  padding: 20px 0;
+}
+.inquire {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 18px 0 15px 0;
+  height: 40px;
+  font-size: 16px;
+}
+.accessory {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 50px;
+  border-bottom: 1px solid #dddddd;
+}
+.accessory img {
+  margin-right: 10px;
+}
+.point-detail {
+  margin-top: 15px;
+  font-size: 15px;
+}
+.point-detail p {
+  margin: 0;
+  font-weight: 700;
+}
+.point-detail-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.point-name {
+  font-size: 16px;
+  color: #cd9306;
+}
+.point-detail-content {
+  margin-top: 15px;
+  padding: 15px;
+  background-color: #f8f8f8;
+  border-radius: 6px;
+}
+.content-img {
+  margin-top: 12px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #dddddd;
+}
+.content-img img {
+  width: 70px;
+  height: 70px;
+  margin-right: 15px;
+}
+.head-img {
+  position: relative;
+  display: inline-block;
+  border-radius: 8px;
+  margin: 10px 20px 10px 0;
+  vertical-align: middle;
+}
+.head-img img {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+}
+.head-img .close {
+  width: 14px;
+  height: 14px;
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  cursor: pointer;
+}
+.add-img {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  border: 1px solid #cccccc;
+  vertical-align: middle;
+  cursor: pointer;
+  background-color: #fff;
+}
+.add-img img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.role-bot {
+  font-size: 16px;
+  color: #2c99ff;
+  margin-top: 20px;
+  cursor: pointer;
+}
+.role-bot span {
+  vertical-align: middle;
+  margin-left: 5px;
+}
+.add-role {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 22px;
+  color: #fff;
+  width: 95px;
+  line-height: 28px;
+  background-color: #1890ff;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.add-role span {
+  margin-left: 5px;
+}
+.children-footer {
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  border-top: 1px solid rgb(232, 232, 232);
+  padding: 10px 16px;
+  text-align: right;
+  left: 0px;
+  background: #fff;
+}
+.modal-result {
+  font-size: 16px;
+  color: #222222;
+  margin-bottom: 55px;
+}
+textarea {
+  resize: none;
+}

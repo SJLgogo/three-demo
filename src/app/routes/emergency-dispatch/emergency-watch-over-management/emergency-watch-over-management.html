@@ -1,0 +1,311 @@
+<nz-card>
+  <div class="head">
+    <p class="ongoing-title">应急值守管理</p>
+    <button nz-button nzType="primary" style="float: right" (click)="openSponsorDrawer(0, null)">发起值守</button>
+  </div>
+  <nz-divider></nz-divider>
+  <div class="card-form">
+    <div>
+      <sf #sf mode="search" [button]="null" [schema]="searchSchema"> </sf>
+    </div>
+    <div style="float: right">
+      <button type="default" nz-button (click)="resetSearch($event)">重置</button>
+      <button type="button" nz-button nzType="primary" (click)="fromSearch()">查询</button>
+    </div>
+  </div>
+</nz-card>
+<nz-card>
+  <st
+    #st
+    [widthMode]="{ type: 'strict' }"
+    [data]="url"
+    [req]="customRequests"
+    [page]="customPage"
+    [res]="customResponse"
+    [columns]="columns"
+    [responsive]="false"
+    [bordered]="true"
+  >
+  </st>
+</nz-card>
+
+<!--值守详情抽屉-->
+<nz-drawer [nzClosable]="true" [nzWidth]="600" [nzVisible]="watchVisible" nzTitle="值守详情" (nzOnClose)="closeWatchDrawer()">
+  <div class="watch-div">
+    <span class="watch-span">线路选择</span>
+    <input nz-input class="watch-input" disabled [(ngModel)]="wachDetails.lineName" />
+  </div>
+  <div class="watch-div">
+    <span class="watch-span">起止时间</span>
+    <!--    <nz-range-picker style='margin-left: 20px;' disabled-->
+    <!--      [nzShowTime]="{ nzFormat: 'HH:mm' }"-->
+    <!--      nzFormat="yyyy-MM-dd HH:mm"-->
+    <!--      [nzPlaceHolder]="['开始时间', '结束时间']"-->
+    <!--      ngModel-->
+    <!--      (ngModelChange)="onChange($event)"-->
+    <!--      (nzOnOk)="onOk($event)"-->
+    <!--    ></nz-range-picker>-->
+    <input nz-input class="watch-input" disabled [(ngModel)]="wachDetails.startDate" />
+    <input nz-input class="watch-input" disabled [(ngModel)]="wachDetails.endDate" />
+  </div>
+  <!--  <div class='watch-div'>-->
+  <!--    <span class='watch-span'>值守类型</span>-->
+  <!--    <input nz-input class='watch-input' disabled [(ngModel)]='wachDetails.type'/>-->
+  <!--  </div>-->
+  <div class="watch-div">
+    <p class="watch-span">值守内容</p>
+    <textarea readonly nz-input rows="5" placeholder="暂无内容" [(ngModel)]="wachDetails.content"></textarea>
+  </div>
+  <div class="watch-div">
+    <span class="watch-span">值守规则</span>
+    <input nz-input class="watch-input" disabled [(ngModel)]="wachDetails.rule" />
+  </div>
+  <div class="watch-div">
+    <p class="watch-span">明细</p>
+    <div class="detail">
+      <div *ngFor="let data of wachDetailsList; let i = index">
+        <div style="padding-top: 20px; margin-left: 20px">
+          <span class="watch-span">值守地点</span>
+          <input nz-input class="watch-input" disabled [(ngModel)]="data.stationName" />
+        </div>
+        <div>
+          <div class="check-option-list" style="margin-top: 10px; margin-left: 20px">
+            <!-- 人员头像 -->
+            <div class="head-img" *ngFor="let item of data['people'];">
+              <img *ngIf="item.icon != null" [src]="item['icon']" />
+              <nz-avatar *ngIf="item.icon == null" [nzShape]="'square'" [nzSize]="50" [nzIcon]="'user'"></nz-avatar>
+              <p>{{ item['name'] }}</p>
+            </div>
+          </div>
+        </div>
+        <nz-divider></nz-divider>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <button type="button" (click)="closeWatchDrawer()" class="ant-btn ant-btn-primary"><span>确定</span></button>
+  </div>
+</nz-drawer>
+
+<!--发起值守抽屉-->
+<nz-drawer [nzClosable]="true" [nzWidth]="600" [nzVisible]="sponsorVisible" nzTitle="发起值守" (nzOnClose)="closeSponsorDrawer()">
+  <div class="watch-div">
+    <span class="watch-span">线路选择</span>
+    <nz-select nzPlaceHolder="请选择" class="watch-input-one" (ngModelChange)="geiLineId($event)" [(ngModel)]="onDutyVO.lineId">
+      <nz-option *ngFor="let item of lineData" [nzValue]="item.value" [nzLabel]="item.label"></nz-option>
+    </nz-select>
+  </div>
+  <div class="watch-div">
+    <span class="watch-span">起止时间</span>
+    <nz-range-picker
+      style="margin-left: 20px"
+      [nzShowTime]="{ nzFormat: 'HH:mm' }"
+      nzFormat="yyyy-MM-dd HH:mm"
+      [nzPlaceHolder]="['开始时间', '结束时间']"
+      [(ngModel)]="startAndEndTime"
+      (ngModelChange)="onChange($event)"
+      (nzOnOk)="onOk($event)"
+    ></nz-range-picker>
+  </div>
+  <!--  <div class='watch-div'>-->
+  <!--    <span class='watch-span'>值守类型</span>-->
+  <!--    <nz-select nzPlaceHolder="请选择" class='watch-input-one' (ngModelChange)='watchTypeChange($event)' [(ngModel)]='onDutyVO.type'>-->
+  <!--      <nz-option *ngFor='let item of watchType' [nzValue]="item.value" [nzLabel]="item.label"></nz-option>-->
+  <!--    </nz-select>-->
+  <!--  </div>-->
+  <div class="watch-div">
+    <p class="watch-span">值守内容</p>
+    <textarea nz-input rows="5" placeholder="请输入值守内容" [(ngModel)]="onDutyVO.content"></textarea>
+  </div>
+  <div class="watch-div">
+    <span class="watch-span">值守规则</span>
+    <nz-select nzPlaceHolder="请选择" class="watch-input-one" (ngModelChange)="watchRuleChange($event)" [(ngModel)]="onDutyVO.rule">
+      <nz-option *ngFor="let item of watchRule" [nzValue]="item.value" [nzLabel]="item.label"></nz-option>
+    </nz-select>
+  </div>
+  <div class="watch-div">
+    <p class="watch-span">明细</p>
+    <div class="detail">
+      <div *ngFor="let i of detailList; let j = index">
+        <div style="padding-top: 20px; margin-left: 20px">
+          <span class="watch-span">值守地点</span>
+          <nz-select nzPlaceHolder="请选择" class="watch-input-one" (ngModelChange)="watchPlaceChange($event, j)" [ngModel]="watchPlace">
+            <nz-option *ngFor="let item of watchPlace" [nzValue]="item" [nzLabel]="item.label"></nz-option>
+          </nz-select>
+        </div>
+        <p class="addPersonnel">
+          添加人员
+          <img style="float: right" src="assets/img/icon-delete.png" (click)="removeDeploy(i)" />
+        </p>
+        <!-- 新增人员 -->
+        <div>
+          <div class="check-option-list" style="margin-top: 10px; margin-left: 20px">
+            <!-- 人员头像 -->
+            <div class="head-img" *ngFor="let item of detailList[j].people; let i = index">
+              <img [src]="item.icon" />
+              <img class="close" src="assets/img/icon-close.png" (click)="userDelete(i,j)" />
+              <p>{{ item.name }}</p>
+            </div>
+            <div class="add-img" (click)="addUser(j)">
+              <img src="assets/img/add.png" />
+            </div>
+          </div>
+        </div>
+        <nz-divider></nz-divider>
+      </div>
+      <div (click)="addDeploy()" style="color: #2c99ff; font-size: 14px; font-weight: 400">
+        <i nz-icon nzType="plus" nzTheme="outline"></i>
+        新增
+      </div>
+    </div>
+  </div>
+  <div style="height: 20px"></div>
+  <div class="footer">
+    <button type="button" (click)="closeSponsorDrawer()" class="ant-btn" style="margin-right: 8px"><span>取消</span></button>
+    <button type="button" (click)="sponsorWatchOver()" class="ant-btn ant-btn-primary"><span>保存</span></button>
+  </div>
+</nz-drawer>
+<style>
+  .watch-title {
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 32px;
+    display: inline;
+    color: #333333;
+  }
+  .head-btn {
+    float: right;
+  }
+  .watch-data nz-date-picker {
+    margin-left: 58px;
+    width: 220px;
+  }
+  .label {
+    margin-left: 30px;
+  }
+  .watch-data nz-select {
+    margin-left: 30px;
+  }
+  .watch-data-one {
+    margin-top: 10px;
+  }
+  .watch-data-one nz-select {
+    margin-left: 30px;
+  }
+  .watchPlace {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+  :host ::ng-deep table {
+    table-layout: fixed;
+  }
+  .footer {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    box-shadow: 0px 7px 15px 0px rgba(0, 0, 0, 0.5);
+    padding: 10px 20px;
+    text-align: right;
+    left: 0px;
+    background: #fff;
+  }
+  .watch-span {
+    width: 64px;
+    height: 18px;
+    font-size: 16px;
+    font-weight: 400;
+    color: rgba(0, 0, 0, 0.85);
+    line-height: 18px;
+  }
+  .watch-input {
+    width: 170px;
+    margin-left: 20px;
+    background: #ffffff;
+    border-radius: 4px;
+    border: 1px solid #dddddd;
+  }
+  textarea {
+    background: #f8f8f8;
+    border-radius: 6px;
+  }
+  .watch-div {
+    margin-bottom: 20px;
+  }
+  .detail {
+    background: #f8f8f8;
+    border-radius: 6px;
+  }
+  .watch-input-one {
+    width: 170px;
+    margin-left: 20px;
+    background: #ffffff;
+    border-radius: 4px;
+  }
+  .addPersonnel {
+    height: 18px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #d2d2d2;
+    line-height: 18px;
+    margin-left: 20px;
+  }
+  .check-option-list {
+    display: flex;
+    align-items: center;
+  }
+  .head-img {
+    position: relative;
+    display: inline-block;
+    border-radius: 8px;
+    margin: 10px 20px 10px 0;
+    vertical-align: middle;
+  }
+  .head-img img {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+  }
+  .head-img .close {
+    width: 14px;
+    height: 14px;
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    cursor: pointer;
+  }
+  .add-img {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    border: 1px solid #cccccc;
+    vertical-align: middle;
+    cursor: pointer;
+  }
+  .head-img p {
+    margin: 0;
+    width: 100%;
+    text-align: center;
+    color: #000000;
+    line-height: 18px;
+  }
+  .add-img img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .ongoing-title {
+    display: inline-block;
+    font-size: 24px;
+    font-weight: 500;
+    margin: 0;
+  }
+</style>
