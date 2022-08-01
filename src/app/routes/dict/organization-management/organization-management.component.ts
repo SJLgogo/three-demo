@@ -3,7 +3,6 @@ import {STColumn, STColumnBadge, STComponent} from "@delon/abc/st";
 import {SystemJdlEditComponent} from "../../system/jdl/edit/edit.component";
 import {ModalHelper} from "@delon/theme";
 import {AppAddComponent} from "./app-add/app-add.component";
-import {SelectProjectPersonComponent} from "../../../hz/select-person/select-project-person/select-project-person.component";
 import {ProAddComponent} from "./pro-add/pro-add.component";
 import {OrganizationService} from "../../../api/dict/organization-management/organization.service.ts";
 import {HttpResult, variable} from "../../../api/common-interface/common-interface";
@@ -123,13 +122,7 @@ export class OrganizationManagementComponent implements OnInit {
 
 
   choosePerson(): void {
-    this.modal.createStatic(SelectProjectPersonComponent, {
-      chooseMode: 'department',  // department organization employee
-      functionName: '23123',
-      selectList:[]
-    }).subscribe(res => {
 
-    })
   }
 
   deleteProHttp(id: string): void {

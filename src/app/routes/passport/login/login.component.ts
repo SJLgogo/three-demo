@@ -16,7 +16,6 @@ import {_HttpClient, SettingsService} from '@delon/theme';
 import {NzTabChangeEvent} from 'ng-zorro-antd/tabs';
 import {finalize} from 'rxjs/operators';
 import {variable} from "../../../api/common-interface/common-interface";
-import {fn} from "../../../hz/select-person/select-project-person/department/department.interface";
 import {environment} from "@env/environment";
 import {NzMessageService} from "ng-zorro-antd/message";
 

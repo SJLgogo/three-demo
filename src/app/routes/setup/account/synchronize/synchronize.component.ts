@@ -5,7 +5,6 @@ import { SFComponent, SFSchema, SFSchemaEnumType, SFSelectWidgetSchema, SFUISche
 import { map } from 'rxjs/operators';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { SetupContactSelectComponent } from '../../../../shared/components/contact-select/contact-select.component';
 
 @Component({
   selector: 'app-setup-synchronize',
@@ -133,28 +132,6 @@ export class SetupSynchronizeComponent implements OnInit {
     //   });
     // }
     let mode = ['employee'];
-    this.modal.createStatic(SetupContactSelectComponent, {
-      selectedItems: selectedItems,
-      mode: mode
-    }).subscribe((res) => {
-      let tagEmployees:any = []; // 选中的用户数据
-      let tagEmployeeIds:any = []; // 选中的用户id
-
-      console.log('res：', res);
-      res.selectedItems.forEach(function(value:any) {
-        tagEmployees.push({ title: value.name, key: value.id, category: value.category });
-        tagEmployeeIds.push(value.id);
-      });
-
-      console.log('tagEmployees:', tagEmployees);
-
-      // this.schema.properties.attendanceGroupEmployeeIds.enum = tagEmployees;
-      // this.schema.properties.attendanceGroupEmployeeIds.default = tagEmployeeIds;
-      this.attendanceGroupEmployeeData = tagEmployees;
-      this.i.attendanceGroupEmployeeIds = tagEmployeeIds;
-      this.sf.refreshSchema();
-      Object.assign(this.i, this.sf.value);
-    });
   }
 
   close() {

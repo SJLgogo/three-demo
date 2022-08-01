@@ -7,7 +7,6 @@ import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd/tree';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzContextMenuService } from 'ng-zorro-antd/dropdown';
-import { SetupContactSelectComponent } from '../../../../shared/components/contact-select/contact-select.component';
 import { SystemContactPostSetupComponent } from '../post/post-setup.component';
 import { SystemContactOrgEditComponent } from '../org/org-edit.component';
 import { SystemContactJobEditComponent } from '../job/job-edit.component';
@@ -437,27 +436,6 @@ export class SetupContactComponent implements OnInit {
 
   selectUser() {
     const mode = ['employee', 'organization', 'post', 'job', 'tag'];
-    this.modal.createStatic(SetupContactSelectComponent, { selectedItems: [], mode: mode }).subscribe((res:any) => {
-      const tagEmployeeIds:any = [];
-      res.selectedItems.forEach(function(value:any) {
-        switch (value.category) {
-          case 'employee':
-            tagEmployeeIds.push(value.id);
-            break;
-        }
-      });
-
-      const params = {
-        tagId: this.tagId,
-        tagEmployeeIds: tagEmployeeIds.join(',')
-      };
-      this.http.post(`/service/contact/admin/tag/assign/employees`, params).subscribe((res:any) => {
-        if (res.success) {
-          this.loadEmployeeTable('tag', null, null, null, null, this.tagId, null);
-          this.msgSrv.success('保存成功');
-        }
-      });
-    });
   }
 
   openFolder(node: any): void {
