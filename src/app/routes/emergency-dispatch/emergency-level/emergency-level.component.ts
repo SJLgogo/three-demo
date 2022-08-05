@@ -2,10 +2,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { _HttpClient, ModalHelper, SettingsService } from '@delon/theme';
 import { SFSchema } from '@delon/form';
 import { environment } from '@env/environment';
+import { Base } from '../../../common/base';
 import { EmergencyDispatchEmergencyLevelEditComponent } from './edit/edit.component';
 import { STColumn, STComponent } from '@delon/abc/st';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import {Base} from "../../../api/common/base";
 
 @Component({
   selector: 'app-emergency-dispatch-emergency-level',
@@ -21,6 +21,7 @@ export class EmergencyDispatchEmergencyLevelComponent extends Base implements On
       },
     },
   };
+
   @ViewChild('st', { static: false }) st!: STComponent;
   columns: STColumn[] = [
     { title: '事件等级名称', index: 'label' },
@@ -32,7 +33,7 @@ export class EmergencyDispatchEmergencyLevelComponent extends Base implements On
           type: 'static',
           icon: 'edit',
           click: (record) => {
-            if (this.isPermission('emergency-level:button:edit', this.settingsService.app['identifiers'])) {
+            if (this.isPermission('emergency-level:button:edit', "")) {
               this.modal.createStatic(EmergencyDispatchEmergencyLevelEditComponent, { i: record }).subscribe(() => this.st.reload());
             } else {
               this.messageService.warning('对不起,你没有权限,请联系管理员!');
@@ -45,7 +46,7 @@ export class EmergencyDispatchEmergencyLevelComponent extends Base implements On
           tooltip: '此处删除的是基础数据,会影响已经用此数据的其他关联数据,请谨慎操作!!!!',
           type: 'del',
           click: (item: any) => {
-            if (this.isPermission('emergency-level:button:delete', this.settingsService.app['identifiers'])) {
+            if (this.isPermission('emergency-level:button:delete', "")) {
               this.remove(item);
             } else {
               this.messageService.warning('对不起,你没有权限,请联系管理员!');

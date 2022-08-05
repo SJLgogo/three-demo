@@ -1,19 +1,18 @@
-import { Component, ElementRef, OnInit, ViewChild, ViewChildren } from '@angular/core';
-import { _HttpClient, ModalHelper } from '@delon/theme';
-import { STColumn, STComponent, STColumnButton } from '@delon/abc/st';
-import { SFComponent, SFSchema, SFTreeSelectWidgetSchema, SFSelectWidgetSchema, SFDateWidgetSchema } from '@delon/form';
-import { DictionaryService } from '../service/dictionary.service';
-import { NzMessageService } from 'ng-zorro-antd/message';
-import { ActivatedRoute, Router } from '@angular/router';
-import { dateTimePickerUtil } from '@delon/util';
-import { environment } from '@env/environment';
-import {NzUploadModule, NzUploadXHRArgs} from 'ng-zorro-antd/upload';
-import { NzUploadFile } from 'ng-zorro-antd/upload';
-import { ModalTable } from '../components/modal-table/modal-table.component';
-import { EmergencyDispatchChooseRoleComponent } from './chooseRole/choose-role.component';
-import {Base} from "../../../api/common/base";
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {_HttpClient, ModalHelper} from '@delon/theme';
+import {STColumn, STComponent} from '@delon/abc/st';
+import {SFComponent, SFDateWidgetSchema, SFSchema, SFTreeSelectWidgetSchema} from '@delon/form';
+import {DictionaryService} from '../service/dictionary.service';
+import {NzMessageService} from 'ng-zorro-antd/message';
+import {ActivatedRoute, Router} from '@angular/router';
+import {dateTimePickerUtil} from '@delon/util';
+import {NzUploadFile} from 'ng-zorro-antd/upload';
+// import {ModalTable} from '../components/modal-table/modal-table.component';
+import {EmergencyDispatchChooseRoleComponent} from './chooseRole/choose-role.component';
+import {Base} from "../../../common/base";
 import {SetupContactSelectComponent} from "../../../shared/components/contact-select/contact-select.component";
-import {FileSaverService} from "ngx-filesaver";
+
+// import {FileSaverService} from "ngx-filesaver";
 
 @Component({
   selector: 'app-emergency-dispatch-emergency-ongoing-event',
@@ -25,7 +24,7 @@ export class EmergencyDispatchEmergencyOngoingEvent extends Base implements OnIn
     private http: _HttpClient,
     private modal: ModalHelper,
     private dictionaryService: DictionaryService,
-    private fileSaverService: FileSaverService,
+    // private fileSaverService: FileSaverService,
     private router: Router,
     private activeRoute: ActivatedRoute,
     private messageService: NzMessageService,
@@ -2657,7 +2656,7 @@ export class EmergencyDispatchEmergencyOngoingEvent extends Base implements OnIn
         (res) => {
           console.log('res:', res);
           if (res != null) {
-            this.fileSaverService.save(res.body, '正在进行的事件.xls');
+            // this.fileSaverService.save(res.body, '正在进行的事件.xls');
             this.messageService.success('导出成功');
           } else {
             this.messageService.warning('导出数据为空,请检查查询条件!');
@@ -2999,8 +2998,8 @@ export class EmergencyDispatchEmergencyOngoingEvent extends Base implements OnIn
     } else {
       url = '/service/emergency-event/wxcp/EventApi/getPartyListForItemVirtual';
     }
-    this.modal.createStatic(ModalTable, { i, url }).subscribe((value) => {
-    });
+    // this.modal.createStatic(ModalTable, { i, url }).subscribe((value) => {
+    // });
   }
 
   ngAfterViewInit() {

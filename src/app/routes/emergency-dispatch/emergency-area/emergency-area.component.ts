@@ -5,7 +5,7 @@ import { EmergencyDispatchEmergencyAreaEditComponent } from './edit/edit.compone
 import { environment } from '@env/environment';
 import { STColumn, STComponent } from '@delon/abc/st';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import {Base} from "../../../api/common/base";
+import {Base} from "../../../common/base";
 
 @Component({
   selector: 'app-emergency-dispatch-emergency-area',

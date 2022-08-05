@@ -6,9 +6,8 @@ import {DictionaryService} from '../service/dictionary.service';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {ActivatedRoute, Router} from '@angular/router';
 import {environment} from '@env/environment';
-import {ModalTable} from '../components/modal-table/modal-table.component';
-import {Base} from "../../../api/common/base";
-import {FileSaverService} from "ngx-filesaver";
+// import {ModalTable} from '../components/modal-table/modal-table.component';
+import {Base} from "../../../common/base";
 
 @Component({
   selector: 'app-emergency-dispatch-emergency-history-report',
@@ -350,7 +349,7 @@ export class EmergencyDispatchEmergencyHistoryReport extends Base implements OnI
     private http: _HttpClient,
     private modal: ModalHelper,
     private dictionaryService: DictionaryService,
-    private fileSaverService: FileSaverService,
+    // private fileSaverService: FileSaverService,
     private router: Router,
     private activeRoute: ActivatedRoute,
     private messageService: NzMessageService,
@@ -848,7 +847,7 @@ export class EmergencyDispatchEmergencyHistoryReport extends Base implements OnI
         (res) => {
           console.log('res:', res);
           if (res != null) {
-            this.fileSaverService.save(res.body, '应急事件历史报表.xls');
+            // this.fileSaverService.save(res.body, '应急事件历史报表.xls');
             this.messageService.success('导出成功');
           } else {
             this.messageService.warning('导出数据为空,请检查查询条件!');
@@ -1326,8 +1325,8 @@ export class EmergencyDispatchEmergencyHistoryReport extends Base implements OnI
     } else {
       url = '/service/emergency-event/wxcp/EventApi/getPartyListForItemVirtual';
     }
-    this.modal.createStatic(ModalTable, {i: i, url: url}).subscribe((value) => {
-    });
+    // this.modal.createStatic(ModalTable, {i: i, url: url}).subscribe((value) => {
+    // });
   }
 
   /* 打开应急要点审核 */

@@ -162,9 +162,9 @@
   <!-- 添加预案 -->
   <div class="item-btn">
     <span class="item-title" style="width: 200px">应急预案</span>
-    <click-button (click)="addPlanFile()">
+    <button nz-button (click)="addPlanFile()">
       <span btntext>添加应急预案</span>
-    </click-button>
+    </button>
   </div>
 
   <!-- 预案列表 -->
@@ -185,9 +185,9 @@
       <span style="color: #acacac">注：附件不得超于5M</span>
     </div>
     <nz-upload [(nzFileList)]="fileList" [nzShowUploadList]="false" [nzBeforeUpload]="beforeUpload">
-      <click-button>
+      <button nz-button>
         <span btntext>上传附件</span>
-      </click-button>
+      </button>
     </nz-upload>
   </div>
   <div class="divider"></div>
@@ -230,9 +230,9 @@
   <div style="height: 60px"></div>
   <div class="footer">
     <div>
-      <click-button *ngIf="newReport" (click)="abandon()">
+      <button nz-button *ngIf="newReport" (click)="abandon()">
         <span btntext>废弃</span>
-      </click-button>
+      </button>
     </div>
     <div>
       <button nz-button nzType="default" (click)="return()">返回</button>

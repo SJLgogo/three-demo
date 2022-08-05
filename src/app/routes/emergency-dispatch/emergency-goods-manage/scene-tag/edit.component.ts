@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {_HttpClient} from '@delon/theme';
 import {NzMessageService} from 'ng-zorro-antd/message';
-import {Base} from "../../../../api/common/base";
+import {Base} from "../../../../common/base";
 
 interface ItemData {
   id: string;

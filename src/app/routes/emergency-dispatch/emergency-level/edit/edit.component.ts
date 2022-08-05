@@ -36,7 +36,7 @@ export class EmergencyDispatchEmergencyLevelEditComponent implements OnInit {
     }
   }
 
-  save(value: any):any {
+  save(value: any) {
     if (this.i.id != '') {
       delete value._values;
     }

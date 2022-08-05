@@ -51,12 +51,11 @@
         [nzDropdownStyle]="{ 'max-height': '455px' }"
       >
       </nz-tree-select>
-    </div>
-    <div class="new-store-item">
+
       仓库名称:
-      <input [disabled]="edit" style="width: 330px" nz-input placeholder="请输入仓库名称" [(ngModel)]="newStoreName" />
+      <input [disabled]="edit" style="width: 330px" nz-input placeholder="请输入仓库名称" [(ngModel)]="newStoreName"/>
     </div>
-    <!-- 新增电话人员 -->
+
     <div style="margin: 20px 0">
       <span class="blod-title" style="font-size: 16px">新增保管人员</span>
       <div class="check-option-list" style="margin-top: 10px">

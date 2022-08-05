@@ -6,7 +6,7 @@ import { environment } from '@env/environment';
 import { STColumn, STComponent } from '@delon/abc/st';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { EmergencyDispatchEmergencyTagRelatedPersonComponent } from './related-person/related-person.component';
-import {Base} from "../../../api/common/base";
+import {Base} from "../../../common/base";
 import {SetupContactSelectComponent} from "../../../shared/components/contact-select/contact-select.component";
 
 @Component({

@@ -2,16 +2,17 @@ import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { _HttpClient, ModalHelper } from '@delon/theme';
 import { STColumn, STComponent, STColumnButton } from '@delon/abc/st';
 import { SFComponent, SFSchema, SFRadioWidgetSchema } from '@delon/form';
+import { Base } from '../../../common/base';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzUploadFile } from 'ng-zorro-antd/upload';
 import { environment } from '@env/environment';
-import {Base} from "../../../api/common/base";
 
 @Component({
   selector: 'app-emergency-dispatch-emergency-point-set',
   templateUrl: './emergency-point-set.component.html',
   styleUrls: ['./emergency-point-set.css'],
 })
+
 export class EmergencyDispatchEmergencyPointSet extends Base implements OnInit {
   constructor(
     private http: _HttpClient,
@@ -58,7 +59,7 @@ export class EmergencyDispatchEmergencyPointSet extends Base implements OnInit {
         enum: ['启用', '停用'],
         ui: {
           widget: 'radio',
-          change: (ngModel) => {
+          change: (ngModel:any) => {
             ngModel == '启用' ? (this.emergencyPointQuery.status = 1) : (this.emergencyPointQuery.status = -1);
           },
         } as SFRadioWidgetSchema,
@@ -253,7 +254,8 @@ export class EmergencyDispatchEmergencyPointSet extends Base implements OnInit {
   }
 
   getLocalStorage() {
-    let value = JSON.parse(<string>window.localStorage.getItem('employee'));
+    let value:any;
+    //>>>>陈阳
     if (this.isEdit) {
       this.emergencyPointVO.editEmployeeName = value.employeeName;
       this.emergencyPointVO.editEmployeeId = value.thirdPartyAccountUserId;
@@ -368,7 +370,7 @@ export class EmergencyDispatchEmergencyPointSet extends Base implements OnInit {
   }
 
   /* 判断附件格式 */
-  judgeFile(url:any) :any{
+  judgeFile(url:any):any {
     if (RegExp(/(.jpg)|(.png)|(.webp)|(.jpeg)/).test(url)) {
       return 'assets/img/icon-img.png';
     } else if (RegExp(/(.docx)|(.doc)/).test(url)) {

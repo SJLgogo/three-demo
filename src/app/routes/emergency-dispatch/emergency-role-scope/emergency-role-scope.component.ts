@@ -5,7 +5,7 @@ import { environment } from '@env/environment';
 import { EmergencyDispatchEmergencyRoleScopeEditComponent } from './edit/edit.component';
 import { STColumn, STComponent } from '@delon/abc/st';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import {Base} from "../../../api/common/base";
+import {Base} from "../../../common/base";
 
 @Component({
   selector: 'app-emergency-dispatch-emergency-role-scope',

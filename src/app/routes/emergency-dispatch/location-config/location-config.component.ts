@@ -5,7 +5,7 @@ import { _HttpClient, ModalHelper } from '@delon/theme';
 import { environment } from '@env/environment';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
-import { Base } from '../../../api/common/base';
+import { Base } from '../../../common/base';
 import { EmergencyDispatchLocationConfigEditComponent } from './edit/edit.component';
 
 @Component({

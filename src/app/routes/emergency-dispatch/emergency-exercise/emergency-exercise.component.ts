@@ -8,7 +8,7 @@ import { environment } from '@env/environment';
 import { dateTimePickerUtil } from '@delon/util';
 import { NzUploadFile } from 'ng-zorro-antd/upload';
 import { NzSafeNullPipe } from 'ng-zorro-antd/pipes';
-import {Base} from "../../../api/common/base";
+import {Base} from "../../../common/base";
 
 @Component({
   selector: 'app-emergency-dispatch-emergency-exercise',

@@ -5,7 +5,7 @@ import { STColumn, STComponent, STColumnButton } from '@delon/abc/st';
 import { SFComponent, SFSchema, SFSelectWidgetSchema, SFTreeSelectWidgetSchema } from '@delon/form';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { EmergencyDispatchGoodsListComponent } from './goods-list/view.component';
-import {Base} from "../../../api/common/base";
+import {Base} from "../../../common/base";
 import {SetupContactSelectComponent} from "../../../shared/components/contact-select/contact-select.component";
 interface ItemData {
   id: string;
@@ -17,6 +17,7 @@ interface ItemData {
   templateUrl: './emergency-goods-store.component.html',
   styleUrls: ['./emergency-goods-store.css'],
 })
+
 export class EmergencyDispatchEmergencyGoodsStore extends Base implements OnInit {
   visible: boolean = false;
   edit: boolean = false;

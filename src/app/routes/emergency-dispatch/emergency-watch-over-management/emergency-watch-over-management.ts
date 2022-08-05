@@ -5,7 +5,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { EmergencyDispatchEmergencyWatchOverManagementEditComponent } from './edit/edit.component';
 import { dateTimePickerUtil } from '@delon/util';
 import { STColumn, STComponent } from '@delon/abc/st';
-import {Base} from "../../../api/common/base";
+import {Base} from "../../../common/base";
 
 interface UploadFile {
   url: string;

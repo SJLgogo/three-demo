@@ -1,12 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { _HttpClient, ModalHelper, SettingsService } from '@delon/theme';
 import { SFSchema } from '@delon/form';
-import { environment } from '@env/environment';
-import { EmergencyDispatchEmergencyCategoryEditComponent } from '../emergency-category/edit/edit.component';
 import { EmergencyDispatchEmergencyBigCategoryEditComponent } from './edit/edit.component';
 import { STColumn, STComponent } from '@delon/abc/st';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import {Base} from "../../../api/common/base";
+import {Base} from '../../../common/base';
 
 @Component({
   selector: 'app-emergency-dispatch-emergency-big-category',

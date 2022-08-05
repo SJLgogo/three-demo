@@ -4,7 +4,7 @@ import { _HttpClient, ModalHelper } from '@delon/theme';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { STColumn, STComponent } from '@delon/abc/st';
-import {Base} from "../../../../api/common/base";
+import {Base} from "../../../../common/base";
 
 @Component({
   selector: 'app-emergency-dispatch-emergency-goods-list-view',

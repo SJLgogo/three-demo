@@ -109,10 +109,10 @@
       </div>
     </div>
     <div class="done-btn" *ngIf="isShowReNotice">
-      <click-button (click)="changeEvent()" *ngIf="!isChange">
+      <button nz-button="" (click)="changeEvent()" *ngIf="!isChange">
         <img btnimg src="assets/img/edit-blue.png" style="margin-right: 5px" />
         <span btntext>事件变更</span>
-      </click-button>
+      </button>
       <span class="save-change" *ngIf="isChange" (click)="saveChange()">保存变更</span>
     </div>
   </div>
@@ -179,9 +179,9 @@
   <!-- 应急预案 -->
   <div class="item-title title-change" style="margin: 15px 0 18px">
     <span>应急预案</span>
-    <click-button (click)="openEmergencyPlanFile()" *ngIf="isChange">
+    <button nz-button="" (click)="openEmergencyPlanFile()" *ngIf="isChange">
       <span btntext style="font-weight: 400">选择</span>
-    </click-button>
+    </button>
   </div>
 
   <nz-modal [(nzVisible)]="isShowDownload" nzTitle="" (nzOnCancel)="downloadCancel()">
@@ -219,9 +219,9 @@
   <div class="item-title title-change" style="margin: 15px 0 18px">
     <span>附件</span>
     <nz-upload [(nzFileList)]="fileList" [nzShowUploadList]="false" [nzBeforeUpload]="beforeUpload">
-      <click-button style="font-weight: 400" *ngIf="isChange">
+      <button nz-button="" style="font-weight: 400" *ngIf="isChange">
         <span btntext>上传附件</span>
-      </click-button>
+      </button>
     </nz-upload>
   </div>
   <nz-divider style="margin: 0"></nz-divider>
@@ -249,9 +249,9 @@
           <span (click)="cancelEmergency()">取消</span>
         </div>
       </div>
-      <click-button (click)="openEmergencyHistory()">
+      <button nz-button="" (click)="openEmergencyHistory()">
         <span btntext>应急发布历史查询</span>
-      </click-button>
+      </button>
     </div>
   </div>
   <!-- 应急发布内容 -->
@@ -301,23 +301,23 @@
   <nz-divider style="margin: 0"></nz-divider>
   <!-- 饼状图 -->
   <div class="response">
-    <chart-pie
-      style="margin-right: 30px"
-      *ngFor="let item of responseData; let i = index"
-      class="response-chart"
-      [chartPieData]="item.chartPieData"
-      [color]="colorList[i]"
-      [ngClass]="{
-        'choose-chart': i == listIndex,
-        bg1: listIndex == 0 && i == 0,
-        bg2: listIndex == 1 && i == 1,
-        bg3: listIndex == 2 && i == 2,
-        bg4: listIndex == 3 && i == 3
-      }"
-      (click)="clickChart(i)"
-    >
-      <p>{{ item.title }}</p>
-    </chart-pie>
+<!--    <chart-pie-->
+<!--      style="margin-right: 30px"-->
+<!--      *ngFor="let item of responseData; let i = index"-->
+<!--      class="response-chart"-->
+<!--      [chartPieData]="item.chartPieData"-->
+<!--      [color]="colorList[i]"-->
+<!--      [ngClass]="{-->
+<!--        'choose-chart': i == listIndex,-->
+<!--        bg1: listIndex == 0 && i == 0,-->
+<!--        bg2: listIndex == 1 && i == 1,-->
+<!--        bg3: listIndex == 2 && i == 2,-->
+<!--        bg4: listIndex == 3 && i == 3-->
+<!--      }"-->
+<!--      (click)="clickChart(i)"-->
+<!--    >-->
+<!--      <p>{{ item.title }}</p>-->
+<!--    </chart-pie>-->
   </div>
   <!-- 消息阅读情况详情 -->
   <div *ngIf="listIndex == 1">
@@ -524,9 +524,9 @@
               <span style="vertical-align: text-top">当前站点：{{item.stationName}}</span>
             </div>
 
-<!--            <click-button (click)="showModal(item)">-->
+<!--            <button (click)="showModal(item)">-->
 <!--              <span btntext>物资反馈情况</span>-->
-<!--            </click-button>-->
+<!--            </button>-->
           </div>
           <div class="goods-list-bot">
             <span style="padding-right: 20px; border-right: 1px solid #666666">运送物资：{{item.goodsName}}</span>
@@ -575,30 +575,30 @@
     </ng-template>
   </nz-modal>
 
-  <personnel-info [personnelInfoData]="personnelInfoData">
-    <click-button btn-inquire (click)="openCommandHistory()">
-      <span btntext>指挥记录查询</span>
-    </click-button>
-  </personnel-info>
-  <category-choose (categoryStatus)="categoryStatus($event)"></category-choose>
+<!--  <personnel-info [personnelInfoData]="personnelInfoData">-->
+<!--    <button nz-button="" btn-inquire (click)="openCommandHistory()">-->
+<!--      <span btntext>指挥记录查询</span>-->
+<!--    </button>-->
+<!--  </personnel-info>-->
+<!--  <category-choose (categoryStatus)="categoryStatus($event)"></category-choose>-->
   <!-- 最新处置措施 -->
   <div class="measure" *ngIf="!showClassify">
-    <measure-item *ngFor="let item of itemDetail" [itemDetail]="item" (deleteItem)="deleteItem($event)"></measure-item>
+<!--    <measure-item *ngFor="let item of itemDetail" [itemDetail]="item" (deleteItem)="deleteItem($event)"></measure-item>-->
   </div>
   <!-- 应急全貌 -->
   <div class="emergency-all" *ngIf="showClassify">
-    <emergency-item *ngFor="let item of emergencyItemList; let i = index" [itemDetail]="item" (click)="openEmengencyItem(i)">
-    </emergency-item>
+<!--    <emergency-item *ngFor="let item of emergencyItemList; let i = index" [itemDetail]="item" (click)="openEmengencyItem(i)">-->
+<!--    </emergency-item>-->
   </div>
   <div style="height: 60px"></div>
   <div class="footer">
     <div class="footer-left">
-      <click-button (click)="openChildren()" *ngIf="isShowReNotice">
+      <button (click)="openChildren()" *ngIf="isShowReNotice">
         <span btntext>事件相关人员重新通知</span>
-      </click-button>
-      <click-button (click)="openEventChangeHistory()">
+      </button>
+      <button (click)="openEventChangeHistory()">
         <span btntext>事件变更历史</span>
-      </click-button>
+      </button>
     </div>
     <button type="button" (click)="openModal()" class="ant-btn ant-btn-primary"><span>关闭事件</span></button>
   </div>
@@ -713,9 +713,9 @@
       <!-- 新增标签组 -->
       <div class="point-set">
         <span class="item-title" style="width: 200px">新增应急标签组</span>
-        <click-button (click)="chooseTag()">
+        <button (click)="chooseTag()">
           <span btntext>选择</span>
-        </click-button>
+        </button>
       </div>
       <!-- 标签组列表 -->
       <div class="emergency-tag-list" *ngFor="let item of reNotice.tagGroupVO; let i = index">
@@ -1115,23 +1115,23 @@
       <nz-divider style="margin: 10px 0"></nz-divider>
       <p style="font-size: 16px; font-weight: 700; margin: 0">应急响应情况</p>
       <div class="response">
-        <chart-pie
-          style="margin-right: 30px"
-          *ngFor="let item of responseData2; let i = index"
-          class="response-chart"
-          [chartPieData]="item.chartPieData"
-          [color]="colorList2[i]"
-          [ngClass]="{
-            'choose-chart': i == emergencyListIndex,
-            bg1: emergencyListIndex == 0 && i == 0,
-            bg2: emergencyListIndex == 1 && i == 1,
-            bg3: emergencyListIndex == 2 && i == 2,
-            bg4: emergencyListIndex == 3 && i == 3
-          }"
-          (click)="emergencyClickChart(i)"
-        >
-          <p>{{ item.title }}</p>
-        </chart-pie>
+<!--        <chart-pie-->
+<!--          style="margin-right: 30px"-->
+<!--          *ngFor="let item of responseData2; let i = index"-->
+<!--          class="response-chart"-->
+<!--          [chartPieData]="item.chartPieData"-->
+<!--          [color]="colorList2[i]"-->
+<!--          [ngClass]="{-->
+<!--            'choose-chart': i == emergencyListIndex,-->
+<!--            bg1: emergencyListIndex == 0 && i == 0,-->
+<!--            bg2: emergencyListIndex == 1 && i == 1,-->
+<!--            bg3: emergencyListIndex == 2 && i == 2,-->
+<!--            bg4: emergencyListIndex == 3 && i == 3-->
+<!--          }"-->
+<!--          (click)="emergencyClickChart(i)"-->
+<!--        >-->
+<!--          <p>{{ item.title }}</p>-->
+<!--        </chart-pie>-->
       </div>
       <!-- 消息阅读情况详情 -->
       <div *ngIf="emergencyListIndex == 1">
@@ -1349,9 +1349,9 @@
                   <span style="vertical-align: text-top">当前站点：前梅</span>
                 </div>
 
-                <click-button (click)="showModal({})">
+                <button (click)="showModal({})">
                   <span btntext>物资反馈情况</span>
-                </click-button>
+                </button>
               </div>
               <div class="goods-list-bot">
                 <span style="padding-right: 20px; border-right: 1px solid #666666">运送物资：防火面罩</span>

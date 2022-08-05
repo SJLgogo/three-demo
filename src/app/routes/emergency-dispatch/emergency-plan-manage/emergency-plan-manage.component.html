@@ -40,7 +40,7 @@
         nzPlaceHolder="请选择"
         style="width: 170px"
       >
-        <nz-option *ngFor="let option of planFileCategoryData" [nzValue]="option" [nzLabel]="option.label"></nz-option>
+        <nz-option *ngFor="let option of planFileCategoryData" [nzValue]="option" nzLabel="option.label"></nz-option>
       </nz-select>
     </div>
   </div>
@@ -55,7 +55,7 @@
         nzPlaceHolder="请选择"
         style="width: 170px"
       >
-        <nz-option *ngFor="let option of categoryTwoData" [nzValue]="option" [nzLabel]="option.label"></nz-option>
+        <nz-option *ngFor="let option of categoryTwoData" [nzValue]="option" nzLabel="option.label"></nz-option>
       </nz-select>
     </div>
   </div>
@@ -70,7 +70,7 @@
         nzPlaceHolder="请选择"
         style="width: 170px"
       >
-        <nz-option *ngFor="let option of categoryThreeData" [nzValue]="option" [nzLabel]="option.label"></nz-option>
+        <nz-option *ngFor="let item of categoryThreeData" [nzValue]="item" nzLabel="item.label"></nz-option>
       </nz-select>
     </div>
   </div>

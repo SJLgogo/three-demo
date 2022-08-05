@@ -127,23 +127,23 @@
   </div> -->
   <!-- 饼状图 -->
   <div class="response">
-    <chart-pie
-      style="margin-right: 30px"
-      *ngFor="let item of responseData; let i = index"
-      class="response-chart"
-      [chartPieData]="item.chartPieData"
-      [color]="colorList[i]"
-      [ngClass]="{
-        'choose-chart': i == listIndex,
-        bg1: listIndex == 0 && i == 0,
-        bg2: listIndex == 1 && i == 1,
-        bg3: listIndex == 2 && i == 2,
-        bg4: listIndex == 3 && i == 3
-      }"
-      (click)="clickChart(i)"
-    >
-      <p>{{ item.title }}</p>
-    </chart-pie>
+<!--    <chart-pie-->
+<!--      style="margin-right: 30px"-->
+<!--      *ngFor="let item of responseData; let i = index"-->
+<!--      class="response-chart"-->
+<!--      [chartPieData]="item.chartPieData"-->
+<!--      [color]="colorList[i]"-->
+<!--      [ngClass]="{-->
+<!--        'choose-chart': i == listIndex,-->
+<!--        bg1: listIndex == 0 && i == 0,-->
+<!--        bg2: listIndex == 1 && i == 1,-->
+<!--        bg3: listIndex == 2 && i == 2,-->
+<!--        bg4: listIndex == 3 && i == 3-->
+<!--      }"-->
+<!--      (click)="clickChart(i)"-->
+<!--    >-->
+<!--      <p>{{ item.title }}</p>-->
+<!--    </chart-pie>-->
   </div>
   <!-- 消息阅读情况详情 -->
   <div *ngIf="listIndex == 1">
@@ -367,26 +367,26 @@
     </div>
   </div>
   <nz-divider style="margin: 0"></nz-divider>
-  <personnel-info [personnelInfoData]="personnelInfoData"></personnel-info>
-  <category-choose (categoryStatus)="categoryStatus($event)"></category-choose>
+<!--  <personnel-info [personnelInfoData]="personnelInfoData"></personnel-info>-->
+<!--  <category-choose (categoryStatus)="categoryStatus($event)"></category-choose>-->
   <!-- 最新处置措施 -->
   <div class="measure" *ngIf="!showClassify">
-    <measure-item *ngFor="let item of itemDetail" [itemDetail]="item"></measure-item>
+<!--    <measure-item *ngFor="let item of itemDetail" [itemDetail]="item"></measure-item>-->
   </div>
   <!-- 应急全貌 -->
   <div class="emergency-all" *ngIf="showClassify">
-    <emergency-item
-      *ngFor="let item of emergencyItemList; let i = index"
-      [itemDetail]="item"
-      (click)="openEmengencyItem(i)"
-    ></emergency-item>
+<!--    <emergency-item-->
+<!--      *ngFor="let item of emergencyItemList; let i = index"-->
+<!--      [itemDetail]="item"-->
+<!--      (click)="openEmengencyItem(i)"-->
+<!--    ></emergency-item>-->
   </div>
   <div style="height: 60px"></div>
   <div class="footer">
     <div class="footer-left">
-      <click-button (click)="openEventChangeHistory()">
+      <button nz-button="" (click)="openEventChangeHistory()">
         <span btntext>事件变更历史</span>
-      </click-button>
+      </button>
     </div>
     <button type="button" (click)="close()" class="ant-btn ant-btn-primary"><span>确定</span></button>
   </div>
@@ -431,23 +431,23 @@
       <nz-divider style="margin: 10px 0"></nz-divider>
       <p style="font-size: 16px; font-weight: 700; margin: 0">应急响应情况</p>
       <div class="response">
-        <chart-pie
-          style="margin-right: 30px"
-          *ngFor="let item of responseData2; let i = index"
-          class="response-chart"
-          [chartPieData]="item.chartPieData"
-          [color]="colorList2[i]"
-          [ngClass]="{
-            'choose-chart': i == emergencyListIndex,
-            bg1: emergencyListIndex == 0 && i == 0,
-            bg2: emergencyListIndex == 1 && i == 1,
-            bg3: emergencyListIndex == 2 && i == 2,
-            bg4: emergencyListIndex == 3 && i == 3
-          }"
-          (click)="emergencyClickChart(i)"
-        >
-          <p>{{ item.title }}</p>
-        </chart-pie>
+<!--        <chart-pie-->
+<!--          style="margin-right: 30px"-->
+<!--          *ngFor="let item of responseData2; let i = index"-->
+<!--          class="response-chart"-->
+<!--          [chartPieData]="item.chartPieData"-->
+<!--          [color]="colorList2[i]"-->
+<!--          [ngClass]="{-->
+<!--            'choose-chart': i == emergencyListIndex,-->
+<!--            bg1: emergencyListIndex == 0 && i == 0,-->
+<!--            bg2: emergencyListIndex == 1 && i == 1,-->
+<!--            bg3: emergencyListIndex == 2 && i == 2,-->
+<!--            bg4: emergencyListIndex == 3 && i == 3-->
+<!--          }"-->
+<!--          (click)="emergencyClickChart(i)"-->
+<!--        >-->
+<!--          <p>{{ item.title }}</p>-->
+<!--        </chart-pie>-->
       </div>
       <!-- 消息阅读情况详情 -->
       <div *ngIf="emergencyListIndex == 1">
@@ -665,9 +665,9 @@
                   <span style="vertical-align: text-top">当前站点：前梅</span>
                 </div>
 
-                <click-button >
+                <button nz-button="">
                   <span btntext>物资反馈情况</span>
-                </click-button>
+                </button>
               </div>
               <div class="goods-list-bot">
                 <span style="padding-right: 20px; border-right: 1px solid #666666">运送物资：防火面罩</span>

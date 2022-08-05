@@ -14,7 +14,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { timeout } from 'rxjs/operators';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { dateTimePickerUtil } from '@delon/util';
-import {Base} from "../../../api/common/base";
+import {Base} from "../../../common/base";
 export interface TreeNodeInterface {
   id: string;
   name: string;

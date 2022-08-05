@@ -3,11 +3,11 @@ import { _HttpClient, ModalHelper, SettingsService } from '@delon/theme';
 import { SFSchema } from '@delon/form';
 import { EmergencyDispatchEmergencyTagInformEditComponent } from './edit/edit.component';
 import { environment } from '@env/environment';
-import { EmergencyDispatchEmployeeShiftEditComponent } from '../employee-shift/edit/edit.component';
+
 import { EmergencyDispatchEmergencyTagInformRelatedPersonComponent } from './related-person/related-person.component';
 import { STColumn, STComponent } from '@delon/abc/st';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import {Base} from "../../../api/common/base";
+import {Base} from "../../../common/base";
 
 @Component({
   selector: 'app-emergency-dispatch-emergency-inform-tag',
@@ -107,9 +107,6 @@ export class EmergencyDispatchEmergencyInformTagComponent extends Base implement
 
   ngOnInit() {}
 
-  peopleImport() {
-    this.modal.createStatic(EmergencyDispatchEmployeeShiftEditComponent, { i: { id: 0 } }).subscribe(() => this.st.reload());
-  }
 
   add() {
     this.modal.createStatic(EmergencyDispatchEmergencyTagInformEditComponent, { i: {}, mode: 'add' }).subscribe(() => {

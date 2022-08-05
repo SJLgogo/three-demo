@@ -6,7 +6,7 @@ import { environment } from '@env/environment';
 import { STColumn, STComponent } from '@delon/abc/st';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { UploadEmergencyPlanFilesComponent } from './upload-files/upload-file.component';
-import {Base} from "../../../api/common/base";
+import {Base} from "../../../common/base";
 
 @Component({
   selector: 'app-emergency-dispatch-emergency-plan-file',

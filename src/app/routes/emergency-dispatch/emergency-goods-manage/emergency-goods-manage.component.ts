@@ -7,7 +7,7 @@ import {EmergencyDispatchGoodsTagEditComponent} from './goods-tag/edit.component
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {ActivatedRoute, Params} from '@angular/router';
 import {EmergencyDispatchEmergencyGoodsEditComponent} from './edit/edit.component';
-import {Base} from "../../../api/common/base";
+import {Base} from "../../../common/base";
 
 interface ItemData {
   id: string;

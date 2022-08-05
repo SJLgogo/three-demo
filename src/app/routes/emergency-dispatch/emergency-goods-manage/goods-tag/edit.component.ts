@@ -2,7 +2,7 @@ import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {_HttpClient} from '@delon/theme';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {NzModalRef} from 'ng-zorro-antd/modal';
-import {Base} from "../../../../api/common/base";
+import {Base} from "../../../../common/base";
 
 @Component({
   selector: 'app-emergency-dispatch-emergency-goods-tag-edit',

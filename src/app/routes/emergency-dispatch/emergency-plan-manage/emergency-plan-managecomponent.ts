@@ -1,15 +1,14 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { _HttpClient, ModalHelper } from '@delon/theme';
-import { STColumn, STComponent, STColumnButton } from '@delon/abc/st';
-import { SFComponent, SFSchema, SFStringWidgetSchema, SFSelectWidgetSchema, SFDateWidgetSchema } from '@delon/form';
-
-import { NzMessageService } from 'ng-zorro-antd/message';
-import { NzUploadFile } from 'ng-zorro-antd/upload';
-import { environment } from '@env/environment';
-import { dateTimePickerUtil } from '@delon/util';
-import { of } from 'rxjs';
-import { delay } from 'rxjs/operators';
-import {Base} from "../../../api/common/base";
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {_HttpClient, ModalHelper} from '@delon/theme';
+import {STColumn, STComponent, STColumnButton} from '@delon/abc/st';
+import {SFComponent, SFSchema, SFStringWidgetSchema, SFSelectWidgetSchema, SFDateWidgetSchema} from '@delon/form';
+import {Base} from '../../../common/base';
+import {NzMessageService} from 'ng-zorro-antd/message';
+import {NzUploadFile} from 'ng-zorro-antd/upload';
+import {environment} from '@env/environment';
+import {dateTimePickerUtil} from '@delon/util';
+import {of} from 'rxjs';
+import {delay} from 'rxjs/operators';
 
 @Component({
   selector: 'app-emergency-dispatch-emergency-plan-manage',
@@ -18,14 +17,16 @@ import {Base} from "../../../api/common/base";
 })
 export class EmergencyDispatchEmergencyPlanManage extends Base implements OnInit {
   url = `/service/emergency-base-config/admin/adminEmergencyPlanFileApi/findForPage`;
+
   constructor(private messageService: NzMessageService, private http: _HttpClient) {
     super();
   }
+
   visible = false;
   selectedValue: any;
-  planFileCategoryData:any = []; //应急规章制度类型列表数据
-  categoryTwoData :any= []; //二级分类数据
-  categoryThreeData:any = []; //三级分类数据
+  planFileCategoryData = []; //应急规章制度类型列表数据
+  categoryTwoData = []; //二级分类数据
+  categoryThreeData = []; //三级分类数据
   emergencyPlanFileDTO: any = {}; //新增应急预案文件
   categoryTwoStatus: any = true;
   planFileCategory: any; //应急规章制度类型
@@ -37,7 +38,7 @@ export class EmergencyDispatchEmergencyPlanManage extends Base implements OnInit
   searchCategoryList = []; //查询预案类别列表
   searchTypeList = []; //查询预案类型列表
 
-  @ViewChild('sf', { static: false }) sf!: SFComponent;
+  @ViewChild('sf', {static: false}) sf!: SFComponent;
   searchSchema: SFSchema = {
     properties: {
       planName: {
@@ -58,7 +59,7 @@ export class EmergencyDispatchEmergencyPlanManage extends Base implements OnInit
         ui: {
           widget: 'date',
           mode: 'range',
-          change: (ngModel:any) => {
+          change: (ngModel: any) => {
             console.log(ngModel);
             // @ts-ignore
             if (ngModel.length != 0) {
@@ -74,6 +75,7 @@ export class EmergencyDispatchEmergencyPlanManage extends Base implements OnInit
         } as SFDateWidgetSchema,
       },
       typeName: {
+        enum: [],
         type: 'string',
         title: '预案类型',
         ui: {
@@ -81,8 +83,8 @@ export class EmergencyDispatchEmergencyPlanManage extends Base implements OnInit
           placeholder: '请选择',
           width: 270,
           allowClear: true,
-          dropdownStyle: { 'max-height': '200px' },
-          change: (ngModel:any) => {
+          dropdownStyle: {'max-height': '200px'},
+          change: (ngModel: any) => {
             console.log(ngModel);
             if (ngModel != null) {
               this.emergencyPlanFileQuery.typeId = ngModel;
@@ -101,8 +103,8 @@ export class EmergencyDispatchEmergencyPlanManage extends Base implements OnInit
           placeholder: '请选择',
           width: 270,
           allowClear: true,
-          dropdownStyle: { 'max-height': '200px' },
-          change: (ngModel:any) => {
+          dropdownStyle: {'max-height': '200px'},
+          change: (ngModel: any) => {
             if (ngModel != null) {
               this.emergencyPlanFileQuery.categoryId = ngModel;
             } else {
@@ -117,8 +119,8 @@ export class EmergencyDispatchEmergencyPlanManage extends Base implements OnInit
         ui: {
           placeholder: '请输入',
           width: 270,
-          dropdownStyle: { 'max-height': '200px' },
-          change: (ngModel:any) => {
+          dropdownStyle: {'max-height': '200px'},
+          change: (ngModel: any) => {
             console.log(ngModel);
             this.emergencyPlanFileQuery.uploaderName = ngModel;
           },
@@ -127,13 +129,13 @@ export class EmergencyDispatchEmergencyPlanManage extends Base implements OnInit
     },
   };
 
-  @ViewChild('st', { static: false }) st!: STComponent;
+  @ViewChild('st', {static: false}) st!: STComponent;
   columns: STColumn[] = [
-    { title: '预案名称', width: 270, index: 'name' },
-    { title: '预案类型', width: 135, index: 'emergencyPlanFileTypeName' },
-    { title: '预案类别', width: 150, index: 'emergencyPlanFileCategoryName' },
-    { title: '上传人', width: 202, index: 'uploaderName' },
-    { title: '上传时间', width: 492, index: 'createdDate' },
+    {title: '预案名称', width: 270, index: 'name'},
+    {title: '预案类型', width: 135, index: 'emergencyPlanFileTypeName'},
+    {title: '预案类别', width: 150, index: 'emergencyPlanFileCategoryName'},
+    {title: '上传人', width: 202, index: 'uploaderName'},
+    {title: '上传时间', width: 492, index: 'createdDate'},
     {
       title: '操作',
       width: 268,
@@ -183,7 +185,7 @@ export class EmergencyDispatchEmergencyPlanManage extends Base implements OnInit
   ];
 
   /* 表单重置 */
-  resetSearch(e:any) {
+  resetSearch(e: any) {
     const extraParams = {};
     this.st.reset(extraParams);
     this.searchCategoryList = [];
@@ -196,12 +198,12 @@ export class EmergencyDispatchEmergencyPlanManage extends Base implements OnInit
   getEmergencyPlanFileCategory() {
     this.http.get(`/service/emergency-base-config/admin/adminEmergencyPlanFileCategoryApi/findAllByLevel/${1}`).subscribe((res) => {
       if (res.success) {
-        this.planFileCategoryData = res.data.map((element:any) => {
-          return { label: element.name, value: element.id };
+        this.planFileCategoryData = res.data.map((element: any) => {
+          return {label: element.name, value: element.id};
         });
-        // @ts-ignore
-        this.searchSchema.properties.typeName.enum = res.data.map((element:any) => {
-          return { label: element.name, value: element.id };
+        const typeNameProperty = this.sf.getProperty('/typeName')!;
+        typeNameProperty.schema.enum = res.data.map((element: any) => {
+          return {label: element.name, value: element.id};
         });
         this.sf.refreshSchema();
       }
@@ -209,22 +211,22 @@ export class EmergencyDispatchEmergencyPlanManage extends Base implements OnInit
   }
 
   /* 加载 二级分类数据*/
-  getCategoryTwo(id:any) {
+  getCategoryTwo(id: any) {
     this.http.get(`/service/emergency-base-config/admin/adminEmergencyPlanFileCategoryApi/findAllByParentId/${id}`).subscribe((res) => {
       if (res.success) {
-        this.categoryTwoData = res.data.map((element:any) => {
-          return { label: element.name, value: element.id };
+        this.categoryTwoData = res.data.map((element: any) => {
+          return {label: element.name, value: element.id};
         });
       }
     });
   }
 
   /* 加载查询预案类别数据 */
-  getSearchCategory(id:any) {
+  getSearchCategory(id: any) {
     this.http.get(`/service/emergency-base-config/admin/adminEmergencyPlanFileCategoryApi/findAllByParentId/${id}`).subscribe((res) => {
       if (res.success) {
-        this.searchCategoryList = res.data.map((element:any) => {
-          return { label: element.name, value: element.id };
+        this.searchCategoryList = res.data.map((element: any) => {
+          return {label: element.name, value: element.id};
         });
         const statusProperty = this.sf.getProperty('/categoryName')!;
         statusProperty.schema.enum = this.searchCategoryList;
@@ -234,18 +236,18 @@ export class EmergencyDispatchEmergencyPlanManage extends Base implements OnInit
   }
 
   /* 加载三级分类数据*/
-  getCategoryThree(id:any) {
+  getCategoryThree(id: any) {
     this.http.get(`/service/emergency-base-config/admin/adminEmergencyPlanFileCategoryApi/findAllByParentId/${id}`).subscribe((res) => {
       if (res.success) {
-        this.categoryThreeData = res.data.map((element:any) => {
-          return { label: element.name, value: element.id };
+        this.categoryThreeData = res.data.map((element: any) => {
+          return {label: element.name, value: element.id};
         });
       }
     });
   }
 
   /* 应急规章制度类型选择回调 */
-  emergencyPlanFileCategoryChange(event:any) {
+  emergencyPlanFileCategoryChange(event: any) {
     if (event != null) {
       let id = event.value;
       this.categoryTwo = null;
@@ -259,7 +261,7 @@ export class EmergencyDispatchEmergencyPlanManage extends Base implements OnInit
   }
 
   /* 二级分类数据回调 */
-  categoryTwoChange(event:any) {
+  categoryTwoChange(event: any) {
     if (event != null) {
       let id = event.value;
       this.categoryThree = null;
@@ -272,7 +274,7 @@ export class EmergencyDispatchEmergencyPlanManage extends Base implements OnInit
   }
 
   /* 三级分类数据回调 */
-  categoryThreeChange(event:any) {
+  categoryThreeChange(event: any) {
     if (event != null) {
       this.emergencyPlanFileDTO.emergencyPlanFileLevelThreeName = event.label;
       this.emergencyPlanFileDTO.emergencyPlanFileLevelThreeId = event.value;
@@ -280,7 +282,8 @@ export class EmergencyDispatchEmergencyPlanManage extends Base implements OnInit
   }
 
   getLocalStorage() {
-    let value = JSON.parse(<string>window.localStorage.getItem('employee'));
+    let value: any;
+    //>>>>>陈阳
     this.emergencyPlanFileDTO.uploaderId = value.thirdPartyAccountUserId;
     this.emergencyPlanFileDTO.uploaderName = value.employeeName;
   }
@@ -330,6 +333,7 @@ export class EmergencyDispatchEmergencyPlanManage extends Base implements OnInit
   closeChildren() {
     this.visible = false;
   }
+
   upload() {
     this.visible = true;
     this.getLocalStorage();
