@@ -77,6 +77,7 @@ import {EmergencyDispatchEmergencyExerciseEditComponent} from "./emergency-exerc
 import {EmergencyDispatchEmergencyHistoryReport} from "./emergency-history-report/emergency-history-report.component";
 import {EmergencyDispatchEmergencyOngoingEvent} from "./emergency-ongoing-event/emergency-ongoing-event.component";
 import {EmergencyDispatchChooseRoleComponent} from "./emergency-ongoing-event/chooseRole/choose-role.component";
+import {EmergencyDispatchEmergencyHome} from "./emergency-home/emergency-home.component";
 
 
 const COMPONENTS = [
@@ -101,6 +102,7 @@ const COMPONENTS = [
   EmergencyDispatchEmergencyExercise,
   EmergencyDispatchEmergencyHistoryReport,
   EmergencyDispatchEmergencyOngoingEvent,
+  EmergencyDispatchEmergencyHome,
 ];
 const COMPONENTS_NOROUNT: any = [
   EmergencyDispatchEmergencyCategoryEditComponent,

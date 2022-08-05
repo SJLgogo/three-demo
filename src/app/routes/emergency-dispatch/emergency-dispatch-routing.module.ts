@@ -16,20 +16,26 @@ import {FixPhoneInfoManagementComponent} from "./fix-phone-info-management/fix-p
 import {EmergencyDispatchLocationConfigComponent} from "./location-config/location-config.component";
 import {EmergencyDispatchEmergencyExercise} from "./emergency-exercise/emergency-exercise.component";
 import {EmergencyDispatchEmergencyOngoingEvent} from "./emergency-ongoing-event/emergency-ongoing-event.component";
+import {EmergencyDispatchEmergencyHistoryReport} from "./emergency-history-report/emergency-history-report.component";
+import {EmergencyDispatchEmergencyLevelComponent} from "./emergency-level/emergency-level.component";
+import {EmergencyDispatchEmergencyHome} from "./emergency-home/emergency-home.component";
+import {EmergencyDispatchEmergencyGoodsStore} from "./emergency-goods-store/emergency-goods-store.component";
+import {EmergencyDispatchEmergencyPlanManage} from "./emergency-plan-manage/emergency-plan-managecomponent";
+import {EmergencyDispatchMapComponent} from "./emergency-map/emergency-map.conmponent";
 
 
 const routes: Routes = [
-  // {path: '', redirectTo: 'emergency-home', pathMatch: 'full'},
+  {path: '', redirectTo: 'emergency-home', pathMatch: 'full'},
   {
     path: 'emergency-category',
     component: EmergencyDispatchEmergencyCategoryComponent,
     data: { title: '事件类型', titleI18n: '事件类型' },
   },
-  // {
-  //   path: 'emergency-level',
-  //   component: EmergencyDispatchEmergencyLevelComponent,
-  //   data: { title: '事件等级', titleI18n: '事件类型' },
-  // },
+  {
+    path: 'emergency-level',
+    component: EmergencyDispatchEmergencyLevelComponent,
+    data: { title: '事件等级', titleI18n: '事件类型' },
+  },
   {
     path: 'emergency-big-category',
     component: EmergencyDispatchEmergencyBigCategoryComponent,
@@ -65,36 +71,36 @@ const routes: Routes = [
     component: EmergencyDispatchEmergencyExercise,
     data: { title: '演练计划申报', titleI18n: '演练计划申报' },
   },
-  // {
-  //   path: 'emergency-home',
-  //   component: EmergencyDispatchEmergencyHome,
-  //   data: { title: '首页', titleI18n: '首页' },
-  // },
+  {
+    path: 'emergency-home',
+    component: EmergencyDispatchEmergencyHome,
+    data: { title: '首页', titleI18n: '首页' },
+  },
   {
     path: 'emergency-ongoing-event',
     component: EmergencyDispatchEmergencyOngoingEvent,
     data: { title: '正在进行的事件', titleI18n: '正在进行的事件' },
   },
-  // {
-  //   path: 'emergency-history-report',
-  //   component: EmergencyDispatchEmergencyHistoryReport,
-  //   data: { title: '应急事件历史报表', titleI18n: '应急事件历史报表' },
-  // },
+  {
+    path: 'emergency-history-report',
+    component: EmergencyDispatchEmergencyHistoryReport,
+    data: { title: '应急事件历史报表', titleI18n: '应急事件历史报表' },
+  },
   {
     path: 'emergency-goods-manage',
     component: EmergencyDispatchEmergencyGoodsManage,
     data: { title: '应急物资管理', titleI18n: '应急物资管理' },
   },
-  // {
-  //   path: 'emergency-goods-store',
-  //   component: EmergencyDispatchEmergencyGoodsStore,
-  //   data: { title: '应急物资仓库管理', titleI18n: '应急物资仓库管理' },
-  // },
-  // {
-  //   path: 'emergency-plan-manage',
-  //   component: EmergencyDispatchEmergencyPlanManage,
-  //   data: { title: '应急规章制度管理', titleI18n: '应急规章制度管理' },
-  // },
+  {
+    path: 'emergency-goods-store',
+    component: EmergencyDispatchEmergencyGoodsStore,
+    data: { title: '应急物资仓库管理', titleI18n: '应急物资仓库管理' },
+  },
+  {
+    path: 'emergency-plan-manage',
+    component: EmergencyDispatchEmergencyPlanManage,
+    data: { title: '应急规章制度管理', titleI18n: '应急规章制度管理' },
+  },
   {
     path: 'emergency-point-set',
     component: EmergencyDispatchEmergencyPointSet,
@@ -105,11 +111,11 @@ const routes: Routes = [
     component: EmergencyDispatchEmergencyRoleScopeComponent,
     data: { title: '应急要点反馈权限管理', titleI18n: '应急要点反馈权限管理' },
   },
-  // {
-  //   path: 'emergency-map',
-  //   component: EmergencyDispatchMapComponent,
-  //   data: { title: '应急GIS地图', titleI18n: '应急GIS地图' },
-  // },
+  {
+    path: 'emergency-map',
+    component: EmergencyDispatchMapComponent,
+    data: { title: '应急GIS地图', titleI18n: '应急GIS地图' },
+  },
   {
     path: 'emergency-regulatory-framework',
     component: emergencyDispatchEmergencyRegulatoryFramework,
