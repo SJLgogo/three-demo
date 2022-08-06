@@ -78,6 +78,7 @@ import {EmergencyDispatchEmergencyHistoryReport} from "./emergency-history-repor
 import {EmergencyDispatchEmergencyOngoingEvent} from "./emergency-ongoing-event/emergency-ongoing-event.component";
 import {EmergencyDispatchChooseRoleComponent} from "./emergency-ongoing-event/chooseRole/choose-role.component";
 import {EmergencyDispatchEmergencyHome} from "./emergency-home/emergency-home.component";
+import {SelectPersonModule} from "../../hz/select-person/select-person.module";
 
 
 const COMPONENTS = [
@@ -168,7 +169,7 @@ const COMPONENTS_NOROUNT: any = [
     DownFileModule,
     NzPaginationModule,
     NzSelectModule,
-
+    SelectPersonModule,
   ]
 })
 export class EmergencyDispatchModule { }

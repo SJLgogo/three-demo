@@ -7,6 +7,7 @@ import { LineNetworkService } from '../../service/line-network.service';
 import { DictionaryService } from '../../service/dictionary.service';
 import { STColumn, STComponent, STData } from '@delon/abc/st';
 import {SetupContactSelectComponent} from "../../../../shared/components/contact-select/contact-select.component";
+import {SelectProjectPersonComponent} from "../../../../hz/select-person/select-project-person/select-project-person.component";
 
 @Component({
   selector: 'app-emergency-dispatch-emergency-scope-edit',
@@ -90,72 +91,86 @@ export class EmergencyDispatchEmergencyScopeEditComponent implements AfterViewIn
   }
 
   selectUser(which:any) {
-    //如果编辑窗口、就把对应的人信息赋值到控件中
     let selectedItems:any = [];
-    if (this.i.id != '') {
-      //编辑人员
-      if (which == 1 && this.relevanceScope != null) {
-        this.relevanceScope.map((item:any) => {
-          let obj:any = {};
-          if (item.type == 0) {
-            //是组织
-            obj['id'] = item['thirdId'];
-            obj['category'] = 'organization';
-          } else if (item.type == 1) {
-            //是员工
-            obj['id'] = item['employeeId'];
-            obj['thirdPartyAccountUserId'] = item['thirdId'];
-            obj['category'] = 'employee';
-          }
-          obj['corpId'] = item['corpId'];
-          obj['companyName'] = item['name'].split('_')[0] + '_';
-          obj['name'] = item['name'].split('_')[1];
-          selectedItems.push(obj);
-        });
-      } else if (this.checkScope != null) {
-        let obj = {};
-        this.checkScope.map((item:any) => {
-          let obj:any = {};
-          if (item.type == 0) {
-            //是组织
-            obj['id'] = item['thirdId'];
-            obj['category'] = 'organization';
-          } else if (item.type == 1) {
-            //是员工
-            obj['id'] = item['employeeId'];
-            obj['thirdPartyAccountUserId'] = item['thirdId'];
-            obj['category'] = 'employee';
-          }
-          obj['corpId'] = item['corpId'];
-          obj['companyName'] = item['name'].split('_')[0] + '_';
-          obj['name'] = item['name'].split('_')[1];
-          selectedItems.push(obj);
-        });
-      }
-    }
-    const mode = ['employee', 'organization'];
-    this.modal.createStatic(SetupContactSelectComponent, { selectedItems: selectedItems, mode: mode }).subscribe((res) => {
-      let Employees:any = []; //选中的用户数据
-      console.log('res：', res);
-      res.selectedItems.forEach(function (value:any, index:any, array:any) {
-        if (value.category == 'employee') {
-          Employees.push({
-            name: value.companyName + value.name,
-            corpId: value.corpId,
-            employeeId: value.id,
-            thirdId: value.thirdPartyAccountUserId,
-            type: 1,
-          });
-        } else if (value.category == 'organization') {
-          Employees.push({ name: value.companyName + '_' + value.name, corpId: value.corpId, thirdId: value.id, type: 0 });
-        }
+    this.modal
+      .createStatic(SelectProjectPersonComponent, {
+        chooseMode: 'department', // department organization employee
+        functionName: 'not-clock',
+        selectList: selectedItems
+      })
+      .subscribe(res => {
+        selectedItems = res.selectList;
+        console.log(selectedItems);
       });
-      if (which == 1) {
-        this.relevanceScope = Employees;
-      } else {
-        this.checkScope = Employees;
-      }
-    });
+
+
+
+    //如果编辑窗口、就把对应的人信息赋值到控件中
+    // let selectedItems:any = [];
+    // if (this.i.id != '') {
+    //   //编辑人员
+    //   if (which == 1 && this.relevanceScope != null) {
+    //     this.relevanceScope.map((item:any) => {
+    //       let obj:any = {};
+    //       if (item.type == 0) {
+    //         //是组织
+    //         obj['id'] = item['thirdId'];
+    //         obj['category'] = 'organization';
+    //       } else if (item.type == 1) {
+    //         //是员工
+    //         obj['id'] = item['employeeId'];
+    //         obj['thirdPartyAccountUserId'] = item['thirdId'];
+    //         obj['category'] = 'employee';
+    //       }
+    //       obj['corpId'] = item['corpId'];
+    //       obj['companyName'] = item['name'].split('_')[0] + '_';
+    //       obj['name'] = item['name'].split('_')[1];
+    //       selectedItems.push(obj);
+    //     });
+    //   } else if (this.checkScope != null) {
+    //     let obj = {};
+    //     this.checkScope.map((item:any) => {
+    //       let obj:any = {};
+    //       if (item.type == 0) {
+    //         //是组织
+    //         obj['id'] = item['thirdId'];
+    //         obj['category'] = 'organization';
+    //       } else if (item.type == 1) {
+    //         //是员工
+    //         obj['id'] = item['employeeId'];
+    //         obj['thirdPartyAccountUserId'] = item['thirdId'];
+    //         obj['category'] = 'employee';
+    //       }
+    //       obj['corpId'] = item['corpId'];
+    //       obj['companyName'] = item['name'].split('_')[0] + '_';
+    //       obj['name'] = item['name'].split('_')[1];
+    //       selectedItems.push(obj);
+    //     });
+    //   }
+    // }
+    // const mode = ['employee', 'organization'];
+    // this.modal.createStatic(SetupContactSelectComponent, { selectedItems: selectedItems, mode: mode }).subscribe((res) => {
+    //   let Employees:any = []; //选中的用户数据
+    //   console.log('res：', res);
+    //   res.selectedItems.forEach(function (value:any, index:any, array:any) {
+    //     if (value.category == 'employee') {
+    //       Employees.push({
+    //         name: value.companyName + value.name,
+    //         corpId: value.corpId,
+    //         employeeId: value.id,
+    //         thirdId: value.thirdPartyAccountUserId,
+    //         type: 1,
+    //       });
+    //     } else if (value.category == 'organization') {
+    //       Employees.push({ name: value.companyName + '_' + value.name, corpId: value.corpId, thirdId: value.id, type: 0 });
+    //     }
+    //   });
+    //   if (which == 1) {
+    //     this.relevanceScope = Employees;
+    //   } else {
+    //     this.checkScope = Employees;
+    //   }
+    // });
   }
 
   save(value: any):any {

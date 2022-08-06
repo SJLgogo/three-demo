@@ -1353,7 +1353,7 @@ export class EmergencyDispatchEmergencyOngoingEvent extends Base implements OnIn
   }
 
   getLocalStorage() {
-    const value = JSON.parse(<string>window.localStorage.getItem('employee'));
+    const value = JSON.parse(<string>window.localStorage.getItem('_token'));
     this.fullViewQuery.avatar = value.avatar;
     this.fullViewQuery.name = value.employeeName;
     this.fullViewQuery.thirdId = value.thirdPartyAccountUserId;
