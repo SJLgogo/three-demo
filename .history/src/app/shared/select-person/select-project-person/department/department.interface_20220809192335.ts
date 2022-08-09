@@ -20,6 +20,8 @@ interface Person extends CommonSelect {
   corpId: string,
   projectId: string,
   projectName: string
+  companyId: string
+  companyName: string
 }
 
 interface Organization extends CommonSelect {
@@ -32,8 +34,7 @@ interface CommonSelect {
   category: string,
   id: string,
   name: string,
-  companyId: string
-  companyName: string
+  company
 }
 
 type selected = Person | Organization | Department
