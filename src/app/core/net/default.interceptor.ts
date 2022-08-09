@@ -206,7 +206,7 @@ export class DefaultInterceptor implements HttpInterceptor {
         }
         break;
       case 401:
-        console.log(401,this.refreshTokenEnabled,this.refreshTokenType);
+        console.log(401, this.refreshTokenEnabled, this.refreshTokenType);
         if (this.refreshTokenEnabled && this.refreshTokenType === 're-request') {
           return this.tryRefreshToken(ev, req, next);
         }
@@ -250,8 +250,13 @@ export class DefaultInterceptor implements HttpInterceptor {
       const { baseUrl } = environment.api;
       url = baseUrl + (baseUrl.endsWith('/') && url.startsWith('/') ? url.substring(1) : url);
     }
+    const headers = this.getAdditionalHeaders(req.headers);
+    //配置中指定了版本则header头中添加版本信息
+    if (environment.api['version']) {
+      headers['version'] = environment.api['version'];
+    }
 
-    const newReq = req.clone({ url, setHeaders: this.getAdditionalHeaders(req.headers) });
+    const newReq = req.clone({ url, setHeaders: headers });
     return next.handle(newReq).pipe(
       mergeMap(ev => {
         // 允许统一对请求错误处理

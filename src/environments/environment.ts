@@ -12,7 +12,8 @@ export const environment = {
   api: {
     baseUrl: './api/',
     refreshTokenEnabled: true,
-    refreshTokenType: 'auth-refresh'
+    refreshTokenType: 'auth-refresh',
+    version: 'dev'
   },
   modules: [DelonMockModule.forRoot({ data: MOCKDATA })]
 } as Environment;

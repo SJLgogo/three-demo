@@ -11,6 +11,7 @@ module.exports = {
    */
   '/api': {
     target: 'http://pub.huiztech.cn:10168/',
+    // target: 'http://127.0.0.1:10198/',
     secure: false, // Ignore invalid SSL certificates
     changeOrigin: true,
     logLevel: 'debug',

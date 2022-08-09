@@ -3,4 +3,12 @@
     <button (click)="add()" nz-button nzType="primary">添加字典类型</button>
   </ng-template>
 </page-header>
-<st #st [data]="url" [columns]="columns"></st>
+<nz-card>
+  <nz-row class="justify-content-between">
+    <sf mode="search" [schema]="searchSchema" (formSubmit)="st.reset($event)" (formReset)="st.reset($event)"></sf>
+    <div>
+      <button (click)="refresh()" nz-button nzShape="circle" nzType="primary"><i nz-icon nzType="reload"></i></button>
+    </div>
+  </nz-row>
+  <st #st [data]="url" [columns]="columns"></st>
+</nz-card>
