@@ -31,7 +31,7 @@ interface CommonSelect {
   id: string;
   name: string;
   companyId?: string;
-  companyName?: string;
+  companyName: string;
 }
 
 type selected = Person | Organization | Department;

@@ -30,8 +30,8 @@ interface CommonSelect {
   category: string;
   id: string;
   name: string;
-  companyId?: string;
-  companyName?: string;
+  companyId: string;
+  companyName: string;
 }
 
 type selected = Person | Organization | Department;
