@@ -60,7 +60,14 @@
           "text": "system.dict.data",
           "i18n": "system.dict.data",
           "icon": "anticon-cloud",
-          "link": "/dict/data",
+          "link": "/system/dict-type",
+          "reuse": false
+        },
+        {
+          "text": "system.operation.log",
+          "i18n": "system.operation.log",
+          "icon": "anticon-cloud",
+          "link": "/system/operation-log",
           "reuse": false
         },
         {

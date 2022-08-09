@@ -4,13 +4,22 @@ import { _HttpClient, ModalHelper } from '@delon/theme';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
 import { DictSwaggerEditComponent } from '../swagger-edit/swagger-edit.component';
+import { SFSchema } from '@delon/form';
 
 @Component({
-  selector: 'app-dict-swagger-list',
+  selector: 'app-dict-type-swagger-list',
   templateUrl: './swagger-list.component.html'
 })
 export class DictSwaggerListComponent {
-  url = '/service/dictionary/dict-data/page-all';
+  url = '/service/dictionary/dict-type-data/page-all';
+  searchSchema: SFSchema = {
+    properties: {
+      no: {
+        type: 'string',
+        title: '编号'
+      }
+    }
+  };
   columns: STColumn[] = [
     {
       title: '编号',
@@ -42,6 +51,10 @@ export class DictSwaggerListComponent {
   @ViewChild('st') private readonly st!: STComponent;
 
   constructor(private http: _HttpClient, private msg: NzMessageService, private modal: ModalHelper) {}
+
+  refresh(): void {
+    this.st.reload();
+  }
 
   add(): void {
     this.modal.createStatic(DictSwaggerEditComponent, { i: { id: '' } }, { size: 600 }).subscribe(() => this.st.reload());
