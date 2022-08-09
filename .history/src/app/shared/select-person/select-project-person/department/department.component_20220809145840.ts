@@ -19,8 +19,6 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
   @Input()
   pageSize: variable<number>;
   @Input()
-  singleChoice: boolean = false;
-  @Input()
   selectList: selected[] = [];
   @Output()
   selectListChange = new EventEmitter();
@@ -83,6 +81,7 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
       this.http.post(`/org/service/organization/admin/account/global-search`, params).subscribe((res: any) => {
         if (res.success) {
           this.panels = res.data;
+          console.log(this.panels);
         }
         this.orgTreeLoading = false;
       });
@@ -113,10 +112,6 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
   }
 
   treeNodeClick(node: NzTreeNode): void {
-    if (this.singleChoice && this.selected.size >= 1) {
-      return;
-    }
-
     switch (this.chooseMode) {
       case 'employee':
         this.addPerson(node);
@@ -131,9 +126,6 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
   }
 
   optSearchResult(value: any) {
-    if (this.singleChoice && this.selected.size >= 1) {
-      return;
-    }
     this.addSelectedPersonList(
       value.type,
       value.loginUserId.toString(),
@@ -170,6 +162,7 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
     this.selectList = [];
     map.forEach((item: T) => this.selectList.push(item as unknown as Person as Organization));
     Promise.all([this.emitSelectFn(), this.cacheSelectList()]);
+    console.log(this.selectList);
   }
 
   receiveDeleteId(): void {
@@ -262,9 +255,6 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
   }
 
   commonDepartmentsClick(item: selected, idx: number): void {
-    if (this.singleChoice && this.selected.size >= 1) {
-      return;
-    }
     this.commonDepartments[idx].selected = true;
     this.addSelectedOrganizationList('organization', item.id as string, item.name as string);
   }

@@ -113,10 +113,6 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
   }
 
   treeNodeClick(node: NzTreeNode): void {
-    if (this.singleChoice && this.selected.size >= 1) {
-      return;
-    }
-
     switch (this.chooseMode) {
       case 'employee':
         this.addPerson(node);
@@ -131,9 +127,6 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
   }
 
   optSearchResult(value: any) {
-    if (this.singleChoice && this.selected.size >= 1) {
-      return;
-    }
     this.addSelectedPersonList(
       value.type,
       value.loginUserId.toString(),
@@ -262,9 +255,6 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
   }
 
   commonDepartmentsClick(item: selected, idx: number): void {
-    if (this.singleChoice && this.selected.size >= 1) {
-      return;
-    }
     this.commonDepartments[idx].selected = true;
     this.addSelectedOrganizationList('organization', item.id as string, item.name as string);
   }

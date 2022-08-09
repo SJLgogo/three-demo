@@ -50,7 +50,7 @@ export class UserManagementComponent implements OnInit {
       .createStatic(SelectProjectPersonComponent, {
         chooseMode: 'employee', // department organization employee
         functionName: 'not-clock',
-        singleChoice:true
+        singleChoice
       })
       .subscribe(res => {
         console.log(res);

@@ -37,7 +37,6 @@ import { SetupRoutingModule } from './setup-routing.module';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { UserManagementComponent } from './user-management/user-management.component';
-import { SelectPersonModule } from 'src/app/shared/select-person/select-person.module';
 
 const COMPONENTS: Array<Type<void>> = [
   SetupIndexComponent,

@@ -3,7 +3,6 @@ import { STColumn, STComponent } from '@delon/abc/st';
 import { ModalHelper } from '@delon/theme';
 import { OrganizationService } from '../../../api/dict/organization-management/organization.service.ts';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { SelectProjectPersonComponent } from 'src/app/shared/select-person/select-project-person/select-project-person.component';
 
 @Component({
   selector: 'app-user-management',
@@ -49,11 +48,8 @@ export class UserManagementComponent implements OnInit {
     this.modal
       .createStatic(SelectProjectPersonComponent, {
         chooseMode: 'employee', // department organization employee
-        functionName: 'not-clock',
-        singleChoice:true
+        functionName: 'not-clock'
       })
-      .subscribe(res => {
-        console.log(res);
-      });
+      .subscribe(res => {});
   }
 }

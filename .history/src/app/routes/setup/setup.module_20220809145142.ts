@@ -32,12 +32,11 @@ import { SystemContactPostEditComponent } from './organization/post/post-edit.co
 import { SystemContactOrgEditComponent } from './organization/org/org-edit.component';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzTreeModule } from 'ng-zorro-antd/tree';
-import { NzCollapseModule } from 'ng-zorro-antd/collapse';
-import { SetupRoutingModule } from './setup-routing.module';
-import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
-import { NzIconModule } from 'ng-zorro-antd/icon';
-import { UserManagementComponent } from './user-management/user-management.component';
-import { SelectPersonModule } from 'src/app/shared/select-person/select-person.module';
+import {NzCollapseModule} from "ng-zorro-antd/collapse";
+import {SetupRoutingModule} from "./setup-routing.module";
+import {NzDropDownModule} from "ng-zorro-antd/dropdown";
+import {NzIconModule} from "ng-zorro-antd/icon";
+import {UserManagementComponent} from "./user-management/user-management.component";
 
 const COMPONENTS: Array<Type<void>> = [
   SetupIndexComponent,
@@ -70,18 +69,7 @@ const COMPONENTS: Array<Type<void>> = [
 ];
 
 @NgModule({
-  imports: [
-    SharedModule,
-    NzDropDownModule,
-    NzIconModule,
-    SystemRoutingModule,
-    NgJsonEditorModule,
-    NzEmptyModule,
-    NzTreeModule,
-    NzCollapseModule,
-    SetupRoutingModule,
-    SelectPersonModule
-  ],
+  imports: [SharedModule, NzDropDownModule ,NzIconModule ,SystemRoutingModule, NgJsonEditorModule, NzEmptyModule, NzTreeModule,NzCollapseModule,SetupRoutingModule,SelectPersonModule],
   declarations: COMPONENTS,
   providers: []
 })
