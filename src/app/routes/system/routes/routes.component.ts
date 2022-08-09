@@ -27,6 +27,16 @@ export class SystemRoutesComponent implements OnInit {
           width: 300,
           placeholder: '请输入serviceId或者备注'
         }
+      },
+      dict: {
+        type: 'string',
+        title: '字典数据',
+        ui: {
+          placeholder: '请选择请假类型',
+          widget: 'dict',
+          typeValue: 'system_education',
+          loadingTip: 'loading...'
+        }
       }
     }
   };
