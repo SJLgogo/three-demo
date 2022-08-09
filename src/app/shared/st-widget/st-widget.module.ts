@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 
-// import { STWidgetRegistry } from '@delon/abc/st';
 import { SharedModule } from '../shared.module';
+import { STWidgetRegistry } from '@delon/abc/st';
+import { StEllipsisComponent } from '../components/st-ellipsis/st-ellipsis.component';
 
-export const STWIDGET_COMPONENTS = [];
+export const STWIDGET_COMPONENTS = [StEllipsisComponent];
 
 @NgModule({
   declarations: STWIDGET_COMPONENTS,
@@ -11,7 +12,7 @@ export const STWIDGET_COMPONENTS = [];
   exports: [...STWIDGET_COMPONENTS]
 })
 export class STWidgetModule {
-  // constructor(widgetRegistry: STWidgetRegistry) {
-  //   widgetRegistry.register(STImgWidget.KEY, STImgWidget);
-  // }
+  constructor(widgetRegistry: STWidgetRegistry) {
+    widgetRegistry.register(StEllipsisComponent.KEY, StEllipsisComponent);
+  }
 }

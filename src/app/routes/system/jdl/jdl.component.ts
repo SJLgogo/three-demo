@@ -2,9 +2,6 @@ import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { STColumn, STComponent } from '@delon/abc/st';
 import { SFSchema } from '@delon/form';
 import { _HttpClient, ModalHelper } from '@delon/theme';
-
-import { DepartmentResourceService } from '../../../api/archive';
-import { SystemDictDataService } from '../../../api/dict';
 import { SystemJdlEditComponent } from './edit/edit.component';
 
 @Component({
@@ -43,14 +40,13 @@ export class SystemJdlComponent {
     }
   ];
 
-  constructor(
-    private http: _HttpClient,
-    private modal: ModalHelper,
-    private dictDataService: SystemDictDataService,
-    private departmentResourceService: DepartmentResourceService
-  ) {}
+  constructor(private http: _HttpClient, private modal: ModalHelper) {}
 
   add(): void {
     this.modal.createStatic(SystemJdlEditComponent, { i: { id: '' } }, { size: 600 }).subscribe(() => this.st.reload());
+  }
+
+  refresh(): void {
+    this.st.reload();
   }
 }

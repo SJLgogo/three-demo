@@ -161,5 +161,6 @@
   "system.schedule": "定时任务管理",
   "system.apiDoc": "接口文档管理",
   "system.dict.data": "字典数据管理",
+  "system.operation.log": "操作日志",
   "home": "首页"
 }

@@ -7,8 +7,23 @@ import { SystemJdlComponent } from './jdl/jdl.component';
 import { SystemRoutesEditComponent } from './routes/edit/edit.component';
 import { SystemRoutesComponent } from './routes/routes.component';
 import { SystemRoutingModule } from './system-routing.module';
+import { SystemDictTypeComponent } from './dict-type/type.component';
+import { SystemTypeEditComponent } from './dict-type/edit/edit.component';
+import { SystemDictDataComponent } from './dict-data/dict-data.component';
+import { SystemDictDataEditComponent } from './dict-data/edit/edit.component';
+import { SystemOperationLogComponent } from './operation-log/operation-log.component';
 
-const COMPONENTS: Array<Type<void>> = [SystemRoutesComponent, SystemRoutesEditComponent, SystemJdlComponent, SystemJdlEditComponent];
+const COMPONENTS: Array<Type<void>> = [
+  SystemRoutesComponent,
+  SystemRoutesEditComponent,
+  SystemJdlComponent,
+  SystemJdlEditComponent,
+  SystemDictTypeComponent,
+  SystemTypeEditComponent,
+  SystemDictDataComponent,
+  SystemDictDataEditComponent
+,
+  SystemOperationLogComponent];
 
 @NgModule({
   imports: [SharedModule, SystemRoutingModule, NgJsonEditorModule],
