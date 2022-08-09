@@ -19,9 +19,9 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
   @Input()
   pageSize: variable<number>;
   @Input()
-  singleChoice: boolean = false;
-  @Input()
   selectList: selected[] = [];
+  @Input()
+  singleChoice: boolean = false;
   @Output()
   selectListChange = new EventEmitter();
 
@@ -136,11 +136,13 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
     }
     this.addSelectedPersonList(
       value.type,
-      value.loginUserId.toString(),
+      value.id.toString(),
       value.name,
       '',
       value.projectId,
       value.projectName,
+      value.companyId,
+      value.companyName,
       value.thirdPartyAccountUserId
     );
   }
@@ -152,6 +154,8 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
     corpId: string,
     projectId: string,
     projectName: string,
+    companyId: string,
+    companyName: string,
     thirdPartyAccountUserId: variable<string>
   ) {
     const person: Person = {
@@ -160,7 +164,9 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
       corpId: corpId,
       projectId: projectId,
       projectName: projectName,
-      category: category
+      category: category,
+      companyId: companyId,
+      companyName: companyName
     };
     this.selected.set(id, person);
     this.getSelectedList<Person>(this.selected as Map<string, Person>);
@@ -180,11 +186,13 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
     });
   }
 
-  addSelectedOrganizationList(category: string, id: string, name: string): void {
+  addSelectedOrganizationList(category: string, id: string, name: string, companyId: string, companyName: string): void {
     const organization: Organization = {
       name: name,
       id: id,
-      category: category
+      category: category,
+      companyId: companyId,
+      companyName: companyName
     };
     this.selected.set(id, organization);
     this.getSelectedList<Organization>(this.selected as Map<string, Organization>);
@@ -195,7 +203,13 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
       this.addPerson(node);
     }
     if (node.origin['category'] === 'organization') {
-      this.addSelectedOrganizationList(node.origin!['category'], node.key, node.title);
+      this.addSelectedOrganizationList(
+        node.origin!['category'],
+        node.key,
+        node.title,
+        node.origin['companyId'],
+        node.origin['companyName']
+      );
     }
   }
 
@@ -216,6 +230,8 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
         node.origin['corpId'],
         node.parentNode!['key'],
         node.parentNode!['title'],
+        node.origin['companyId'],
+        node.origin['companyName'],
         node.origin['thirdPartyAccountUserId']
       );
     }
@@ -223,7 +239,13 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
 
   addOrganization(node: NzTreeNode): void {
     if (this.chooseMode === node.origin['category'] || this.chooseMode === 'department') {
-      this.addSelectedOrganizationList(node.origin!['category'], node.key, node.title);
+      this.addSelectedOrganizationList(
+        node.origin!['category'],
+        node.key,
+        node.title,
+        node.origin['companyId'],
+        node.origin['companyName']
+      );
     }
   }
 
@@ -234,9 +256,11 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
       this.http.post('/org/service/organization/SelectOrgTotalController/findByAppIdAndFunctionId', postData).subscribe(res => {
         this.commonDepartments = res.data.map((item: any) => {
           return {
-            id: item?.id,
+            id: item.id,
             category: 'organization',
-            name: item?.name,
+            name: item.name,
+            companyId: item.companyId,
+            companyName: item.companyName,
             selected: false
           };
         });
@@ -266,7 +290,13 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
       return;
     }
     this.commonDepartments[idx].selected = true;
-    this.addSelectedOrganizationList('organization', item.id as string, item.name as string);
+    this.addSelectedOrganizationList(
+      'organization',
+      item.id as string,
+      item.name as string,
+      item.companyId as string,
+      item.companyName as string
+    );
   }
 
   ngOnDestroy(): void {
