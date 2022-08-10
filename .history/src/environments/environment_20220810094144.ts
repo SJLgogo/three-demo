@@ -16,7 +16,7 @@ export const environment = {
     version: 'dev'
   },
   SERVER_URL: '',
-  RESOURCE_SERVER_URL: '',
+  RESOURCE_SERVER_URL: '';
   modules: [DelonMockModule.forRoot({ data: MOCKDATA })]
 } as Environment;
 

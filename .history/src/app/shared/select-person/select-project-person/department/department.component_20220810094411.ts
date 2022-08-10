@@ -136,7 +136,7 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
     }
     this.addSelectedPersonList(
       value.type,
-      value.loginUserId.toString(),
+      value.id.toString(),
       value.name,
       '',
       value.projectId,
