@@ -9,5 +9,5 @@
       <button (click)="refresh()" nz-button nzShape="circle" nzType="primary"><i nz-icon nzType="reload"></i></button>
     </div>
   </nz-row>
-  <st #st [data]="url" [columns]="columns" bordered></st>
+  <st #st [data]="url" [scroll]="{x: '1600px'}" [columns]="columns" size="middle" bordered></st>
 </nz-card>

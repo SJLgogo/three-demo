@@ -45,7 +45,6 @@ export class SystemRoutesComponent implements OnInit {
     { title: '序号', type: 'no' },
     { title: '服务id', index: 'serviceId' },
     { title: '状态', index: 'enable', type: 'badge', badge: BADGE },
-    { title: 'openApi', index: 'openApi', type: 'badge', badge: BADGE },
     { title: 'uri', index: 'uri' },
     { title: '排序', index: 'sort' },
     { title: '备注', type: '', index: 'comment' },
