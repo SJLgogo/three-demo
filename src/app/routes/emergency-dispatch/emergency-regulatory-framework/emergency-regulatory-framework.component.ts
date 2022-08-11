@@ -160,30 +160,25 @@ export class emergencyDispatchEmergencyRegulatoryFramework extends Base implemen
         this.showModalLabel = '规章制度类型';
         this.dto.level = 1;
         this.dto.createdDate = dateTimePickerUtil.format(new Date(), 'yyyy-MM-dd HH:mm:ss');
-        this.getLocalStorage();
       } else if (data.level == 0) {
         this.showModalLabel = '二级分类';
         this.dto.level = 2;
         this.dto.parentId = data.id;
         this.dto.parentName = data.name;
         this.dto.createdDate = dateTimePickerUtil.format(new Date(), 'yyyy-MM-dd HH:mm:ss');
-        this.getLocalStorage();
       } else if (data.level == 1) {
         this.showModalLabel = '三级分类';
         this.dto.level = 3;
         this.dto.parentId = data.id;
         this.dto.parentName = data.name;
         this.dto.createdDate = dateTimePickerUtil.format(new Date(), 'yyyy-MM-dd HH:mm:ss');
-        this.getLocalStorage();
       }
     } else if (num == 1) {
       this.title = '编辑';
       if (data.level == 0) {
         this.showModalLabel = '规章制度类型';
-        this.getLocalStorage();
       } else if (data.level == 1) {
         this.showModalLabel = '二级分类';
-        this.getLocalStorage();
       } else if (data.level == 2) {
         this.showModalLabel = '三级分类';
       }
@@ -318,12 +313,6 @@ export class emergencyDispatchEmergencyRegulatoryFramework extends Base implemen
         this.findAllData();
       }
     });
-  }
-
-  getLocalStorage() {
-    let value = JSON.parse(<string>window.localStorage.getItem('employee'));
-    this.dto.lastModifiedBy = value.thirdPartyAccountUserId;
-    this.dto.createdBy = value.employeeName;
   }
 
   /* 表单重置 */

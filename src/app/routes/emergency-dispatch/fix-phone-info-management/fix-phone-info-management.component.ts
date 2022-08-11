@@ -7,6 +7,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 
 import { Base } from '../../../common/base';
 import { FixPhoneInfoManagementEditComponent } from './edit/edit.component';
+import {dateTimePickerUtil} from "@delon/util";
 
 @Component({
   selector: 'app-fix-phone-info-management',
@@ -27,7 +28,10 @@ export class FixPhoneInfoManagementComponent extends Base implements OnInit {
     { title: '固话名称', index: 'name' },
     { title: '固话号码', index: 'telephoneNum' },
     { title: '更新人', index: 'employeeName' },
-    { title: '更新时间', index: 'lastModifiedDate' },
+    { title: '更新时间', index: 'updateTime',format(item){
+        return dateTimePickerUtil.format(new Date(item.updateTime), 'yyyy-MM-dd HH:mm:ss');
+      }
+    },
     {
       title: '操作',
       buttons: [

@@ -53,14 +53,16 @@
     </tbody>
   </nz-table>
   <nz-modal [(nzVisible)]="isVisible" nzTitle="{{ title }}" nzOkText="保存" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk(title)">
-    <form nz-form [formGroup]="validateForm">
-      <nz-form-item>
-        <nz-form-label [nzSpan]="6" nzRequired nzFor="name">{{ showModalLabel }}</nz-form-label>
-        <nz-form-control [nzSpan]="8" nzErrorTip="必填项">
-          <input type="text" nz-input formControlName="name" placeholder="请输入" [(ngModel)]="dto.name" />
-        </nz-form-control>
-      </nz-form-item>
-    </form>
+    <ng-container *nzModalContent>
+      <form nz-form [formGroup]="validateForm">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="6" nzRequired nzFor="name">{{ showModalLabel }}</nz-form-label>
+          <nz-form-control [nzSpan]="8" nzErrorTip="必填项">
+            <input type="text" nz-input formControlName="name" placeholder="请输入" [(ngModel)]="dto.name" />
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+    </ng-container>
   </nz-modal>
 </nz-card>
 
