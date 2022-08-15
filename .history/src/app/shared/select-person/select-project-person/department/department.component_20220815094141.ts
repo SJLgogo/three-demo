@@ -139,8 +139,8 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
       value.loginUserId.toString(),
       value.name,
       '',
-      value.departmentId,
-      value.departmentName,
+      value.projectId,
+      value.projectName,
       value.companyId,
       value.companyName,
       value.thirdPartyAccountUserId
@@ -152,8 +152,8 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
     id: string,
     name: string,
     corpId: string,
-    departmentId: string,
-    departmentName: string,
+    projectId: string,
+    projectName: string,
     companyId: string,
     companyName: string,
     thirdPartyAccountUserId: variable<string>
@@ -162,8 +162,8 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
       name: name,
       id: id,
       corpId: corpId,
-      departmentId: departmentId,
-      departmentName: departmentName,
+      projectId: projectId,
+      projectName: projectName,
       category: category,
       companyId: companyId,
       companyName: companyName
@@ -289,8 +289,8 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
     if (this.singleChoice && this.selected.size >= 1) {
       return;
     }
-    if (this.chooseMode != 'department') {
-      return;
+    if(){
+      
     }
     this.commonDepartments[idx].selected = true;
     this.addSelectedOrganizationList(

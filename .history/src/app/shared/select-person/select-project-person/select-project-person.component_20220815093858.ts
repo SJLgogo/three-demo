@@ -38,6 +38,7 @@ export class SelectProjectPersonComponent implements OnInit {
 
   del(idx: number, node: selected): void {
     this.rxjsChangeService.emit({ category: node.category, id: node.id });
+    // this.selectList.splice(idx, 1);
   }
 
   clearCatch(): void {
