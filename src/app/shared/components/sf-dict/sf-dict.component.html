@@ -6,6 +6,7 @@
     [nzMode]="mode"
     [nzPlaceHolder]="placeholder"
   >
-    <nz-option *ngFor="let item of selectSources" [nzLabel]="item.label" [nzValue]="item.value"></nz-option>
+    <nz-option *ngFor="let item of selectSources" [nzLabel]="item.label"
+               [nzValue]="item.typeValue+':'+item.value"></nz-option>
   </nz-select>
 </sf-item-wrap>
