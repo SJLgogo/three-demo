@@ -31,9 +31,6 @@ const routes: Routes = [
       { path: 'extras', loadChildren: () => import('./extras/extras.module').then(m => m.ExtrasModule) },
       { path: 'pro', loadChildren: () => import('./pro/pro.module').then(m => m.ProModule) },
       { path: 'system', loadChildren: () => import('./system/system.module').then(m => m.SystemModule) },
-      { path: 'dict', loadChildren: () => import('./dict/dict.module').then(m => m.DictModule) },
-      { path: 'setup', loadChildren: () => import('./setup/setup.module').then((m) => m.SetupModule) },
-      { path: 'emergency-dispatch', loadChildren: () => import('./emergency-dispatch/emergency-dispatch.module').then((m) => m.EmergencyDispatchModule) },
       { path: 'dict-type', loadChildren: () => import('./dict/dict.module').then(m => m.DictModule) },
       { path: 'setup', loadChildren: () => import('./setup/setup.module').then(m => m.SetupModule) }
     ]
