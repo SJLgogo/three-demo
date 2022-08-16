@@ -4,7 +4,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { DictSwaggerEditComponent } from './swagger-edit/swagger-edit.component';
 import { DictSwaggerListComponent } from './swagger-list/swagger-list.component';
 import {OrganizationManagementComponent} from "./organization-management/organization-management.component";
-import {SelectPersonModule} from "../../hz/select-person/select-person.module";
 
 const routes: Routes = [
   { path: 'data', component: DictSwaggerListComponent },
@@ -15,7 +14,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes),SelectPersonModule],
+  imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
 export class DictRoutingModule {}

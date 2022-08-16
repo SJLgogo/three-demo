@@ -17,7 +17,7 @@ import { of } from 'rxjs';
 import { environment } from '@env/environment';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import {SetupContactSelectComponent} from "../../../../shared/components/contact-select/contact-select.component";
+// import {SetupContactSelectComponent} from "../../../../shared/components/contact-select/contact-select.component";
 
 
 @Component({
@@ -556,25 +556,25 @@ export class EmergencyDispatchEmergencyWatchOverManagementEditComponent implemen
 
     const mode = ['employee'];
     let multiple = '';
-    this.modal
-      .createStatic(SetupContactSelectComponent, { selectedItems: this.selectedItems, mode: mode, isSingleSelect: this.isSingleSelect })
-      .subscribe((res) => {
-        let tagEmployees:any = []; //选中的用户数据
-        let tagEmployeeIds:any = []; //选中的用户id
-        let tagOrganizationIds = []; //选中的部门id
-        console.log('res：', res);
-        res.selectedItems.forEach(function (value:any, index:any, array:any) {
-          tagEmployees.push({ title: value.name, key: value.thirdPartyAccountUserId, category: value.category, icon: value.icon });
-          tagEmployeeIds.push(value.thirdPartyAccountUserId);
-        });
-
-        console.log('tagEmployees:', tagEmployees);
-        this.i.selectEmployeeIds = tagEmployeeIds;
-        this.areaSchemaJson.properties.selectEmployeeIds.enum = tagEmployees;
-        this.sf.refreshSchema();
-        Object.assign(this.i, this.sf.value);
-        // this.sf.refreshSchema();
-      });
+    // this.modal
+    //   .createStatic(SetupContactSelectComponent, { selectedItems: this.selectedItems, mode: mode, isSingleSelect: this.isSingleSelect })
+    //   .subscribe((res) => {
+    //     let tagEmployees:any = []; //选中的用户数据
+    //     let tagEmployeeIds:any = []; //选中的用户id
+    //     let tagOrganizationIds = []; //选中的部门id
+    //     console.log('res：', res);
+    //     res.selectedItems.forEach(function (value:any, index:any, array:any) {
+    //       tagEmployees.push({ title: value.name, key: value.thirdPartyAccountUserId, category: value.category, icon: value.icon });
+    //       tagEmployeeIds.push(value.thirdPartyAccountUserId);
+    //     });
+    //
+    //     console.log('tagEmployees:', tagEmployees);
+    //     this.i.selectEmployeeIds = tagEmployeeIds;
+    //     this.areaSchemaJson.properties.selectEmployeeIds.enum = tagEmployees;
+    //     this.sf.refreshSchema();
+    //     Object.assign(this.i, this.sf.value);
+    //     // this.sf.refreshSchema();
+    //   });
   }
 
   save(value: any):any {

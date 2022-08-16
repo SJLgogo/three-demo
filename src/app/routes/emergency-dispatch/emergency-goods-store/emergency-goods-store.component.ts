@@ -6,7 +6,6 @@ import { SFComponent, SFSchema, SFSelectWidgetSchema, SFTreeSelectWidgetSchema }
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { EmergencyDispatchGoodsListComponent } from './goods-list/view.component';
 import {Base} from "../../../common/base";
-import {SetupContactSelectComponent} from "../../../shared/components/contact-select/contact-select.component";
 interface ItemData {
   id: string;
   name: string;
@@ -210,20 +209,20 @@ export class EmergencyDispatchEmergencyGoodsStore extends Base implements OnInit
   selectedItems:any  = [];
   addUser() {
     const mode = ['employee'];
-    this.modal
-      .createStatic(SetupContactSelectComponent, { selectedItems: this.selectedItems, mode: mode, isSingleSelect: true })
-      .subscribe((res) => {
-        this.selectedItems = res.selectedItems;
-        this.keepers = res.selectedItems.map((element:any) => {
-          return {
-            avatar: element.icon,
-            name: element.name,
-            employeeName: element.name,
-            employeeId: element.thirdPartyAccountUserId,
-          };
-        });
-        console.log(this.keepers);
-      });
+    // this.modal
+    //   .createStatic(SetupContactSelectComponent, { selectedItems: this.selectedItems, mode: mode, isSingleSelect: true })
+    //   .subscribe((res) => {
+    //     this.selectedItems = res.selectedItems;
+    //     this.keepers = res.selectedItems.map((element:any) => {
+    //       return {
+    //         avatar: element.icon,
+    //         name: element.name,
+    //         employeeName: element.name,
+    //         employeeId: element.thirdPartyAccountUserId,
+    //       };
+    //     });
+    //     console.log(this.keepers);
+    //   });
   }
 
   addNewStore() {

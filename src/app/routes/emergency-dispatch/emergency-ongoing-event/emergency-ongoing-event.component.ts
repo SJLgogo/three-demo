@@ -10,7 +10,7 @@ import {NzUploadFile} from 'ng-zorro-antd/upload';
 // import {ModalTable} from '../components/modal-table/modal-table.component';
 import {EmergencyDispatchChooseRoleComponent} from './chooseRole/choose-role.component';
 import {Base} from "../../../common/base";
-import {SetupContactSelectComponent} from "../../../shared/components/contact-select/contact-select.component";
+import {environment} from "@env/environment";
 
 // import {FileSaverService} from "ngx-filesaver";
 
@@ -44,6 +44,8 @@ export class EmergencyDispatchEmergencyOngoingEvent extends Base implements OnIn
   fullPushStatus = 'false'; // 事件相关人员重新通知页面事件大类单选按钮默认选项
   checked = true; // 是否需要与初次通知人员去重默认选中
   drawerWidth = 660; // 子抽屉页面宽度
+  isAssess: boolean = false; // 预评估抽屉控制
+  showFooter = 0;
   pageChoose = 0;
   listIndex = 0;
   emergencyListIndex = 0;
@@ -102,6 +104,7 @@ export class EmergencyDispatchEmergencyOngoingEvent extends Base implements OnIn
   thirdId: any;
   getPartyList: any = {};
   fileList: NzUploadFile[] = []; // 上传文件列表
+  fileList1: NzUploadFile[] = []; // 上传文件列表
   uploading = false;
    customRequests: any = {
     allInBody: true,
@@ -304,7 +307,27 @@ export class EmergencyDispatchEmergencyOngoingEvent extends Base implements OnIn
   cilckNumber: any;
   childCilckNumber: any;
   modalTableParams = {};
-
+  eventAssess = {
+    id: '',
+    eventId: '',
+    concludeAssess: '',
+    suggestions: '',
+    employeeName: JSON.parse(<string>window.localStorage.getItem('_token')).loginUserName,
+    employeeId: JSON.parse(<string>window.localStorage.getItem('_token')).loginUserId,
+    lastModifiedDate: ''
+  }; // 总结评估数据
+  eventPreAssess = {
+    id: '',
+    eventId: '',
+    disposalInstructions: '',
+    suggestions: '',
+    resources: '',
+    score: '',
+    employeeName: JSON.parse(<string>window.localStorage.getItem('_token')).loginUserName,
+    employeeId: JSON.parse(<string>window.localStorage.getItem('_token')).loginUserId,
+    lastModifiedDate: '',
+    resourcesNames: '',
+  }; // 预评估数据
   @ViewChild('sf', { static: false }) sf!: SFComponent;
   searchSchema: SFSchema = {
     properties: {
@@ -1308,22 +1331,22 @@ export class EmergencyDispatchEmergencyOngoingEvent extends Base implements OnIn
   addCheckUser() {
     if (this.isShowReNotice) {
       const mode = ['employee'];
-      this.modal.createStatic(SetupContactSelectComponent, {
-        selectedItems: [],
-        mode,
-        isSingleSelect: true,
-      }).subscribe((res) => {
-        this.submitEventVO.checkUsers = res.selectedItems.map((element:any) => {
-          return {
-            avatar: element.icon,
-            corpId: element.corpId,
-            employeeId: element.thirdPartyAccountUserId,
-            employeeName: element.name,
-            key: '',
-          };
-        });
-        this.saveCheckUserData();
-      });
+      // this.modal.createStatic(SetupContactSelectComponent, {
+      //   selectedItems: [],
+      //   mode,
+      //   isSingleSelect: true,
+      // }).subscribe((res) => {
+      //   this.submitEventVO.checkUsers = res.selectedItems.map((element:any) => {
+      //     return {
+      //       avatar: element.icon,
+      //       corpId: element.corpId,
+      //       employeeId: element.thirdPartyAccountUserId,
+      //       employeeName: element.name,
+      //       key: '',
+      //     };
+      //   });
+      //   this.saveCheckUserData();
+      // });
     }
   }
 
@@ -1355,48 +1378,48 @@ export class EmergencyDispatchEmergencyOngoingEvent extends Base implements OnIn
   getLocalStorage() {
     const value = JSON.parse(<string>window.localStorage.getItem('_token'));
     this.fullViewQuery.avatar = value.avatar;
-    this.fullViewQuery.name = value.employeeName;
-    this.fullViewQuery.thirdId = value.thirdPartyAccountUserId;
-    this.thirdId = value.thirdPartyAccountUserId;
+    this.fullViewQuery.name = value.loginUserName;
+    this.fullViewQuery.thirdId = value.loginUserId;
+    this.thirdId = value.loginUserId;
     this.employee = value;
 
-    this.changeElementsVO.operationEmployeeId = value.thirdPartyAccountUserId;
-    this.changeElementsVO.operationEmployeeName = value.employeeName;
+    this.changeElementsVO.operationEmployeeId = value.loginUserId;
+    this.changeElementsVO.operationEmployeeName = value.loginUserName;
 
-    this.changeEventAttachmentFileVO.employeeId = value.thirdPartyAccountUserId;
-    this.changeEventAttachmentFileVO.employeeIdName = value.employeeName;
+    this.changeEventAttachmentFileVO.employeeId = value.loginUserId;
+    this.changeEventAttachmentFileVO.employeeIdName = value.loginUserName;
 
-    this.changeEventPlanVO.employeeId = value.thirdPartyAccountUserId;
-    this.changeEventPlanVO.employeeIdName = value.employeeName;
+    this.changeEventPlanVO.employeeId = value.loginUserId;
+    this.changeEventPlanVO.employeeIdName = value.loginUserName;
 
-    this.changeBigCategory.operationEmployeeId = value.thirdPartyAccountUserId;
-    this.changeBigCategory.operationEmployeeName = value.employeeName;
+    this.changeBigCategory.operationEmployeeId = value.loginUserId;
+    this.changeBigCategory.operationEmployeeName = value.loginUserName;
 
-    this.changeProfession.operationEmployeeId = value.thirdPartyAccountUserId;
-    this.changeProfession.operationEmployeeName = value.employeeName;
+    this.changeProfession.operationEmployeeId = value.loginUserId;
+    this.changeProfession.operationEmployeeName = value.loginUserName;
 
-    this.changeCategory.operationEmployeeId = value.thirdPartyAccountUserId;
-    this.changeCategory.operationEmployeeName = value.employeeName;
+    this.changeCategory.operationEmployeeId = value.loginUserId;
+    this.changeCategory.operationEmployeeName = value.loginUserName;
 
-    this.changeLevel.operationEmployeeId = value.thirdPartyAccountUserId;
-    this.changeLevel.operationEmployeeName = value.employeeName;
+    this.changeLevel.operationEmployeeId = value.loginUserId;
+    this.changeLevel.operationEmployeeName = value.loginUserName;
 
-    this.personnelInfoData.operationEmployeeId = value.thirdPartyAccountUserId;
-    this.personnelInfoData.operationEmployeeName = value.employeeName;
+    this.personnelInfoData.operationEmployeeId = value.loginUserId;
+    this.personnelInfoData.operationEmployeeName = value.loginUserName;
 
-    this.changeArea.employeeId = value.thirdPartyAccountUserId;
-    this.changeArea.employeeIdName = value.employeeName;
+    this.changeArea.employeeId = value.loginUserId;
+    this.changeArea.employeeIdName = value.loginUserName;
 
-    this.changeLine.employeeId = value.thirdPartyAccountUserId;
-    this.changeLine.employeeIdName = value.employeeName;
+    this.changeLine.employeeId = value.loginUserId;
+    this.changeLine.employeeIdName = value.loginUserName;
 
-    this.changeStation.employeeId = value.thirdPartyAccountUserId;
-    this.changeStation.employeeIdName = value.employeeName;
-    this.changeStation.operationEmployeeId = value.thirdPartyAccountUserId;
-    this.changeStation.operationEmployeeName = value.employeeName;
+    this.changeStation.employeeId = value.loginUserId;
+    this.changeStation.employeeIdName = value.loginUserName;
+    this.changeStation.operationEmployeeId = value.loginUserId;
+    this.changeStation.operationEmployeeName = value.loginUserName;
 
-    this.feedbackData.employeeId = value.thirdPartyAccountUserId;
-    this.feedbackData.employeeName = value.employeeName;
+    this.feedbackData.employeeId = value.loginUserId;
+    this.feedbackData.employeeName = value.loginUserName;
   }
 
   /* 打开 应急规章制度关联选择*/
@@ -1559,6 +1582,16 @@ export class EmergencyDispatchEmergencyOngoingEvent extends Base implements OnIn
     this.childReadData.isLoading = false;
     this.childSignData.isLoading = false;
     this.childCallData.isLoading = false;
+    this.isAssess = false;
+    for(const key in this.eventPreAssess){
+      // @ts-ignore
+      this.eventPreAssess[key]  = ''
+    }
+    for(const key in this.eventAssess){
+      // @ts-ignore
+      this.eventAssess[key]  = ''
+    }
+    this.fileList1 = [];
   }
 
   close() {
@@ -1658,24 +1691,24 @@ export class EmergencyDispatchEmergencyOngoingEvent extends Base implements OnIn
 
   addUser() {
     const mode = ['employee'];
-    this.modal
-      .createStatic(SetupContactSelectComponent, {
-        selectedItems: this.selectedItems,
-        mode,
-        isSingleSelect: false,
-      })
-      .subscribe((res) => {
-        this.selectedItems = res.selectedItems;
-        this.reNotice.temCallThirdUsers = res.selectedItems.map((element:any) => {
-          return {
-            avatar: element.icon,
-            corpId: element.corpId,
-            eventId: '',
-            name: element.name,
-            thirdPartyAccountUserId: element.thirdPartyAccountUserId,
-          };
-        });
-      });
+    // this.modal
+    //   .createStatic(SetupContactSelectComponent, {
+    //     selectedItems: this.selectedItems,
+    //     mode,
+    //     isSingleSelect: false,
+    //   })
+    //   .subscribe((res) => {
+    //     this.selectedItems = res.selectedItems;
+    //     this.reNotice.temCallThirdUsers = res.selectedItems.map((element:any) => {
+    //       return {
+    //         avatar: element.icon,
+    //         corpId: element.corpId,
+    //         eventId: '',
+    //         name: element.name,
+    //         thirdPartyAccountUserId: element.thirdPartyAccountUserId,
+    //       };
+    //     });
+    //   });
   }
 
   /* 删除电话人员 */
@@ -3002,6 +3035,40 @@ export class EmergencyDispatchEmergencyOngoingEvent extends Base implements OnIn
     // });
   }
 
+  // 打开预评估页面
+  openAssess() {
+    this.showFooter = 0;
+    this.isAssess = true;
+    this.getEventAssess();
+    this.getEventPreAssess();
+    this.selectRole = {};
+    this.selectPoint = {};
+    this.allEmergencyPointData = [];
+    this.doneEmergencyPointData = [];
+    this.undoneEmergencyPointData = [];
+    this.getPointList();
+    // 判断用户的岗位信息。
+    this.getRoleList();
+  }
+
+  // 切换tab
+  checkTab(value: any) {
+    this.showFooter = value.index;
+  }
+
+  // 取消预评估页面
+  closeAssess() {
+    this.isAssess = false;
+    for(const key in this.eventPreAssess){
+      // @ts-ignore
+      this.eventPreAssess[key]  = ''
+    }
+    for(const key in this.eventAssess){
+      // @ts-ignore
+      this.eventAssess[key]  = ''
+    }
+    this.fileList1 = [];
+  }
   ngAfterViewInit() {
     this.loadLineData();
     this.loadAllArea();
@@ -3019,6 +3086,103 @@ export class EmergencyDispatchEmergencyOngoingEvent extends Base implements OnIn
     });
   }
 
+  // 上传文件
+  beforeUpload1 = (file: NzUploadFile): boolean => {
+    this.fileList1 = [];
+    this.fileList1 = this.fileList1.concat(file);
+    console.log(this.fileList1)
+    this.handleUpload1();
+    return false;
+  };
+
+  handleUpload1() {
+    const formData = new FormData();
+    this.fileList1.forEach((file: any) => {
+      formData.append('file', file);
+    });
+    this.uploading = true;
+    this.http.post(`${environment['RESOURCE_SERVER_URL']}/api/upload`, formData).subscribe((res) => {
+      if (res.success) {
+        this.eventPreAssess.resources = res.data.url;
+        this.eventPreAssess.resourcesNames = res.data.fileName+"."+res.data.suffix;
+        console.log(res);
+      }
+    });
+  }
+  fileRemove = (file: NzUploadFile) => {
+    this.eventPreAssess.resources = '';
+    this.eventPreAssess.resourcesNames = '';
+    return true;
+  };
+
+  // 保存预估报告详情
+  saveAssess() {
+    if (this.showFooter == 0) {
+      this.http.post(`/service/emergency-event/admin/AdminEventAssessApi/eventPreAssess/save`, this.eventPreAssess).subscribe((res) => {
+        if (res.success) {
+          this.messageService.success(res.message);
+          this.closeAssess()
+        } else {
+          this.messageService.error(res.message);
+        }
+      });
+    } else {
+      this.http.post(`/service/emergency-event/admin/AdminEventAssessApi/eventAssess/save`, this.eventAssess).subscribe((res) => {
+        if (res.success) {
+          this.messageService.success(res.message);
+          this.closeAssess()
+        } else {
+          this.messageService.error(res.message);
+        }
+      });
+    }
+
+  }
+
+  // 查询预评估
+  getEventPreAssess() {
+    this.http.get(`/service/emergency-event/admin/AdminEventAssessApi/eventPreAssess/findByEventId/`+ this.eventId).subscribe((res) => {
+      if (res.success) {
+        if (res.data != null) {
+          Object.assign(this.eventPreAssess, res.data)
+          if (res.data.resources != '') {
+            const str = (res.data.resources.substring(res.data.resources.length - 1) == ',') ? res.data.resources.substring(0, res.data.resources.length - 1) : res.data.resources;
+            const nameStr = (res.data.resourcesNames.substring(res.data.resourcesNames.length - 1) == ',') ? res.data.resourcesNames.substring(0, res.data.resourcesNames.length - 1) : res.data.resourcesNames;
+
+            const list = str.split(',');
+            const nameList = nameStr.split(',');
+            this.fileList1 = [];
+            list.forEach((item: string, index: string | number) => {
+              // @ts-ignore
+              this.fileList1.push({ uid: index, name: nameList[index], url: this.downloadUrl + item })
+            })
+          }
+        } else {
+          this.eventPreAssess.employeeName = JSON.parse(<string>window.localStorage.getItem('_token')).loginUserName;
+          this.eventPreAssess.employeeId = JSON.parse(<string>window.localStorage.getItem('_token')).loginUserId;
+          this.eventPreAssess.eventId = this.eventId;
+        }
+      } else {
+        this.messageService.error(res.message);
+      }
+    });
+  }
+  // 查询总结评估
+  getEventAssess() {
+    this.http.get(`/service/emergency-event/admin/AdminEventAssessApi/eventAssess/findByEventId/`+ this.eventId).subscribe((res) => {
+      if (res.success) {
+        if (res.data != null) {
+          Object.assign(this.eventAssess, res.data)
+        } else {
+          this.eventAssess.employeeName = JSON.parse(<string>window.localStorage.getItem('_token')).loginUserName;
+          this.eventAssess.employeeId = JSON.parse(<string>window.localStorage.getItem('_token')).loginUserId;
+          this.eventAssess.eventId = this.eventId;
+        }
+      } else {
+        this.messageService.error(res.message);
+      }
+    });
+  }
   ngOnInit() {
     this.getLocalStorage();
   }

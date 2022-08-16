@@ -28,76 +28,78 @@
 </nz-card>
 
 <nz-drawer [nzClosable]="true" [nzWidth]="600" [nzFooter]="footerTpl" [nzVisible]="visible" (nzOnClose)="closeChildren()">
-  <p class="blod-title">上传</p>
-  <nz-divider></nz-divider>
-  <div class="content-item">
-    <div class="item-title must">应急规章制度类型</div>
-    <div>
-      <nz-select
-        [(ngModel)]="planFileCategory"
-        (ngModelChange)="emergencyPlanFileCategoryChange($event)"
-        nzAllowClear
-        nzPlaceHolder="请选择"
-        style="width: 170px"
-      >
-        <nz-option *ngFor="let option of planFileCategoryData" [nzValue]="option" nzLabel="option.label"></nz-option>
-      </nz-select>
-    </div>
-  </div>
-  <div class="content-item">
-    <div class="item-title must">二级分类</div>
-    <div>
-      <nz-select
-        [nzDisabled]="!planFileCategory"
-        (ngModelChange)="categoryTwoChange($event)"
-        [(ngModel)]="categoryTwo"
-        nzAllowClear
-        nzPlaceHolder="请选择"
-        style="width: 170px"
-      >
-        <nz-option *ngFor="let option of categoryTwoData" [nzValue]="option" nzLabel="option.label"></nz-option>
-      </nz-select>
-    </div>
-  </div>
-  <div class="content-item">
-    <div class="item-title must">三级分类</div>
-    <div>
-      <nz-select
-        [nzDisabled]="!categoryTwo"
-        (ngModelChange)="categoryThreeChange($event)"
-        [(ngModel)]="categoryThree"
-        nzAllowClear
-        nzPlaceHolder="请选择"
-        style="width: 170px"
-      >
-        <nz-option *ngFor="let item of categoryThreeData" [nzValue]="item" nzLabel="item.label"></nz-option>
-      </nz-select>
-    </div>
-  </div>
-  <div class="content-item">
-    <div class="item-title must">应急预案名称</div>
-    <div>
-      <input nz-input placeholder="请输入" [(ngModel)]="emergencyPlanFileDTO.name" style="width: 170px" />
-    </div>
-  </div>
-  <div class="upload">
-    <nz-upload
-      nzType="drag"
-      [nzMultiple]="false"
-      [nzAccept]="
-        'application/msword,application/vnd.ms-excel,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-      "
-      [(nzFileList)]="fileList"
-      [nzBeforeUpload]="beforeUpload"
-      [nzRemove]="fileRemove"
-    >
-      <div class="add-img">
-        <img src="assets/img/add.png" />
+  <ng-container *nzDrawerContent>
+    <p class="blod-title">上传</p>
+    <nz-divider></nz-divider>
+    <div class="content-item">
+      <div class="item-title must">应急规章制度类型</div>
+      <div>
+        <nz-select
+          [(ngModel)]="planFileCategory"
+          (ngModelChange)="emergencyPlanFileCategoryChange($event)"
+          nzAllowClear
+          nzPlaceHolder="请选择"
+          style="width: 170px"
+        >
+          <nz-option *ngFor="let option of planFileCategoryData" [nzValue]="option" [nzLabel]="option.label"></nz-option>
+        </nz-select>
       </div>
-      <p class="ant-upload-text">将文件拖到此处，或点击上传</p>
-    </nz-upload>
-  </div>
+    </div>
+    <div class="content-item">
+      <div class="item-title must">二级分类</div>
+      <div>
+        <nz-select
+          [nzDisabled]="!planFileCategory"
+          (ngModelChange)="categoryTwoChange($event)"
+          [(ngModel)]="categoryTwo"
+          nzAllowClear
+          nzPlaceHolder="请选择"
+          style="width: 170px"
+        >
+          <nz-option *ngFor="let option of categoryTwoData" [nzValue]="option" [nzLabel]="option.label"></nz-option>
+        </nz-select>
+      </div>
+    </div>
+    <div class="content-item">
+      <div class="item-title must">三级分类</div>
+      <div>
+        <nz-select
+          [nzDisabled]="!categoryTwo"
+          (ngModelChange)="categoryThreeChange($event)"
+          [(ngModel)]="categoryThree"
+          nzAllowClear
+          nzPlaceHolder="请选择"
+          style="width: 170px"
+        >
+          <nz-option *ngFor="let item of categoryThreeData" [nzValue]="item" [nzLabel]="item.label"></nz-option>
+        </nz-select>
+      </div>
+    </div>
+    <div class="content-item">
+      <div class="item-title must">应急预案名称</div>
+      <div>
+        <input nz-input placeholder="请输入" [(ngModel)]="emergencyPlanFileDTO.name" style="width: 170px" />
+      </div>
+    </div>
+    <div class="upload">
+      <nz-upload
+        nzType="drag"
+        [nzMultiple]="false"
+        [nzAccept]="
+          'application/msword,application/vnd.ms-excel,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        "
+        [(nzFileList)]="fileList"
+        [nzBeforeUpload]="beforeUpload"
+        [nzRemove]="fileRemove"
+      >
+        <div class="add-img">
+          <img src="assets/img/add.png" />
+        </div>
+        <p class="ant-upload-text">将文件拖到此处，或点击上传</p>
+      </nz-upload>
+    </div>
 
+  </ng-container>
   <ng-template #footerTpl>
     <div style="float: right">
       <button nz-button style="margin-right: 8px" (click)="cancel()">取消</button>

@@ -78,10 +78,25 @@ import {EmergencyDispatchEmergencyHistoryReport} from "./emergency-history-repor
 import {EmergencyDispatchEmergencyOngoingEvent} from "./emergency-ongoing-event/emergency-ongoing-event.component";
 import {EmergencyDispatchChooseRoleComponent} from "./emergency-ongoing-event/chooseRole/choose-role.component";
 import {EmergencyDispatchEmergencyHome} from "./emergency-home/emergency-home.component";
-import {SelectPersonModule} from "../../hz/select-person/select-person.module";
+import {SelectPersonModule} from "../../shared/select-person/select-person.module";
+import {clickButtonComponent} from "./components/click-button/click-button.component";
+import {chartPieComponent} from "./components/chart-pie/chart-pie.component";
+import {ModalTable} from "./components/modal-table/modal-table.component";
+import {measureItemComponent} from "./components/measure-item/measure-item.component";
+import {emergencyItemComponent} from "./components/emergency-item/emergency-item.component";
+import {personnelInfoComponent} from "./components/personnel-info/personnel-info.component";
+import {categoryChooseComponent} from "./components/category-choose/category-choose.component";
+import {EmergencyDispatchComponentsEditComponent} from "./components/personnel-info/edit/edit.component";
 
 
 const COMPONENTS = [
+  clickButtonComponent,
+  personnelInfoComponent,
+  categoryChooseComponent,
+  chartPieComponent,
+  emergencyItemComponent,
+  measureItemComponent,
+  ModalTable,
   EmergencyDispatchEmergencyCategoryComponent,
   EmergencyDispatchEmergencyBigCategoryComponent,
   EmergencyDispatchEmergencyAreaComponent,
@@ -134,6 +149,7 @@ const COMPONENTS_NOROUNT: any = [
   EmergencyDispatchLocationConfigEditComponent,
   EmergencyDispatchEmergencyExerciseEditComponent,
   EmergencyDispatchChooseRoleComponent,
+  EmergencyDispatchComponentsEditComponent
 ];
 @NgModule({
   declarations: [...COMPONENTS, ...COMPONENTS_NOROUNT],

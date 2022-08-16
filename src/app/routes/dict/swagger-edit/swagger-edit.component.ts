@@ -7,7 +7,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 
 @Component({
-  selector: 'app-dict-swagger-edit',
+  selector: 'app-dict-type-swagger-edit',
   templateUrl: './swagger-edit.component.html'
 })
 export class DictSwaggerEditComponent implements OnInit {

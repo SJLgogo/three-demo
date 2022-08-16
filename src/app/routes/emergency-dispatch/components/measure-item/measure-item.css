@@ -1,0 +1,71 @@
+.measure-item {
+  position: relative;
+  padding: 15px 20px;
+  border-radius: 4px;
+  border: 1px solid #dddddd;
+  margin-bottom: 10px;
+}
+.measure-item p {
+  margin: 0;
+}
+.measure-item p:first-child {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+}
+.item-detail {
+  display: inline-block;
+  width: 85%;
+  vertical-align: top;
+}
+.img-list {
+  margin-top: 15px;
+}
+.img {
+  margin-right: 15px;
+  width: 70px;
+  height: 70px;
+}
+.measure-button {
+  position: absolute;
+  right: 40px;
+  top: 30px;
+  width: 100px;
+  color: #1677ff;
+}
+.measure-button span {
+  display: inline-block;
+  width: 50%;
+  font-size: 14px;
+  line-height: 14px;
+  text-align: center;
+  cursor: pointer;
+}
+.measure-button :first-child {
+  border-right: 1px solid #eee;
+}
+textarea {
+  resize: none;
+}
+.add-img {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  border: 1px solid #cccccc;
+  vertical-align: middle;
+  cursor: pointer;
+}
+.add-img img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.deleteImg {
+  position: absolute;
+  right: 4px;
+  top: -5px;
+  cursor: pointer;
+}

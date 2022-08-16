@@ -1,0 +1,12 @@
+<sf-item-wrap [error]="error" [id]="id" [schema]="schema" [showError]="showError" [showTitle]="schema.title" [ui]="ui">
+  <nz-select
+    (ngModelChange)="change($event)"
+    [nzDisabled]="dictDisabled"
+    [(ngModel)]="_value"
+    [nzMode]="mode"
+    [nzPlaceHolder]="placeholder"
+  >
+    <nz-option *ngFor="let item of selectSources" [nzLabel]="item.label"
+               [nzValue]="item.typeValue+':'+item.value"></nz-option>
+  </nz-select>
+</sf-item-wrap>

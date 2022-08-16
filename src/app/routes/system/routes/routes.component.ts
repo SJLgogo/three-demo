@@ -20,9 +20,23 @@ export class SystemRoutesComponent implements OnInit {
 
   searchSchema: SFSchema = {
     properties: {
-      no: {
+      param: {
         type: 'string',
-        title: '编号'
+        title: '查询参数',
+        ui: {
+          width: 300,
+          placeholder: '请输入serviceId或者备注'
+        }
+      },
+      dict: {
+        type: 'string',
+        title: '字典数据',
+        ui: {
+          placeholder: '请选择请假类型',
+          widget: 'dict',
+          typeValue: 'system_education',
+          loadingTip: 'loading...'
+        }
       }
     }
   };
@@ -31,7 +45,6 @@ export class SystemRoutesComponent implements OnInit {
     { title: '序号', type: 'no' },
     { title: '服务id', index: 'serviceId' },
     { title: '状态', index: 'enable', type: 'badge', badge: BADGE },
-    { title: 'openApi', index: 'openApi', type: 'badge', badge: BADGE },
     { title: 'uri', index: 'uri' },
     { title: '排序', index: 'sort' },
     { title: '备注', type: '', index: 'comment' },
@@ -67,5 +80,9 @@ export class SystemRoutesComponent implements OnInit {
 
   add(): void {
     this.modal.createStatic(SystemRoutesEditComponent, { i: { id: '' } }).subscribe(() => this.st.reload());
+  }
+
+  refresh(): void {
+    this.st.reload();
   }
 }

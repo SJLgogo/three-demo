@@ -14,7 +14,10 @@ import { NZ_CONFIG, NzConfig } from 'ng-zorro-antd/core/config';
 
 const alainConfig: AlainConfig = {
   st: {
+    bordered: true,
+    ps: 20,
     modal: { size: 'lg' },
+    responsive: false,
     req: {
       method: 'POST',
       reName: {
@@ -29,12 +32,22 @@ const alainConfig: AlainConfig = {
         list: 'data.content'
       }
     },
-    page: { zeroIndexed: true }
+    page: { zeroIndexed: true, front: false, showSize: true, total: `共 {{total}} 条`, showQuickJumper: true }
   },
   pageHeader: { homeI18n: 'home' },
   lodop: {
     license: `A59B099A586B3851E0F0D7FDBF37B603`,
     licenseA: `C94CEE276DB2187AE6B65D56B3FC2848`
+  },
+  themeResponsive: {
+    rules: {
+      1: { xs: 24 },
+      2: { xs: 24, sm: 12 },
+      3: { xs: 24, sm: 12, md: 8 },
+      4: { xs: 24, sm: 12, md: 8, lg: 6 },
+      5: { xs: 24, sm: 12, md: 8, lg: 6, xl: 4 },
+      6: { xs: 24, sm: 12, md: 8, lg: 6, xl: 4, xxl: 2 }
+    }
   },
   auth: { login_url: '/passport/login' }
 };

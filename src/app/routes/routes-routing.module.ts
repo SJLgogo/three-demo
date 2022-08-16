@@ -34,6 +34,8 @@ const routes: Routes = [
       { path: 'dict', loadChildren: () => import('./dict/dict.module').then(m => m.DictModule) },
       { path: 'setup', loadChildren: () => import('./setup/setup.module').then((m) => m.SetupModule) },
       { path: 'emergency-dispatch', loadChildren: () => import('./emergency-dispatch/emergency-dispatch.module').then((m) => m.EmergencyDispatchModule) },
+      { path: 'dict-type', loadChildren: () => import('./dict/dict.module').then(m => m.DictModule) },
+      { path: 'setup', loadChildren: () => import('./setup/setup.module').then(m => m.SetupModule) }
     ]
   },
   // Blak Layout 空白布局

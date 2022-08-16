@@ -111,7 +111,8 @@
   </div>
 </div>
 
-<nz-drawer [nzClosable]="true" [nzWidth]="880" [nzVisible]="visible" nzPlacement="right" (nzOnClose)="close()">
+<nz-drawer [nzClosable]="true" [nzWidth]="920" [nzVisible]="visible" nzPlacement="right" (nzOnClose)="close()">
+  <ng-container *nzDrawerContent>
   <!-- 发起应急 -->
   <div class="fixation">
     <div style="margin: 20px 0 0 20px">
@@ -454,6 +455,7 @@
 
   <!-- 应急处置要点选择 -->
   <nz-drawer [nzClosable]="true" [nzVisible]="childrenVisible" (nzOnClose)="closeChildren()" [nzWidth]="660">
+    <ng-container *nzDrawerContent>
     <!-- 应急处置要点选择页面 -->
     <div *ngIf="pageChoose == 0">
       <span class="blod-title">应急处置要点选择</span>
@@ -640,12 +642,16 @@
         <span (click)="childrenConfirm()" style="background-color: #4c83e5">确认</span>
       </div>
     </div>
+    </ng-container>
   </nz-drawer>
+  </ng-container>
 </nz-drawer>
 
 <!-- 发起应急弹出框 -->
 <nz-modal [(nzVisible)]="isVisible" nzTitle="操作提示" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()" [nzFooter]="modalFooter">
-  <p style="height: 100px; color: #000000">请确认是否发起应急事件？</p>
+  <ng-container *nzModalContent>
+    <p style="height: 100px; color: #000000">请确认是否发起应急事件？</p>
+  </ng-container>
 </nz-modal>
 
 <ng-template #modalFooter>

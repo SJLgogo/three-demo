@@ -11,17 +11,18 @@ import {
 } from '@delon/form';
 import { LineNetworkService } from '../../service/line-network.service';
 import { DictionaryService } from '../../service/dictionary.service';
-// import { SystemContactUserSelectComponent } from '../../../system/contact/contact-select/contact-select.component';
-import { delay, map } from 'rxjs/operators';
-import { of } from 'rxjs';
-import { environment } from '@env/environment';
-import { NzModalRef } from 'ng-zorro-antd/modal';
-import { NzMessageService } from 'ng-zorro-antd/message';
-import {SetupContactSelectComponent} from "../../../../shared/components/contact-select/contact-select.component";
+import {NzModalRef} from "ng-zorro-antd/modal";
+import {NzMessageService} from "ng-zorro-antd/message";
+import { SelectProjectPersonComponent } from 'src/app/shared/select-person/select-project-person/select-project-person.component';
 
 @Component({
   selector: 'app-emergency-dispatch-emergency-tag-edit',
   templateUrl: './edit.component.html',
+  styles: [`
+    :host ::ng-deep nz-tree-select {
+      width: 100%;
+    }
+  `]
 })
 export class EmergencyDispatchEmergencyTagEditComponent implements AfterViewInit {
   record: any = {};
@@ -609,35 +610,40 @@ export class EmergencyDispatchEmergencyTagEditComponent implements AfterViewInit
     }
     console.log(selectedItems, 'selectedItems');
     const mode = ['employee'];
-    this.modal.createStatic(SetupContactSelectComponent, { selectedItems, mode }).subscribe((res) => {
+    this.modal
+      .createStatic(SelectProjectPersonComponent, {
+        chooseMode: 'employee', // department organization employee
+        functionName: 'not-clock',
+        selectList: selectedItems
+      }).subscribe((res) => {
       const tagEmployees:any = []; // 选中的用户数据
       const tagEmployeeIds :any= []; // 选中的用户id
       const tagOrganizationIds = []; // 选中的部门id
 
       console.log('res：', res);
-      res.selectedItems.forEach(function (value:any, index:any, array:any) {
-        tagEmployees.push({ title: value.name, key: value.thirdPartyAccountUserId, category: value.category, icon: value.icon });
-        tagEmployeeIds.push(value.thirdPartyAccountUserId);
+      res.selectList.forEach(function (value:any, index:any, array:any) {
+        tagEmployees.push({ title: value.name, key: value.id, category: value.category, icon: value.icon });
+        tagEmployeeIds.push(value.id);
       });
 
       console.log('tagEmployees:', tagEmployees);
       this.i.selectEmployeeIds = tagEmployeeIds;
-      if (this.i.area) {
+      if (this.i.area|| this.area) {
         this.selectUserDataIsArea = tagEmployees;
-        console.log('区域人tagEmployeeIds:', tagEmployeeIds);
+        console.log('区域人tagEmployeeIds:', this.selectUserDataIsArea );
         console.log('selectEmployeeIds长度:', this.i.selectEmployeeIds.length);
         console.log(this.i.selectEmployeeIds);
         this.areaSchemaJson.properties.selectEmployeeIds.enum = tagEmployees;
         this.areaSchemaJson.properties.selectEmployeeIds.default = tagEmployeeIds;
       } else {
         this.selectUserDataNotArea = tagEmployees;
-        console.log('非区域人tagEmployeeIds:', tagEmployeeIds);
+        console.log('非区域人tagEmployeeIds:', this.selectUserDataNotArea);
         this.notAreaSchemaJson.properties.selectEmployeeIds.enum = tagEmployees;
         this.notAreaSchemaJson.properties.selectEmployeeIds.default = tagEmployeeIds;
       }
       this.sf.refreshSchema();
       Object.assign(this.i, this.sf.value);
-      // this.sf.refreshSchema();
+      this.sf.refreshSchema(this.areaSchemaJson);
     });
   }
 

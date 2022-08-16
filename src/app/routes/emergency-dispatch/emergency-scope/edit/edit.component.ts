@@ -6,8 +6,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { LineNetworkService } from '../../service/line-network.service';
 import { DictionaryService } from '../../service/dictionary.service';
 import { STColumn, STComponent, STData } from '@delon/abc/st';
-import {SetupContactSelectComponent} from "../../../../shared/components/contact-select/contact-select.component";
-import {SelectProjectPersonComponent} from "../../../../hz/select-person/select-project-person/select-project-person.component";
+import {SelectProjectPersonComponent} from "../../../../shared/select-person/select-project-person/select-project-person.component";
 
 @Component({
   selector: 'app-emergency-dispatch-emergency-scope-edit',

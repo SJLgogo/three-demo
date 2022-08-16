@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-@BaseUrl('/api/service/system/jdl-metadata')
+@BaseUrl('/service/system/jdl-metadata')
 export class JdlMetadataService extends BaseApi {
   @GET('/page-all')
   findAll(): Observable<HttpResponse<any>> {

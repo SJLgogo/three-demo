@@ -173,7 +173,6 @@ img {
 .footer-left {
   display: flex;
   justify-content: space-between;
-  width: 37%;
 }
 .done-btn {
   position: absolute;

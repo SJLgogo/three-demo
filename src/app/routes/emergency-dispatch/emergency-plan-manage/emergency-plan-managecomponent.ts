@@ -14,6 +14,11 @@ import {delay} from 'rxjs/operators';
   selector: 'app-emergency-dispatch-emergency-plan-manage',
   templateUrl: './emergency-plan-manage.component.html',
   styleUrls: ['./emergency-plan-manage.css'],
+  styles: [`
+    :host ::ng-deep nz-tree-select {
+      width: 100%;
+    }
+  `]
 })
 export class EmergencyDispatchEmergencyPlanManage extends Base implements OnInit {
   url = `/service/emergency-base-config/admin/adminEmergencyPlanFileApi/findForPage`;
@@ -24,9 +29,11 @@ export class EmergencyDispatchEmergencyPlanManage extends Base implements OnInit
 
   visible = false;
   selectedValue: any;
-  planFileCategoryData = []; //应急规章制度类型列表数据
-  categoryTwoData = []; //二级分类数据
-  categoryThreeData = []; //三级分类数据
+  planFileCategoryData:any = [
+
+  ]; //应急规章制度类型列表数据
+  categoryTwoData:any = []; //二级分类数据
+  categoryThreeData:any = []; //三级分类数据
   emergencyPlanFileDTO: any = {}; //新增应急预案文件
   categoryTwoStatus: any = true;
   planFileCategory: any; //应急规章制度类型
@@ -201,10 +208,12 @@ export class EmergencyDispatchEmergencyPlanManage extends Base implements OnInit
         this.planFileCategoryData = res.data.map((element: any) => {
           return {label: element.name, value: element.id};
         });
-        const typeNameProperty = this.sf.getProperty('/typeName')!;
-        typeNameProperty.schema.enum = res.data.map((element: any) => {
+        //无法修改对象本体
+        // const typeNameProperty = this.sf.getProperty('/typeName')!;
+        this.searchSchema.properties!['typeName'].enum = res.data.map((element: any) => {
           return {label: element.name, value: element.id};
         });
+
         this.sf.refreshSchema();
       }
     });
@@ -282,10 +291,9 @@ export class EmergencyDispatchEmergencyPlanManage extends Base implements OnInit
   }
 
   getLocalStorage() {
-    let value: any;
-    //>>>>>陈阳
-    this.emergencyPlanFileDTO.uploaderId = value.thirdPartyAccountUserId;
-    this.emergencyPlanFileDTO.uploaderName = value.employeeName;
+    const value = JSON.parse(<string>window.localStorage.getItem('_token'));
+    this.emergencyPlanFileDTO.uploaderId = value.loginUserId;
+    this.emergencyPlanFileDTO.uploaderName = value.loginUserName;
   }
 
   beforeUpload = (file: NzUploadFile): boolean => {

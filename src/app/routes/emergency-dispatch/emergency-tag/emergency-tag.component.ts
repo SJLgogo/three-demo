@@ -7,7 +7,7 @@ import { STColumn, STComponent } from '@delon/abc/st';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { EmergencyDispatchEmergencyTagRelatedPersonComponent } from './related-person/related-person.component';
 import {Base} from "../../../common/base";
-import {SetupContactSelectComponent} from "../../../shared/components/contact-select/contact-select.component";
+// import {SetupContactSelectComponent} from "../../../shared/components/contact-select/contact-select.component";
 
 @Component({
   selector: 'app-emergency-dispatch-emergency-tag',
@@ -112,9 +112,9 @@ export class EmergencyDispatchEmergencyTagComponent extends Base implements OnIn
 
   peopleImport() {
     const mode = ['employee'];
-    this.modal.createStatic(SetupContactSelectComponent, { mode }).subscribe((res) => {
-      this.st.reload();
-    });
+    // this.modal.createStatic(SetupContactSelectComponent, { mode }).subscribe((res) => {
+    //   this.st.reload();
+    // });
     // this.modal
     //   .createStatic(EmergencyDispatchEmployeeShiftEditComponent, { i: { id: 0 } })
     //   .subscribe(() => this.st.reload());

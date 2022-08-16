@@ -8,7 +8,8 @@ import { NzUploadFile } from 'ng-zorro-antd/upload';
 import { STColumn, STComponent, STColumnButton, STChange, STData } from '@delon/abc/st';
 import { element } from 'protractor';
 import {Base} from "../../../common/base";
-import {SetupContactSelectComponent} from "../../../shared/components/contact-select/contact-select.component";
+import {SelectProjectPersonComponent} from "../../../shared/select-person/select-project-person/select-project-person.component";
+// import {SetupContactSelectComponent} from "../../../shared/components/contact-select/contact-select.component";
 
 @Component({
   selector: 'app-emergency-dispatch-emergency-home',
@@ -608,18 +609,24 @@ export class EmergencyDispatchEmergencyHome extends Base implements OnInit {
   /* 添加电话通知人员 */
   selectedItems = [];
   addUser() {
-    const mode = ['employee'];
+    // mode:["employee"]
+    // this.modal
+    //   .createStatic(SetupContactSelectComponent, { selectedItems: this.selectedItems, mode: mode, isSingleSelect: false })
+    //   .subscribe((res) => {
     this.modal
-      .createStatic(SetupContactSelectComponent, { selectedItems: this.selectedItems, mode: mode, isSingleSelect: false })
-      .subscribe((res) => {
-        this.selectedItems = res.selectedItems;
-        this.submitEventVO.temCallThirdUsers = res.selectedItems.map((element:any) => {
+      .createStatic(SelectProjectPersonComponent, {
+        chooseMode: 'employee', // department organization employee
+        functionName: 'not-clock',
+        selectList: this.selectedItems
+      }).subscribe((res) => {
+        this.selectedItems = res.selectList;
+        this.submitEventVO.temCallThirdUsers = res.selectList.map((element:any) => {
           return {
             avatar: element.icon,
             corpId: element.corpId,
             eventId: '',
             name: element.name,
-            thirdPartyAccountUserId: element.thirdPartyAccountUserId,
+            thirdPartyAccountUserId: element.id,
           };
         });
         console.log(this.submitEventVO.temCallThirdUsers);
@@ -629,15 +636,20 @@ export class EmergencyDispatchEmergencyHome extends Base implements OnInit {
   addCommand() {
     if (this.commandPeople.length == 0) {
       const mode = ['employee'];
-      this.modal.createStatic(SetupContactSelectComponent, { selectedItems: [], mode: mode, isSingleSelect: true }).subscribe((res) => {
-        this.commandPeople = res.selectedItems;
-        let commandUser = res.selectedItems.map((element:any) => {
+      // this.modal.createStatic(SetupContactSelectComponent, { selectedItems: [], mode: mode, isSingleSelect: true }).subscribe((res) => {
+      this.modal.createStatic(SelectProjectPersonComponent, {
+          chooseMode: 'employee', // department organization employee
+          functionName: 'not-clock',
+          selectList: []
+        }).subscribe((res) => {
+        this.commandPeople = res.selectList;
+        let commandUser = res.selectList.map((element:any) => {
           return {
             avatar: element.icon,
             corpId: element.corpId,
             eventId: '',
             name: element.name,
-            thirdPartyAccountUserId: element.thirdPartyAccountUserId,
+            thirdPartyAccountUserId: element.id,
           };
         });
         this.submitEventVO.commandUser = commandUser[0];
@@ -767,13 +779,13 @@ export class EmergencyDispatchEmergencyHome extends Base implements OnInit {
   }
 
   getLocalStorage() {
-    let value = JSON.parse(<string>window.localStorage.getItem('employee'));
+    let value = JSON.parse(<string>window.localStorage.getItem('_token'));
     this.submitEventVO.submitAvatar = value.avatar;
     this.submitEventVO.submitCorpId = value.cropId;
     this.submitEventVO.submitMobilePhone = value.mobilePhone;
-    this.submitEventVO.submitThirdId = value.thirdPartyAccountUserId;
-    this.thirdId = value.thirdPartyAccountUserId;
-    this.submitEventVO.submitName = value.employeeName;
+    this.submitEventVO.submitThirdId = value.loginUserId;
+    this.thirdId = value.loginUserId;
+    this.submitEventVO.submitName = value.loginUserName;
   }
 
   /* 选择发生时间回调 */
