@@ -1,0 +1,16 @@
+<page-header title="应急管理系统" [action]="phActionTpl">
+  <ng-template #phActionTpl>
+    <button
+      (click)="add()"
+      *ngIf="isPermission('emergency-big-category:button:add', settingsService.app['identifiers'])"
+      nz-button
+      nzType="primary">
+      新建
+    </button>
+  </ng-template>
+</page-header>
+<nz-card>
+  <sf mode="search" [schema]="searchSchema" (formSubmit)="st.reset($event)" (formReset)="st.reset($event)"></sf>
+  <st #st [data]="url" [bordered]="true" [req]="customRequest" [page]="customPage" [res]="customResponse"
+      [columns]="columns"></st>
+</nz-card>

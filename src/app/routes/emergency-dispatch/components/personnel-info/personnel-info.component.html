@@ -1,0 +1,57 @@
+<div>
+  <div class="repair">
+    <span>设备抢修负责人/现场指挥</span>
+    <div *ngIf="!personnelInfoData.noEdit">
+      <img src="assets/img/icon-edit.png" (click)="edit()" *ngIf="!personnelInfoData.isEdit" />
+      <div class="publish-button" *ngIf="personnelInfoData.isEdit">
+        <span class="button-status point-cancel" (click)="cancelEdit()">取消</span>
+        <span class="button-status point-publish" (click)="confirm()">确认</span>
+      </div>
+    </div>
+  </div>
+  <div class="information">
+    <!-- 有指挥人员显示数据 -->
+    <div class="personal-information" *ngIf="!personnelInfoData.delete && personnelInfoData.name">
+      <div style="position: relative">
+        <img [src]="personnelInfoData.img" *ngIf="personnelInfoData.img" />
+        <nz-avatar
+          [nzShape]="'square'"
+          [nzSize]="50"
+          [nzIcon]="'user'"
+          *ngIf="!personnelInfoData.img"
+          style="margin-right: 15px"
+        ></nz-avatar>
+        <img class="close" src="assets/img/icon-close.png" *ngIf="personnelInfoData.isEdit" (click)="deleteCommandUser()" />
+      </div>
+      <p style="font-size: 18px; color: #000">{{ personnelInfoData.name }}</p>
+    </div>
+    <!-- 无指挥人员显示数据 -->
+    <div class="personal-information" *ngIf="!personnelInfoData.isEdit && !personnelInfoData.name">
+      <nz-avatar [nzShape]="'square'" [nzSize]="50" [nzIcon]="'user'"></nz-avatar>
+      <p style="font-size: 18px; color: #000; margin-left: 15px">无指挥人员</p>
+    </div>
+    <div class="add-img" (click)="addCheckUser()" *ngIf="personnelInfoData.delete">
+      <img src="assets/img/add.png" />
+    </div>
+    <div class="btn-inquire">
+      <ng-content select="[btn-inquire]"></ng-content>
+    </div>
+  </div>
+  <div style="color: #000; margin: 15px 0 10px">
+    <span>指示详情</span>
+    <ng-content select="[updatatime]"></ng-content>
+  </div>
+  <div>
+    <nz-form-item>
+      <nz-form-control [nzSpan]="24" nzErrorTip="请输入处理结果">
+        <textarea
+          nz-input
+          [disabled]="editCommandDetail"
+          rows="5"
+          [(ngModel)]="personnelInfoData.detail"
+          placeholder="无指示详情"
+        ></textarea>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+</div>

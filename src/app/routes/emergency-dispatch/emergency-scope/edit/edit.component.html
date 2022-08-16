@@ -1,0 +1,43 @@
+<div class="modal-header">
+  <div class="modal-title">编辑 {{ record.id }} 信息</div>
+</div>
+<nz-spin *ngIf="!i" class="modal-spin"></nz-spin>
+<sf *ngIf="i" #sf mode="edit" [schema]="schema" [ui]="ui" [formData]="i" button="none">
+  <div style="display: flex; align-items: flex-start; justify-content: center">
+    <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: center">
+      <div (click)="selectUser(1)" class="edit-button">添加关联范围人员</div>
+      <st
+        #st
+        [widthMode]="{ type: 'strict' }"
+        [data]="relevanceScope"
+        [total]="relevanceScope.length"
+        bordered
+        [columns]="relevanceScopeColumns"
+      ></st>
+    </div>
+    <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: center">
+      <div (click)="selectUser(2)" class="edit-button">添加查看范围人员</div>
+      <st #st [widthMode]="{ type: 'strict' }" [data]="checkScope" [total]="checkScope.length" bordered [columns]="checkScopeColumns"></st>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+    <button nz-button type="button" (click)="close()">关闭</button>
+    <button nz-button type="submit" nzType="primary" (click)="save(sf.value)" [disabled]="!sf.valid" [nzLoading]="http.loading">
+      保存
+    </button>
+  </div>
+</sf>
+<style>
+  .edit-button {
+    margin-left: 50px;
+    width: 120px;
+    height: 40px;
+    border-radius: 4px;
+    background: #1890ff;
+    color: #ffffff;
+    line-height: 40px;
+    text-align: center;
+    margin-right: 30px;
+  }
+</style>

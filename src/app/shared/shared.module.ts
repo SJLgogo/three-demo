@@ -20,7 +20,7 @@ const THIRDMODULES: Array<Type<any>> = [];
 // #endregion
 
 // #region your componets & directives
-const COMPONENTS: Array<Type<any>> = [SelectEmployeeButtonComponent];
+const COMPONENTS: Array<Type<any>> = [];
 const DIRECTIVES: Array<Type<any>> = [];
 
 // #endregion

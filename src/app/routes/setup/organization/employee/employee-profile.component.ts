@@ -12,7 +12,7 @@
 //   templateUrl: './employee-profile.component.html',
 //   styleUrls: ['./employee-profile.component.less'],
 // })
-// export class SystemContactEmployeeProfileComponent extends Base implements OnInit {
+// export class SystemContactEmployeeProfileComponent implements OnInit {
 //   employee: any = {};
 //   employeeAvatar = '';
 //   employeeOrgInfo = '';
@@ -32,7 +32,7 @@
 //     private modalSrv: NzModalService,
 //     private router: Router,
 //   ) {
-//     super();
+//
 //     this.profileForm = fb.group({
 //       name: [null, Validators.compose([Validators.required])],
 //       email: '',

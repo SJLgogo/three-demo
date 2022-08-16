@@ -1,0 +1,248 @@
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.ongoing-title {
+  display: inline-block;
+  font-size: 24px;
+  font-weight: 500;
+  margin: 0;
+}
+.point-set {
+  display: flex;
+  /* flex-direction: column; */
+}
+:host ::ng-deep .ant-form-inline .ant-form-item {
+  margin: 0 105px 0 0;
+}
+.set-item {
+  display: flex;
+  justify-content: space-between;
+}
+.divider {
+  height: 1px;
+  background-color: #eeeeee;
+  margin: 20px 0;
+}
+.blod-title {
+  font-size: 20px;
+  font-weight: 700;
+  vertical-align: middle;
+}
+.content-item {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 16px;
+}
+.item-title {
+  display: inline-block;
+  width: 64px;
+  font-size: 16px;
+  font-weight: 700;
+  height: 18px;
+  line-height: 18px;
+  margin-right: 25px;
+}
+.item-content {
+  display: inline-block;
+  font-size: 15px;
+  line-height: 18px;
+}
+.cross-line {
+  height: 3px;
+  background: url('^assets/img/cross-line.png') no-repeat center;
+  margin-top: 10px;
+}
+.content-item {
+  position: relative;
+  margin-bottom: 16px;
+}
+.item-content {
+  display: inline-block;
+  font-size: 15px;
+}
+.edit-content {
+  width: 82%;
+  padding: 15px 15px;
+  background-color: #f8f8f8;
+  border-radius: 6px;
+}
+.middle {
+  display: flex;
+  align-items: center;
+  margin-top: 25px;
+}
+.middle .item-title {
+  width: 100px;
+  margin-right: 40px;
+}
+textarea {
+  resize: none;
+}
+.emergency-tag-list {
+  margin-top: 17px;
+}
+.check-option-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.head-img {
+  position: relative;
+  display: inline-block;
+  border-radius: 8px;
+  margin: 10px 20px 10px 0;
+  vertical-align: middle;
+}
+.head-img img {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+}
+.head-img p {
+  margin: 0;
+  width: 100%;
+  text-align: center;
+  color: #000000;
+  line-height: 18px;
+}
+.head-img .close {
+  width: 14px;
+  height: 14px;
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  cursor: pointer;
+}
+.icon-up {
+  position: relative;
+  float: right;
+  width: 14px;
+  height: 14px;
+  background: #dddddd;
+  border-radius: 3px;
+}
+.icon-up img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 80%;
+}
+.list-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.division {
+  position: relative;
+  top: -2px;
+  left: -24px;
+  width: 873px;
+  height: 10px;
+  background-color: #eee;
+}
+.add-img {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  border: 1px solid #cccccc;
+  vertical-align: middle;
+  cursor: pointer;
+}
+.add-img img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.item-btn {
+  display: flex;
+  margin: 20px 0 15px 0;
+  justify-content: space-between;
+  align-items: center;
+}
+.tips {
+  font-size: 14px;
+  color: #acacac;
+}
+.download {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+  height: 40px;
+  background-color: #f8f8f8;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+.download span {
+  margin-left: 10px;
+  font-size: 14px;
+  color: #4c83e5;
+  line-height: 22px;
+}
+.accessory {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 825px;
+  padding: 0 0 15px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #dddddd;
+}
+.accessory img {
+  margin-right: 10px;
+}
+
+.footer {
+  display: flex;
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  box-shadow: 0px 7px 15px 0px rgba(0, 0, 0, 0.1);
+  padding: 10px 20px;
+  text-align: right;
+  justify-content: space-between;
+  left: 0px;
+  background: #fff;
+}
+:host ::ng-deep .ant-form-item-label > label {
+  width: 70px;
+}
+.must::before {
+  content: '*';
+  color: #e02020;
+  font-size: 16px;
+}
+
+.tag-list {
+  display: flex;
+  align-items: center;
+}
+.tag {
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  background: #f5f5f5;
+  border-radius: 4px;
+  border: 1px solid #dddddd;
+}
+.tag-list .close {
+  margin-left: 8px;
+  width: 12px;
+  height: 12px;
+  cursor: pointer;
+}
+.head-switch {
+  display: inline-block;
+  margin-left: 44px;
+}
+.head-switch span {
+  color: #000000;
+  margin-right: 10px;
+}

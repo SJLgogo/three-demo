@@ -1,0 +1,85 @@
+<nz-card>
+  <p class="framework-title">应急规章制度类型设置</p>
+  <nz-divider></nz-divider>
+  <div class="framework-set">
+    <div>
+      <sf #sf mode="search" [button]="null" [schema]="searchSchema"> </sf>
+    </div>
+    <div>
+      <button type="reset" (click)="resetSearch($event)" nz-button>重置</button>
+      <button type="default" (click)="findAllData()" nz-button>查询</button>
+      <button (click)="showModal(null, 0)" type="button" nz-button nzType="primary">新建</button>
+    </div>
+  </div>
+</nz-card>
+<nz-card>
+  <nz-table #expandTable [nzData]="listOfMapData" [nzBordered]="true">
+    <thead>
+      <tr>
+        <th nzWidth="60%">应急规章制度类型</th>
+        <th nzWidth="40%">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let data of expandTable.data">
+        <ng-container *ngFor="let item of mapOfExpandedData[data.id]; let i = index">
+          <tr
+            *ngIf="(item.parent && item.parent.expand) || !item.parent"
+            [ngClass]="{ firstLevel: item.level == 1, secondLevel: item.level == 2 }"
+          >
+            <td
+              [nzIndentSize]="item['level'] * 20"
+              [nzShowExpand]="!!item['child']"
+              [(nzExpand)]="item.expand"
+              (nzExpandChange)="collapse(mapOfExpandedData[data.id], item, $event)"
+            >
+              {{ item.name }}
+            </td>
+            <td>
+              <a (click)="showModal(item, 0)" *ngIf="item.level != 2">增加</a> | <a (click)="showModal(item, 1)">编辑</a> |
+              <a
+                nz-popconfirm
+                nzPopconfirmTitle="确定删除？"
+                nzOkText="确定"
+                nzCancelText="取消"
+                (nzOnConfirm)="confirm(item.id)"
+                (nzOnCancel)="cancel()"
+                >删除</a
+              >
+            </td>
+          </tr>
+        </ng-container>
+      </ng-container>
+    </tbody>
+  </nz-table>
+  <nz-modal [(nzVisible)]="isVisible" nzTitle="{{ title }}" nzOkText="保存" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk(title)">
+    <ng-container *nzModalContent>
+      <form nz-form [formGroup]="validateForm">
+        <nz-form-item>
+          <nz-form-label [nzSpan]="6" nzRequired nzFor="name">{{ showModalLabel }}</nz-form-label>
+          <nz-form-control [nzSpan]="8" nzErrorTip="必填项">
+            <input type="text" nz-input formControlName="name" placeholder="请输入" [(ngModel)]="dto.name" />
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+    </ng-container>
+  </nz-modal>
+</nz-card>
+
+<style>
+  .framework-title {
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 32px;
+  }
+  .framework-set {
+    display: flex;
+    justify-content: space-between;
+  }
+  .firstLevel {
+    background-color: #f4f7ff;
+  }
+  .secondLevel {
+    background-color: #fef8ea;
+  }
+</style>

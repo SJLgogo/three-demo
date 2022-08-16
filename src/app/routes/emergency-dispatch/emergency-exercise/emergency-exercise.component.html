@@ -1,0 +1,272 @@
+<nz-card>
+  <div class="head">
+    <p class="ongoing-title">演练计划申报</p>
+    <button nz-button nzType="primary" style="float: right" (click)="new()">新建</button>
+  </div>
+  <div class="divider"></div>
+  <div class="point-set">
+    <div>
+      <sf #sf1 mode="search" [button]="null" [schema]="searchSchema"> </sf>
+    </div>
+    <div style="display: flex; justify-content: flex-end">
+      <button type="search" nzType="primary" (click)="fromSearch()" nz-button>搜索</button>
+      <button type="reset" (click)="resetSearch($event)" nz-button>重置</button>
+    </div>
+  </div>
+</nz-card>
+<nz-card>
+  <st
+    #st
+    [widthMode]="{ type: 'strict' }"
+    [data]="url"
+    [req]="customRequest"
+    [page]="customPage"
+    [res]="customResponse"
+    [columns]="columns"
+    [responsive]="false"
+  >
+  </st>
+  <div style="margin-top: 15px">
+    <button nz-button nzType="primary" (click)="st.export()">导出</button>
+  </div>
+</nz-card>
+
+<nz-drawer [nzClosable]="true" [nzWidth]="880" [nzVisible]="visible" nzPlacement="right" (nzOnClose)="close()">
+  <div style="display: flex; align-items: center">
+    <span class="blod-title">{{ title[titleIndex] }}</span>
+    <div class="head-switch">
+      <span>区域应急</span>
+      <nz-switch [(ngModel)]="submitEventVO.isAreaEmergency" (ngModelChange)="areaEmergencyChange()"></nz-switch>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+  <!-- 计划名称和区域 -->
+  <div class="drawer-content-head">
+    <sf #sf3 mode="search" [button]="null" [schema]="drawerSearchSchema"> </sf>
+  </div>
+  <div class="cross-line"></div>
+  <span class="item-title" style="margin-top: 26px">演练用例</span>
+
+  <!-- 选择事件大类 -->
+  <div class="content-item middle">
+    <div class="item-title">选择事件大类</div>
+    <div class="item-content edit-content">
+      <nz-checkbox-group [(ngModel)]="eventCategoryData" (ngModelChange)="categoryChange(eventCategoryData)"> </nz-checkbox-group>
+    </div>
+  </div>
+
+  <!-- 选择事件类型 -->
+  <div class="content-item middle">
+    <div class="item-title">选择事件类型</div>
+    <div class="item-content edit-content">
+      <nz-checkbox-group [(ngModel)]="eventData" (ngModelChange)="eventChange(eventData)"> </nz-checkbox-group>
+    </div>
+  </div>
+
+  <!-- 选择事件等级 -->
+  <div class="content-item middle">
+    <div class="item-title">选择事件等级</div>
+    <div class="item-content edit-content">
+      <nz-checkbox-group [(ngModel)]="eventLevelData" (ngModelChange)="levelChange(eventLevelData)"> </nz-checkbox-group>
+    </div>
+  </div>
+
+  <!-- 事件概括及处理要求 -->
+  <div style="margin: 12px 0 15px 0">
+    <span class="item-title must" style="width: 200px; margin-bottom: 15px">事件概况及处理要求</span>
+    <nz-form-item>
+      <nz-form-control [nzSpan]="24" nzErrorTip="请输入事件概况及处理要求">
+        <textarea
+          maxlength="100"
+          nz-input
+          rows="5"
+          placeholder="请输入事件概况及处置要求，确保事件概况简明扼要，提升语音电话通知效率，填写文字请勿超过100字"
+          [(ngModel)]="submitEventVO.overviewAndRequirements"
+          (ngModelChange)="textareaChange()"
+        ></textarea>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+
+  <!-- 查询 -->
+  <div *ngIf="!isEdit">
+    <span class="item-title">查询结果</span>
+    <button nz-button nzType="primary" style="float: right" (click)="tagSearch()">查询</button>
+  </div>
+  <div class="divider"></div>
+
+  <!-- 应急预案预设应急人员 -->
+  <div *ngIf="!isEdit">
+    <span class="blod-title" style="font-size: 16px">应急预案预设应急人员</span>
+    <div class="emergency-tag-list" *ngFor="let item of submitEventVO.tagVOS; let i = index">
+      <div class="list-title">
+        <div class="tag-list">
+          <span style="margin-right: 15px; color: #429eff">标签名称</span>
+          <div class="tag" *ngIf="item.tagName">
+            <span>{{ item.tagName }}</span>
+            <img class="close" src="assets/img/close.png" (click)="tagClose(i)" />
+          </div>
+        </div>
+        <div class="icon-up">
+          <img src="assets/img/icon-up.png" />
+        </div>
+      </div>
+      <div style="margin: 10px 0">
+        <div class="head-img" *ngFor="let list of item.tagUsers; let a = index">
+          <img [src]="list.avatar" *ngIf="list.avatar" />
+          <nz-avatar [nzShape]="'square'" [nzSize]="50" [nzIcon]="'user'" *ngIf="!list.avatar"></nz-avatar>
+          <img class="close" src="assets/img/icon-close.png" (click)="tagUserDelete(i, a)" />
+          <p>{{ list.name }}</p>
+        </div>
+      </div>
+      <nz-divider style="margin: 0"></nz-divider>
+    </div>
+  </div>
+  <div class="division" style="margin-top: 17px"></div>
+
+  <!-- 新增电话人员 -->
+  <div style="margin: 20px 0">
+    <span class="blod-title" style="font-size: 16px">新增电话人员</span>
+    <div class="check-option-list" style="margin-top: 10px">
+      <!-- 审核人员头像 -->
+      <div class="head-img" *ngFor="let item of submitEventVO.temCallThirdUsers; let i = index">
+        <img [src]="item.avatar" *ngIf="item.avatar" />
+        <nz-avatar [nzShape]="'square'" [nzSize]="50" [nzIcon]="'user'" *ngIf="!item.avatar"></nz-avatar>
+        <img class="close" src="assets/img/icon-close.png" (click)="phoneDelete(i)" />
+        <p>{{ item.name }}</p>
+      </div>
+      <div class="add-img" (click)="addUser()">
+        <img src="assets/img/add.png" />
+      </div>
+    </div>
+  </div>
+  <!-- 现场指挥 -->
+  <div class="division"></div>
+  <div style="margin: 20px 0">
+    <span class="blod-title must" style="font-size: 16px">现场指挥人员</span>
+    <div class="check-option-list" style="margin-top: 10px">
+      <div class="head-img" *ngFor="let item of commandPeople; let i = index">
+        <img [src]="item.avatar" *ngIf="item.avatar" />
+        <nz-avatar [nzShape]="'square'" [nzSize]="50" [nzIcon]="'user'" *ngIf="!item.avatar"></nz-avatar>
+        <img class="close" src="assets/img/icon-close.png" (click)="commandDelete(i)" />
+        <p>{{ item.name }}</p>
+      </div>
+      <div class="add-img" (click)="addCommand()">
+        <img src="assets/img/add.png" />
+      </div>
+    </div>
+  </div>
+  <div class="division"></div>
+
+  <!-- 添加预案 -->
+  <div class="item-btn">
+    <span class="item-title" style="width: 200px">应急预案</span>
+    <button nz-button (click)="addPlanFile()">
+      <span btntext>添加应急预案</span>
+    </button>
+  </div>
+
+  <!-- 预案列表 -->
+  <div>
+    <div class="download" *ngFor="let item of submitEventVO.eventPlanVOS; let i = index">
+      <div>
+        <img [src]="judgeFile(item.fileUrl)" />
+        <span>{{ item.title }}</span>
+      </div>
+      <img src="assets/img/icon-close.png" (click)="emergencyPlanFileDelete(i)" />
+    </div>
+  </div>
+
+  <!-- 附件 -->
+  <div class="item-btn">
+    <div>
+      <span class="item-title" style="width: auto">附件</span>
+      <span style="color: #acacac">注：附件不得超于5M</span>
+    </div>
+    <nz-upload [(nzFileList)]="fileList" [nzShowUploadList]="false" [nzBeforeUpload]="beforeUpload">
+      <button nz-button>
+        <span btntext>上传附件</span>
+      </button>
+    </nz-upload>
+  </div>
+  <div class="divider"></div>
+  <div class="accessory" *ngFor="let item of submitEventVO.eventAttachmentFiles; let i = index">
+    <div>
+      <img [src]="judgeFile(item.url)" />
+      <span style="vertical-align: middle">{{ item.fileName }}</span>
+    </div>
+    <img src="assets/img/icon-close.png" (click)="deleteAttachmentFiles(i)" />
+  </div>
+  <div class="division" style="margin: 20px 0"></div>
+
+  <!-- 底部信息 -->
+  <div class="content-item" style="display: block">
+    <div class="item-title">填写人</div>
+    <div class="item-content" style="width: 220px">{{ submitEventVO.submitName }}</div>
+  </div>
+  <div class="content-item" style="display: block">
+    <div class="item-title">填写日期</div>
+    <div class="item-content" style="width: 220px">{{ submitTime }}</div>
+  </div>
+  <div class="content-item">
+    <div class="item-title">审批人</div>
+    <div class="item-content">
+      <nz-select [(ngModel)]="approver[0]" [nzShowArrow]="false" nzAllowClear nzPlaceHolder="请选择" style="width: 220px">
+        <nz-option *ngFor="let option of approver" [nzValue]="option" [nzLabel]="option.label"> </nz-option>
+      </nz-select>
+      <img src="assets/img/add.png" style="margin-left: 15px" (click)="approverUser()" />
+    </div>
+  </div>
+  <!-- 驳回原因 -->
+  <div *ngIf="dismissed">
+    <span class="item-title" style="width: 200px; margin-bottom: 15px">驳回原因</span>
+    <nz-form-item>
+      <nz-form-control [nzSpan]="24" nzErrorTip="请输入处理结果">
+        <textarea maxlength="100" nz-input rows="5" placeholder="请输入驳回原因"></textarea>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div style="height: 60px"></div>
+  <div class="footer">
+    <div>
+      <button nz-button *ngIf="newReport" (click)="abandon()">
+        <span btntext>废弃</span>
+      </button>
+    </div>
+    <div>
+      <button nz-button nzType="default" (click)="return()">返回</button>
+      <button nz-button nzType="primary" (click)="save()">保存</button>
+    </div>
+  </div>
+
+  <!-- 子抽屉 -->
+  <nz-drawer [nzClosable]="true" [nzFooter]="footerTpl" [nzVisible]="childrenVisible" (nzOnClose)="closeChildren()" [nzWidth]="660">
+    <div>
+      <span class="blod-title">应急预案关联</span>
+      <nz-divider></nz-divider>
+      <!-- 应急规章制度列表 -->
+      <div>
+        <st
+          #st2
+          [widthMode]="{ type: 'strict' }"
+          [data]="childrenUrl"
+          [req]="customRequest"
+          [page]="customPage"
+          [res]="customResponse"
+          [columns]="columns2"
+          [responsive]="false"
+          (change)="stChange($event)"
+        >
+        </st>
+      </div>
+    </div>
+
+    <ng-template #footerTpl>
+      <div style="float: right">
+        <button nz-button style="margin-right: 8px" (click)="childrenCancel()">取消</button>
+        <button nz-button nzType="primary" (click)="childrenConfirm()">确认</button>
+      </div>
+    </ng-template>
+  </nz-drawer>
+</nz-drawer>

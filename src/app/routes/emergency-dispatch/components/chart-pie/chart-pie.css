@@ -1,0 +1,17 @@
+.show-data {
+  position: relative;
+  display: inline-block;
+  width: 150px;
+  text-align: center;
+  cursor: default;
+}
+.show-data p {
+  margin: 0;
+}
+.show-percent {
+  width: 100%;
+  position: absolute;
+  text-align: center;
+  top: 54px;
+  left: 0;
+}
