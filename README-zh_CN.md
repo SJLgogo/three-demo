@@ -17,6 +17,76 @@
 
 + minio分布式存储功能组织使用方法
 + 
++ 1.环境变量配置
+export const environment = {
+  production: false,
+  useHash: false,
+  api: {
+    baseUrl: './api/',
+    refreshTokenEnabled: true,
+    refreshTokenType: 'auth-refresh',
+    version: 'dev',
+    RESOURCE_APP_NAME:'shaoxing2-resource-document-management',
+  },
+  modules: [DelonMockModule.forRoot({ data: MOCKDATA })]
+} as Environment;
+
++ 2.html
+<div class="upload">
+  <nz-upload
+    nzType="drag"
+    [nzMultiple]="false"
+    [nzAccept]="
+      'application/pdf,application/msword,application/vnd.ms-excel,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+    "
+    [(nzFileList)]="fileList"
+    [nzBeforeUpload]="beforeUpload"
+    [nzRemove]="fileRemove"
+  >
+    <div class="add-img">
+      <img src="assets/img/add.png" />
+    </div>
+    <p class="ant-upload-text">将文件拖到此处，或点击上传</p>
+  </nz-upload>
+</div>
+
++ 3.ts代码
+handleUpload() {
+  const formData = new FormData();
+  this.fileList.forEach((file: any) => {
+    formData.append('file', file);
+  });
+  this.uploading = true;
+  const appName = `${environment.api['RESOURCE_APP_NAME']}`;
+  formData.append('appName', appName);
+  this.http.post(`/service/platform-resource/resources/wxcp/uploadObject`, formData).subscribe((res) => {
+    if (res.success) {
+      //->>>>>>>>>>>>业务代码
+
+      const objectName = res.data.objectName;//应用只存上传返回的这个objectName
+      console.log(objectName);
+      const url = this.presignedGetObjectUrl(objectName);//通过objectName来获取访问链接
+      this.emergencyPlanFileDTO.url = url;
+    }
+  });
+}
+
+//获取临时访问链接
+presignedGetObjectUrl(objectName: String) {
+  const postData = {
+    objectName: objectName,//上传获取的文件名称
+    appName: `${environment.api['RESOURCE_APP_NAME']}`,//每个应用应该配置一个应用名
+    expires: 120000//临时链接生效时长，不少于120秒，这里是120000毫秒
+  };
+  this.http.post(`/service/platform-resource/resources/wxcp/presignedGetObjectUrl`, postData).subscribe((res) => {
+    if (res.success) {
+      console.log(res);
+      return res.data;
+    } else {
+      return null;
+    }
+  });
+}
 
 
 ## 特性
