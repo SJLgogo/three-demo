@@ -49,8 +49,8 @@ export class UserManagementComponent implements OnInit {
     this.modal
       .createStatic(SelectProjectPersonComponent, {
         chooseMode: 'employee', // department organization employee
-        functionName: 'not-clock',
-        singleChoice:true
+        functionName: 'not-clock'
+        // singleChoice:true
       })
       .subscribe(res => {
         console.log(res);

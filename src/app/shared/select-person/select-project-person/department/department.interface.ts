@@ -1,6 +1,4 @@
-class DepartmentClass {
-
-}
+class DepartmentClass {}
 
 interface childNode {
   title: string;
@@ -13,42 +11,33 @@ interface childNode {
 }
 
 interface TreeNode extends childNode {
-  children: childNode[]
+  children: childNode[];
 }
 
 interface Person extends CommonSelect {
-  corpId: string,
-  projectId: string,
-  projectName: string
+  corpId: string;
+  departmentId: string;
+  departmentName: string;
 }
 
 interface Organization extends CommonSelect {
-  selected?: boolean
+  selected?: boolean;
 }
 
-type Department = Partial<Person>
+type Department = Partial<Person>;
 
 interface CommonSelect {
-  category: string,
-  id: string,
-  name: string,
-  companyId: string
-  companyName: string
+  category: string;
+  id: string;
+  name: string;
+  companyId: string;
+  companyName: string;
 }
 
-type selected = Person | Organization | Department
+type selected = Person | Organization | Department;
 type variable<T> = T | undefined | null;
 type fn = voidFn;
-type voidFn = () => void
-type promiseFn<T = void> = (str: string) => Promise<T>
+type voidFn = () => void;
+type promiseFn<T = void> = (str: string) => Promise<T>;
 
-export {
-  DepartmentClass,
-  TreeNode,
-  fn,
-  variable,
-  childNode,
-  Person,
-  Organization,
-  selected
-}
+export { DepartmentClass, TreeNode, fn, variable, childNode, Person, Organization, selected };
