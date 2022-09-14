@@ -13,7 +13,7 @@ export const environment = {
     baseUrl: './api/',
     refreshTokenEnabled: true,
     refreshTokenType: 'auth-refresh',
-    version: 'dev'
+    version: 'rpc'
   },
   SERVER_URL: '',
   RESOURCE_SERVER_URL: '',

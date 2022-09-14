@@ -71,20 +71,6 @@
           "reuse": false
         },
         {
-          "text": "system.login.log",
-          "i18n": "system.login.log",
-          "icon": "anticon-cloud",
-          "link": "/system/login-log",
-          "reuse": false
-        },
-        {
-          "text": "system.online.user",
-          "i18n": "system.online.user",
-          "icon": "anticon-cloud",
-          "link": "/system/online-user",
-          "reuse": false
-        },
-        {
           "text": "system.schedule",
           "i18n": "system.schedule",
           "icon": "anticon-cloud",

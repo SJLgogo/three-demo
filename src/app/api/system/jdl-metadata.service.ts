@@ -14,6 +14,12 @@ export class JdlMetadataService extends BaseApi {
     return;
   }
 
+  @GET('/test')
+  test(): Observable<HttpResponse<any>> {
+    // @ts-ignore
+    return;
+  }
+
   @POST('')
   save(@Body data: any): Observable<HttpResponse<any>> {
     // @ts-ignore

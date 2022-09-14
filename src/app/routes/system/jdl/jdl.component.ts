@@ -3,6 +3,7 @@ import { STColumn, STComponent } from '@delon/abc/st';
 import { SFSchema } from '@delon/form';
 import { _HttpClient, ModalHelper } from '@delon/theme';
 import { SystemJdlEditComponent } from './edit/edit.component';
+import { JdlMetadataService } from '../../../api/system/jdl-metadata.service';
 
 @Component({
   selector: 'app-system-jdl',
@@ -40,7 +41,7 @@ export class SystemJdlComponent {
     }
   ];
 
-  constructor(private http: _HttpClient, private modal: ModalHelper) {}
+  constructor(private http: _HttpClient, private modal: ModalHelper, private metadataService: JdlMetadataService) {}
 
   add(): void {
     this.modal.createStatic(SystemJdlEditComponent, { i: { id: '' } }, { size: 600 }).subscribe(() => this.st.reload());
@@ -48,5 +49,11 @@ export class SystemJdlComponent {
 
   refresh(): void {
     this.st.reload();
+  }
+
+  test(): void {
+    this.metadataService.test().subscribe(res => {
+      console.log(res);
+    });
   }
 }
