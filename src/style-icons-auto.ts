@@ -53,7 +53,14 @@ import {
   UserOutline,
   WeiboCircleOutline,
   FolderOutline,
-  ReloadOutline
+  ReloadOutline,
+  MinusSquareOutline,
+  FolderOpenOutline,
+  PlusSquareOutline,
+  FolderOpenFill,
+  MenuOutline,
+  PlusCircleOutline,
+  DeploymentUnitOutline
 } from '@ant-design/icons-angular/icons';
 
 export const ICONS_AUTO = [
@@ -106,5 +113,12 @@ export const ICONS_AUTO = [
   UserOutline,
   WeiboCircleOutline,
   FolderOutline,
-  ReloadOutline
+  ReloadOutline,
+  MinusSquareOutline,
+  FolderOpenOutline,
+  PlusSquareOutline,
+  FolderOpenFill,
+  MenuOutline,
+  PlusCircleOutline,
+  DeploymentUnitOutline
 ];

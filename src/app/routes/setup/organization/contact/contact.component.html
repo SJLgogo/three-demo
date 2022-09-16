@@ -104,10 +104,9 @@
         [data]="url"
         [size]="'small'"
         [columns]="columns"
-        [req]="employeeTableRequest"
-        [res]="employeeTableResponse"
         [scroll]="{ x: '1300px' }"
       ></st>
+
     </nz-card>
     <ng-template #extraTemplate>
       <button *ngIf="showAssignEmployeeButton" nz-button nzType="default" (click)="addAccount()" nzBlock>

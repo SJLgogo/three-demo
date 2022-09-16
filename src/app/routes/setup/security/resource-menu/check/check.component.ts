@@ -30,7 +30,7 @@ export class SetupSecurityResourceMenuCheckComponent implements OnInit, OnChange
   confirmModal!: NzModalRef;
   halfCheckedIds: any = [];
 
-  url = `//base/service/security/admin/authority/permission/page-element-table`;
+  url = `/security/service/security/admin/authority/permission/page-element-table`;
   searchSchema: SFSchema = {
     properties: {
       no: {
@@ -65,9 +65,9 @@ export class SetupSecurityResourceMenuCheckComponent implements OnInit, OnChange
     { title: '', type: 'checkbox', index: 'permissionId' },
     { title: '元素名称', index: 'name' },
     { title: '页面标识符', index: 'identifier' },
-    { title: '权限受控', index: 'isPermissionElement', type: 'badge' },
-    { title: '权限名称', index: 'permissionName' },
-    { title: '权限标识符', index: 'permissionIdentifier' },
+    // { title: '权限受控', index: 'isPermissionElement', type: 'badge' },
+    // { title: '权限名称', index: 'permissionName' },
+    // { title: '权限标识符', index: 'permissionIdentifier' },
     { title: '备注', index: 'remark' }
   ];
 
@@ -137,19 +137,13 @@ export class SetupSecurityResourceMenuCheckComponent implements OnInit, OnChange
     }
   }
 
-  // 加载组织机构树
+  // 加载角色对应的菜单数据
   loadMenuTree(): void {
     this.orgTreeLoading = true;
-    this.http.get(`//base/service/security/admin/security-resource/menu-tree?menuId=root&roleId=` + this.role.id).subscribe((res) => {
+    this.http.get(`/security/service/security/admin/security-resource/menu-tree/` + this.role.id).subscribe((res) => {
       if (res.success) {
-        // this.defaultCheckedKeys = ['ff808081751a80fd01751a9fdc770009'];
-        console.log('res.data:', res.data);
         this.defaultCheckedKeys = res.data.selectedKeys;
-        console.log('defaultCheckedKeys:', this.defaultCheckedKeys);
-
         this.menuNodes = res.data.tree;
-        // this.defaultCheckedKeys = ['ff808081751a80fd01751a9fdc770009'];
-
         this.orgTreeLoading = false;
         this.cdr.detectChanges();
       }
@@ -193,7 +187,7 @@ export class SetupSecurityResourceMenuCheckComponent implements OnInit, OnChange
   getCheckedMenuIds(treeNodes: NzTreeNode[]): Set<string> {
     const checkedMenuIds = new Set('');
 
-    console.log('treeNodes', treeNodes);
+    // console.log('treeNodes', treeNodes);
 
     treeNodes.forEach((treeNode, index) => {
       checkedMenuIds.add(treeNode.key);

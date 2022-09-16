@@ -49,36 +49,37 @@ export class SetupContactComponent implements OnInit {
   confirmModal!: NzModalRef;
 
   url = `/org/service/organization/rpc/user/findByOrgId`;
-  employeeTableRequest: any = {
-    lazyLoad: true,
-    allInBody: true,
-    method: 'POST',
-    reName: {
-      pi: 'page',
-      ps: 'pageSize'
-    },
-    params: {
-      orgId: 'root',
-      mode: 'organization'
-    }
-  };
-  employeeTableResponse: any = {
-    reName: {
-      total: 'data.totalElements',
-      list: 'data.content'
-    }
-  };
+  // employeeTableRequest: any = {
+  //   lazyLoad: true,
+  //   allInBody: true,
+  //   method: 'POST',
+  //   reName: {
+  //     pi: 'page',
+  //     ps: 'pageSize'
+  //   },
+  //   params: {
+  //     orgId: 'root',
+  //     mode: 'organization'
+  //   }
+  // };
+  // employeeTableResponse: any = {
+  //   reName: {
+  //     total: 'data.totalElements',
+  //     list: 'data.content'
+  //   }
+  // };
 
 
   @ViewChild('st', { static: false }) st!: STComponent;
   columns: STColumn[] = [
     // { title: '头像', type: 'img', width: 60, index: 'wxAvatar', fixed: 'left' },
-    { title: '姓名', index: 'thirdPartyName', fixed: 'left' },
+    { title: '公司', index: 'companyName', fixed: 'left' },
+    { title: '姓名', index: 'loginUserName', fixed: 'left' },
     { title: '账号', index: 'mobilePhone', fixed: 'left' },
     {
       title: '来源', index: 'scene',
       format: (item: any) => {
-        if (item.scene == 'wxcp') {
+        if (item.scene == 'wxCp') {
           return '企业微信';
         } else if (item.scene == 'miniapp') {
           return '小程序';
@@ -167,7 +168,7 @@ export class SetupContactComponent implements OnInit {
       mode: mode,
       searchName: searchName,
       employeeId: orgId,
-      orgId: orgId,
+      parentOrgId: orgId,
       postId: postId,
       jobId: jobId,
       tagId: tagId

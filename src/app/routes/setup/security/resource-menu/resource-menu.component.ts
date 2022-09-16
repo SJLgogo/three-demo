@@ -23,7 +23,7 @@ export class SetupSecurityResourceMenuComponent implements OnInit {
   activedMenuNode!: NzTreeNode;
   confirmModal!: NzModalRef;
 
-  url = `//base/service/security/admin/authority/permission/page-element-table`;
+  url = `/security/service/security/admin/authority/permission/page-element-table`;
   searchSchema: SFSchema = {
     properties: {
       no: {
@@ -57,9 +57,9 @@ export class SetupSecurityResourceMenuComponent implements OnInit {
   columns: STColumn[] = [
     { title: '元素名称', index: 'name' },
     { title: '页面标识符', index: 'identifier' },
-    { title: '权限受控', index: 'isPermissionElement', type: 'badge' },
-    { title: '权限名称', index: 'permissionName' },
-    { title: '权限标识符', index: 'permissionIdentifier' },
+    // { title: '权限受控', index: 'isPermissionElement', type: 'badge' },
+    // { title: '权限名称', index: 'permissionName' },
+    // { title: '权限标识符', index: 'permissionIdentifier' },
     { title: '备注', index: 'remark' },
     {
       title: '',
@@ -90,7 +90,7 @@ export class SetupSecurityResourceMenuComponent implements OnInit {
 
   loadPageElementResourceTable(menuId: string): void {
     this.st.reload({
-      menuId: this.optMenuId
+      parentId: this.optMenuId
     });
   }
 
@@ -99,7 +99,8 @@ export class SetupSecurityResourceMenuComponent implements OnInit {
     private modal: ModalHelper,
     private msgSrv: NzMessageService,
     private cdr: ChangeDetectorRef,
-    private modalSrv: NzModalService
+    private modalSrv: NzModalService,
+
   ) {
   }
 
@@ -122,7 +123,7 @@ export class SetupSecurityResourceMenuComponent implements OnInit {
   // 加载组织机构树
   loadMenuTree(): void {
     this.orgTreeLoading = true;
-    this.http.get(`//base/service/security/admin/security-resource/menu-tree?menuId=root`).subscribe((res) => {
+    this.http.get(`/security/service/security/admin/security-resource/myMenuTree`).subscribe((res) => {
       if (res.success) {
         this.menuNodes = res.data.tree;
         this.orgTreeLoading = false;

@@ -40,7 +40,7 @@ export class SetupSecurityRolePermissionComponent implements OnInit {
   //加载组织机构树
   loadRoleTree(): void {
     this.roleTreeLoading = true;
-    this.http.get(`//base/service/security/admin/authority/role/role-tree`).subscribe((res) => {
+    this.http.get(`/security/service/security/admin/authority/role/role-tree`).subscribe((res) => {
       if (res.success) {
         this.roleNodes = res.data;
         this.roleTreeLoading = false;
