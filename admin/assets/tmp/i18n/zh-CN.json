@@ -162,7 +162,5 @@
   "system.apiDoc": "接口文档管理",
   "system.dict.data": "字典数据管理",
   "system.operation.log": "操作日志",
-  "system.login.log": "登录日志",
-  "system.online.user": "在线用户管理",
   "home": "首页"
 }

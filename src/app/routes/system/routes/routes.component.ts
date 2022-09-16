@@ -29,13 +29,18 @@ export class SystemRoutesComponent implements OnInit {
         }
       },
       dict: {
-        type: 'string',
-        title: '字典数据',
-        ui: {
-          placeholder: '请选择请假类型',
-          widget: 'dict',
-          typeValue: 'system_education',
-          loadingTip: 'loading...'
+        type: 'object',
+        properties: {
+          name: {
+            type: 'string',
+            title: '字典数据',
+            ui: {
+              placeholder: '请选择请假类型',
+              widget: 'dict',
+              typeValue: 'system_education',
+              loadingTip: 'loading...'
+            }
+          }
         }
       }
     }
