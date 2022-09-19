@@ -15,36 +15,21 @@
   <div nz-col [nzSpan]="4">
     <nz-card nzTitle="角色关系">
       <nz-tree
-        nzBlockNode
         [nzData]="roleNodes"
+        [nzAsyncData]="'true'"
+        nzExpandAll="true"
+        nzShowLine
         (nzClick)="roleEvent($event)"
         [nzTreeTemplate]="nzTreeTemplate"
       ></nz-tree>
-
-<!--      <ng-template #nzTreeTemplate let-node let-origin="origin">-->
-<!--      <span class="custom-node">-->
-<!--        <span *ngIf="!node.isLeaf" >-->
-<!--          <span nz-icon [nzType]="node.isExpanded ? 'folder-open' : 'folder'" (click)="openFolder(node)"></span>-->
-<!--          <span class="folder-name">{{ node.title }}</span>-->
-<!--          <span class="folder-desc">created by </span>-->
-<!--        </span>-->
-<!--        <span *ngIf="node.isLeaf" >-->
-<!--          <span nz-icon nzType="file"></span>-->
-<!--          <span class="file-name">{{ node.title }}</span>-->
-<!--          <span class="file-desc">modified by </span>-->
-<!--        </span>-->
-<!--      </span>-->
-<!--      </ng-template>-->
-
-
       <ng-template #nzTreeTemplate let-node>
-        <span class="custom-node">
+        <span class="custom-node" [class.active]="activeRoleNode?.key === node.key">
           <span class="custom-node-item" *ngIf="!node.isLeaf">
             <i nz-icon [nzType]="node.isExpanded ? 'folder-open' : 'folder'" (click)="openFolder(node)"></i>
             <span class="folder-name"> {{ node.title }} </span>
             <span class="file-desc">
               <a nz-dropdown [nzDropdownMenu]="roleOptMenu" nzTrigger="click"
-                ><i nz-icon nzType="menu" (click)="optRole(node)" nzTheme="outline"></i
+              ><i nz-icon nzType="menu" (click)="optRole(node)" nzTheme="outline"></i
               ></a>
             </span>
           </span>
@@ -53,7 +38,7 @@
             <span class="file-name">{{ node.title }}</span>
             <span class="file-desc">
               <a nz-dropdown [nzDropdownMenu]="roleOptMenu" nzTrigger="click"
-                ><i nz-icon nzType="menu" (click)="optRole(node)" nzTheme="outline"></i
+              ><i nz-icon nzType="menu" (click)="optRole(node)" nzTheme="outline"></i
               ></a>
             </span>
           </span>
@@ -69,8 +54,6 @@
           </nz-dropdown-menu>
         </span>
       </ng-template>
-
-
     </nz-card>
   </div>
 
@@ -83,13 +66,13 @@
           <app-setup-security-resource-menu-check [role]="selectedRole"></app-setup-security-resource-menu-check>
         </nz-tab>
 
-        <nz-tab nzTitle="数据权限" [nzForceRender]="true">
-          <app-setup-data-permissions [role]="selectedRole"></app-setup-data-permissions>
-        </nz-tab>
-
-<!--        <nz-tab nzTitle="应用权限" [nzForceRender]="true">-->
-<!--          <app-setup-app-permissions [role]="selectedRole"></app-setup-app-permissions>-->
+<!--        <nz-tab nzTitle="数据权限" [nzForceRender]="true">-->
+<!--          <app-setup-data-permissions [role]="selectedRole"></app-setup-data-permissions>-->
 <!--        </nz-tab>-->
+
+        <nz-tab nzTitle="应用权限" [nzForceRender]="true">
+          <app-setup-app-permissions [role]="selectedRole"></app-setup-app-permissions>
+        </nz-tab>
 
         <nz-tab nzTitle="用户授权" [nzForceRender]="true">
           <app-setup-user-permission #appUsePermission [role]="selectedRole"></app-setup-user-permission>

@@ -1,6 +1,6 @@
 /* eslint-disable */
 import { ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import { STColumn, STComponent } from '@delon/abc/st';
+import { STColumn, STComponent, STData } from '@delon/abc/st';
 import { SFSchema } from '@delon/form';
 import { _HttpClient, ModalHelper } from '@delon/theme';
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -19,6 +19,8 @@ export class SetupSecurityResourceMenuCheckComponent implements OnInit, OnChange
   defaultCheckedKeys = [];
   checkedMenuIds: any = [];
   checkedPermissionIds: any = [];
+  //选中的按钮权限id
+  checkedButtonPermissionIds: any = [];
   // 内存中的菜单和权限选择数据
   checkedMenuPermissionMap: Map<string, Set<string>> = new Map<string, Set<string>>();
 
@@ -26,7 +28,7 @@ export class SetupSecurityResourceMenuCheckComponent implements OnInit, OnChange
   optMenuId = '';
   optMenuName = '无';
   orgTreeLoading = true;
-  activedMenuNode!: NzTreeNode;
+  activeMenuNode!: NzTreeNode;
   confirmModal!: NzModalRef;
   halfCheckedIds: any = [];
 
@@ -65,9 +67,6 @@ export class SetupSecurityResourceMenuCheckComponent implements OnInit, OnChange
     { title: '', type: 'checkbox', index: 'permissionId' },
     { title: '元素名称', index: 'name' },
     { title: '页面标识符', index: 'identifier' },
-    // { title: '权限受控', index: 'isPermissionElement', type: 'badge' },
-    // { title: '权限名称', index: 'permissionName' },
-    // { title: '权限标识符', index: 'permissionIdentifier' },
     { title: '备注', index: 'remark' }
   ];
 
@@ -88,50 +87,43 @@ export class SetupSecurityResourceMenuCheckComponent implements OnInit, OnChange
   ) {
   }
 
-  // selectedRole;
   ngOnInit() {
-    // console.log('role:', this.role);
     // this.loadMenuTree();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('测试:', this.role);
     this.loadMenuTree();
   }
 
   // 表格点击事件
   permissionTableChange(e: any): void {
     if (e.type === 'checkbox') {
-      const permissionIds = [];
-      for (const p of e.checkbox) {
-        if (!this.checkedMenuPermissionMap.has(p.menuId)) {
-          this.msgSrv.error('请选中该权限所属的菜单!');
-          this.st.clearCheck();
-          return;
-        } else {
-          permissionIds.push(p.permissionId);
-        }
+      //点击一行的数据
+      for (const permission of e.checkbox) {
+        // if (!this.checkedMenuPermissionMap.has(p.menuId)) {
+        //   this.msgSrv.error('请选中该权限所属的菜单!');
+        //   this.st.clearCheck();
+        //   return;
+        // } else {
+        //   permissionIds.push(p.permissionId);
+        // }
+        this.checkedButtonPermissionIds.push(permission.id);
       }
-      this.updatePermissionCheck(e.checkbox);
-      this.updateCheckIds();
     }
   }
 
+
   // 点击树节点
   menuEvent(event: NzFormatEmitEvent): void {
-    // console.log('role222:', this.role);
-
     const node: any = event.node;
     if (event.eventName === 'click' || event.eventName === 'dblclick') {
       this.optMenuId = node.key;
       this.optMenuName = node.title;
       this.loadPageElementResourceTable(this.optMenuId);
-      this.activedMenuNode = node;
+      this.activeMenuNode = node;
     } else if (event.eventName === 'check') {
       const checkedMenuIdArray = this.getCheckedMenuIds(this.roleTreeComponent.getCheckedNodeList());
-
-      console.log('checkedMenuIdArray:', checkedMenuIdArray);
-
+      // console.log('checkedMenuIdArray:', checkedMenuIdArray);
       this.updateMenuCheckNodes(checkedMenuIdArray);
       this.updateCheckIds();
     }
@@ -142,7 +134,10 @@ export class SetupSecurityResourceMenuCheckComponent implements OnInit, OnChange
     this.orgTreeLoading = true;
     this.http.get(`/security/service/security/admin/security-resource/menu-tree/` + this.role.id).subscribe((res) => {
       if (res.success) {
+        //下拉树赋值
         this.defaultCheckedKeys = res.data.selectedKeys;
+        //按钮选中赋值
+        this.checkedButtonPermissionIds = res.data.selectedKeys;
         this.menuNodes = res.data.tree;
         this.orgTreeLoading = false;
         this.cdr.detectChanges();
@@ -150,8 +145,20 @@ export class SetupSecurityResourceMenuCheckComponent implements OnInit, OnChange
     });
   }
 
+
+  // 数据前端再处理一次
+  dataProcess = (data: STData[]): STData[] => {
+    return data.map((i: any, index) => {
+      if (this.checkedButtonPermissionIds != null && this.checkedButtonPermissionIds.includes(i.id)) {
+        i.checked = true;
+      }
+      return i;
+    });
+  };
+
+
   optMenu(node: any) {
-    this.activedMenuNode = node;
+    this.activeMenuNode = node;
     this.optMenuId = node.key;
     this.optMenuName = node.title;
   }
@@ -161,22 +168,17 @@ export class SetupSecurityResourceMenuCheckComponent implements OnInit, OnChange
     if (checkedMenuIdArray.size > 0) {
       // 删除已取消选择的数据
       const toRemoveIds = new Array();
-      // console.log(this.checkedMenuPermissionMap);
       this.checkedMenuPermissionMap.forEach((value, menuId) => {
-        // console.log('menuId',menuId,'has',checkedMenuIdArray.has(menuId));
         if (!checkedMenuIdArray.has(menuId)) {
           toRemoveIds.push(menuId);
         }
       });
       toRemoveIds.forEach((removeId) => this.checkedMenuPermissionMap.delete(removeId));
-      // console.log('after remove ', this.checkedMenuPermissionMap);
-
       checkedMenuIdArray.forEach((menuId) => {
         if (!this.checkedMenuPermissionMap.has(menuId)) {
           this.checkedMenuPermissionMap.set(menuId, new Set<string>());
         }
       });
-      // console.log('after set ', this.checkedMenuPermissionMap);
     } else {
       // 清空已经选择的所有信息
       this.checkedMenuPermissionMap.clear();
@@ -186,9 +188,6 @@ export class SetupSecurityResourceMenuCheckComponent implements OnInit, OnChange
   // 菜单-获取所有已选择的节点id数组
   getCheckedMenuIds(treeNodes: NzTreeNode[]): Set<string> {
     const checkedMenuIds = new Set('');
-
-    // console.log('treeNodes', treeNodes);
-
     treeNodes.forEach((treeNode, index) => {
       checkedMenuIds.add(treeNode.key);
       if (treeNode.children.length > 0) {
@@ -201,23 +200,12 @@ export class SetupSecurityResourceMenuCheckComponent implements OnInit, OnChange
     return checkedMenuIds;
   }
 
-  // 权限-根据已选中权限表格的数据航更新内存数据
-  updatePermissionCheck(checkPermissionRow: any): void {
-    const permissionIdSet = new Set<string>();
-    if (checkPermissionRow.length > 0) {
-      checkPermissionRow.forEach((permissionRow: any) => {
-        permissionIdSet.add(permissionRow.permissionId);
-      });
-      this.checkedMenuPermissionMap.set(checkPermissionRow[0].menuId, permissionIdSet);
-    }
-  }
 
+  //获取选中的资源id
   updateCheckIds(): void {
     this.checkedMenuIds = [];
-    this.checkedPermissionIds = [];
     this.checkedMenuPermissionMap.forEach((value, key, map) => {
       this.checkedMenuIds.push(key);
-      value.forEach((permissionId) => this.checkedPermissionIds.push(permissionId));
     });
     this.cdr.detectChanges();
   }
@@ -226,30 +214,25 @@ export class SetupSecurityResourceMenuCheckComponent implements OnInit, OnChange
     // 获取半选状态的数据
     const halfChecked = this.roleTreeComponent.getHalfCheckedNodeList();
 
-    console.log('checkedMenuIds:', this.checkedMenuIds);
-    console.log('this.checkedMenuIds.length:', this.checkedMenuIds.length);
-
-    if (this.checkedMenuIds.length === 0) {
-      this.msgSrv.warning('没有修改任何菜单权限,请改变数据后提交！');
-      return;
-    }
-
-    console.log('halfChecked:', halfChecked);
+    // if (this.checkedMenuIds.length === 0) {
+    //   this.msgSrv.warning('没有修改任何菜单权限,请改变数据后提交！');
+    //   return;
+    // }
 
     halfChecked.forEach((value, number) => {
-      console.log('value:', value.key, 'has:', number);
       this.halfCheckedIds.push(value.key);
     });
 
+    // console.log('checkedButtonPermissionIds', this.checkedButtonPermissionIds);
+    // console.log('checkedMenuIds', this.checkedMenuIds);
+
     const requestParams = {
       roleId: this.role.id,
-      menuResourceIds: this.checkedMenuIds.join(','),
-      permissionIds: this.checkedPermissionIds.join(','),
-      halfCheckedIds: this.halfCheckedIds.join(',')
+      permissionIds: this.checkedButtonPermissionIds.concat(this.checkedMenuIds),
+      halfCheckedIds: this.halfCheckedIds
     };
 
-    console.log('requestParams:', requestParams);
-    this.http.post(`//base/service/security/admin/authority/role/assign-permissions`, requestParams).subscribe((res) => {
+    this.http.post(`/security/service/security/admin/authority/role/assign-permissions`, requestParams).subscribe((res) => {
       this.msgSrv.success(res.message);
     });
   }
