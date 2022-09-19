@@ -7,6 +7,7 @@ import { SystemDictDataComponent } from './dict-data/dict-data.component';
 import { SystemOperationLogComponent } from './operation-log/operation-log.component';
 import { SystemOnlineUserComponent } from './online-user/online-user.component';
 import { SystemLoginLogComponent } from './login-log/login-log.component';
+import { SystemConfigComponent } from './config/config.component';
 
 const routes: Routes = [
   { path: 'routes', component: SystemRoutesComponent },
@@ -15,7 +16,8 @@ const routes: Routes = [
   { path: 'dict-data/:id', component: SystemDictDataComponent },
   { path: 'operation-log', component: SystemOperationLogComponent },
   { path: 'online-user', component: SystemOnlineUserComponent },
-  { path: 'login-log', component: SystemLoginLogComponent }
+  { path: 'login-log', component: SystemLoginLogComponent },
+  { path: 'config', component: SystemConfigComponent }
 ];
 
 @NgModule({

@@ -57,6 +57,13 @@
           "reuse": false
         },
         {
+          "text": "system.config",
+          "i18n": "system.config",
+          "icon": "anticon-cloud",
+          "link": "/system/config",
+          "reuse": false
+        },
+        {
           "text": "system.dict.data",
           "i18n": "system.dict.data",
           "icon": "anticon-cloud",

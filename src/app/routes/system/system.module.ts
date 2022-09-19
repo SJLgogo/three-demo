@@ -14,6 +14,8 @@ import { SystemDictDataEditComponent } from './dict-data/edit/edit.component';
 import { SystemOperationLogComponent } from './operation-log/operation-log.component';
 import { SystemOnlineUserComponent } from './online-user/online-user.component';
 import { SystemLoginLogComponent } from './login-log/login-log.component';
+import { SystemConfigComponent } from './config/config.component';
+import { SystemConfigEditComponent } from './config/edit/edit.component';
 
 const COMPONENTS: Array<Type<void>> = [
   SystemRoutesComponent,
@@ -26,7 +28,9 @@ const COMPONENTS: Array<Type<void>> = [
   SystemDictDataEditComponent,
   SystemOperationLogComponent,
   SystemOnlineUserComponent,
-  SystemLoginLogComponent
+  SystemLoginLogComponent,
+  SystemConfigComponent,
+  SystemConfigEditComponent
 ];
 
 @NgModule({
