@@ -1,0 +1,13 @@
+<page-header [action]="phActionTpl" [autoTitle]="false" [title]="null">
+  <ng-template #phActionTpl></ng-template>
+</page-header>
+<nz-card>
+  <nz-row class="justify-content-between">
+    <sf mode="search" [schema]="searchSchema" (formSubmit)="st.reset($event)" (formReset)="st.reset($event)"></sf>
+    <div>
+      <button (click)="add()" nz-button nzType="primary">添加</button>
+      <button (click)="refresh()" nz-button nzShape="circle" nzType="primary"><i nz-icon nzType="reload"></i></button>
+    </div>
+  </nz-row>
+  <st #st [bordered]="true" [columns]="columns" [data]="url"></st>
+</nz-card>

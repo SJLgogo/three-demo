@@ -161,6 +161,7 @@
   "system.schedule": "定时任务管理",
   "system.apiDoc": "接口文档管理",
   "system.dict.data": "字典数据管理",
+  "system.config": "应用配置",
   "system.operation.log": "操作日志",
   "system.login.log": "登录日志",
   "system.online.user": "在线用户管理",
