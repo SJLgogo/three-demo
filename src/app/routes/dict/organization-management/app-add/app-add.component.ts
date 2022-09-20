@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {SFComponent, SFSchema, SFUISchema} from "@delon/form";
+import { SFComponent, SFSchema, SFSelectWidgetSchema, SFUISchema } from '@delon/form';
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {CommonSelect, EmptyObject, HttpResult, variable} from "../../../../api/common-interface/common-interface";
@@ -10,7 +10,7 @@ import {map} from "rxjs/operators";
 @Component({
   selector: 'app-app-add',
   templateUrl: './app-add.component.html',
-  styleUrls: ['./app-add.component.less']
+  styleUrls: ['./app-add.component.less'],
 })
 export class AppAddComponent implements OnInit {
   @ViewChild('sf', {static: false}) sf!: SFComponent;
@@ -29,6 +29,7 @@ export class AppAddComponent implements OnInit {
       name: {type: 'string', title: '应用名称', maxLength: 100, ui: {placeHolder: '请输入'}},
       companyId: {
         type: 'string', title: '接入公司', maxLength: 100, ui: {
+          width:100,
           placeHolder: '请输入', widget: 'select',
           asyncData: () => {
             return this.organizationService.allPro().pipe(
@@ -50,8 +51,8 @@ export class AppAddComponent implements OnInit {
         type: 'string',
         title: '应用类型',
         enum: applicationType,
-        ui: {placeHolder: '请选择', widget: 'select', width: 150}
-      },
+        ui: {placeHolder: '请选择', widget: 'select'}
+      } as SFSelectWidgetSchema,
       secret: {
         type: 'string',
         title: '企业微信通讯录',

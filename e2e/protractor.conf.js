@@ -16,7 +16,7 @@ exports.config = {
     'browserName': 'chrome'
   },
   directConnect: true,
-  baseUrl: 'http://localhost:4200/',
+  baseUrl: 'http://pub.huiztech.cn:10306/huiztech-schedule-admin/',
   framework: 'jasmine',
   jasmineNodeOpts: {
     showColors: true,

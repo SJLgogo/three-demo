@@ -33,7 +33,7 @@ export class StartupService {
 
   load(): Observable<void> {
     const defaultLang = this.i18n.defaultLang;
-    return zip(this.i18n.loadLangData(defaultLang), this.httpClient.get('assets/tmp/app-data.json')).pipe(
+    return zip(this.i18n.loadLangData(defaultLang), this.httpClient.get('/security/service/security/admin/security-resource/myAlainAppData')).pipe(
       // 接收其他拦截器后产生的异常消息
       catchError(res => {
         console.warn(`StartupService.load: Network request failed`, res);
@@ -44,17 +44,21 @@ export class StartupService {
         // setting language data
         this.i18n.use(defaultLang, langData);
 
+        let data: any = { 'app': null, 'user': null, 'menu': null };
+        if (appData.success) {
+          data = appData.data;
+        }
         // 应用信息：包括站点名、描述、年份
-        this.settingService.setApp(appData.app);
+        this.settingService.setApp(data.app);
         // 用户信息：包括姓名、头像、邮箱地址
-        this.settingService.setUser(appData.user);
+        this.settingService.setUser(data.user);
         // ACL：设置权限为全量
         this.aclService.setFull(true);
         // 初始化菜单
-        this.menuService.add(appData.menu);
+        this.menuService.add(data.menu);
         // 设置页面标题的后缀
         this.titleService.default = '';
-        this.titleService.suffix = appData.app.name;
+        this.titleService.suffix = data.app.name;
       })
     );
   }

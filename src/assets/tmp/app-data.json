@@ -37,55 +37,55 @@
       ]
     },
     {
-      "text": "system",
+      "text": "系统配置",
       "i18n": "config.system",
       "group": true,
       "hideInBreadcrumb": true,
       "children": [
         {
-          "text": "system.routes",
+          "text": "路由设置",
           "i18n": "system.routes",
           "icon": "anticon-cloud",
           "link": "/system/routes",
           "reuse": false
         },
         {
-          "text": "system.jdl",
+          "text": "jdl代码生成",
           "i18n": "system.jdl",
           "icon": "anticon-cloud",
           "link": "/system/jdl",
           "reuse": false
         },
         {
-          "text": "system.dict.data",
+          "text": "字典数据管理",
           "i18n": "system.dict.data",
           "icon": "anticon-cloud",
           "link": "/system/dict-type",
           "reuse": false
         },
         {
-          "text": "system.operation.log",
+          "text": "操作日志",
           "i18n": "system.operation.log",
           "icon": "anticon-cloud",
           "link": "/system/operation-log",
           "reuse": false
         },
         {
-          "text": "system.login.log",
+          "text": "登录日志",
           "i18n": "system.login.log",
           "icon": "anticon-cloud",
           "link": "/system/login-log",
           "reuse": false
         },
         {
-          "text": "system.online.user",
+          "text": "在线用户管理",
           "i18n": "system.online.user",
           "icon": "anticon-cloud",
           "link": "/system/online-user",
           "reuse": false
         },
         {
-          "text": "system.schedule",
+          "text": "定时任务管理",
           "i18n": "system.schedule",
           "icon": "anticon-cloud",
           "externalLink": "/api/service/schedule/platform-schedule",
@@ -93,7 +93,7 @@
           "reuse": false
         },
         {
-          "text": "system.apiDoc",
+          "text": "接口文档管理",
           "i18n": "system.apiDoc",
           "icon": "anticon-cloud",
           "externalLink": "/api/service/api-doc/doc.html#/home",
