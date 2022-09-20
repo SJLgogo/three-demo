@@ -24,12 +24,12 @@ export class SetupContactComponent implements OnInit {
   searchValue: any = '';
   // -----------标签页
   activeTabIndex = 0;
-  panels:any = [];
+  panels: any = [];
   // ------------------------人员table
   employeeTableTitle = '【组织人员信息】';
   // ------------------------标签列表
   tagId = null;
-  tagList :any = [];
+  tagList: any = [];
   // 是否显示添加账户按钮
   showAssignEmployeeButton = true;
   // ------------------------组织机构树
@@ -136,7 +136,7 @@ export class SetupContactComponent implements OnInit {
       this.showSearchResult = false;
     } else {
       this.showSearchResult = true;
-      this.http.post(`/org/service/organization/admin/employee/global-search`, params).subscribe((res:any) => {
+      this.http.post(`/org/service/organization/admin/employee/global-search`, params).subscribe((res: any) => {
         if (res.success) {
           this.panels = res.data;
         }
@@ -207,7 +207,7 @@ export class SetupContactComponent implements OnInit {
   // 加载组织机构树
   loadOrgTree(): void {
     this.orgTreeLoading = true;
-    this.http.get(`/org/service/organization/admin/organization/tree/child/root`).subscribe((res:any) => {
+    this.http.get(`/org/service/organization/admin/organization/tree/child/root`).subscribe((res: any) => {
       if (res.success) {
         this.orgNodes = res.data;
         this.orgTreeLoading = false;
@@ -215,6 +215,7 @@ export class SetupContactComponent implements OnInit {
 
         this.selectedOrgId = this.orgNodes[0].key;
         // console.log('test:', this.orgNodes[0]);
+
 
         this.loadEmployeeTable('index', '', this.orgNodes[0].key, null, null, null, null);
       }
@@ -278,7 +279,7 @@ export class SetupContactComponent implements OnInit {
           const params = {
             id: node.key
           };
-          this.http.post(`/org/service/organization/admin/organization/remove`, params).subscribe((res:any) => {
+          this.http.post(`/org/service/organization/admin/organization/remove`, params).subscribe((res: any) => {
             if (res.success) {
               this.msgSrv.success('删除成功');
               this.loadOrgTree();
@@ -296,7 +297,7 @@ export class SetupContactComponent implements OnInit {
     const node: any = event.node;
     if (event.eventName === 'expand') {
       if (node && node.getChildren().length === 0 && node.isExpanded) {
-        this.http.get(`/org/service/organization/admin/job/tree/child/` + node.key).subscribe((res:any) => {
+        this.http.get(`/org/service/organization/admin/job/tree/child/` + node.key).subscribe((res: any) => {
           if (res.success) {
             node.addChildren(res.data);
           }
@@ -313,7 +314,7 @@ export class SetupContactComponent implements OnInit {
   // 加载职务树
   loadJobTree(): void {
     this.orgTreeLoading = true;
-    this.http.get(`/org/service/organization/admin/job/tree`).subscribe((res:any) => {
+    this.http.get(`/org/service/organization/admin/job/tree`).subscribe((res: any) => {
       if (res.success) {
         this.jobsNodes = [...res.data];
         this.orgTreeLoading = false;
@@ -328,7 +329,7 @@ export class SetupContactComponent implements OnInit {
     this.optJobName = node.title;
   }
 
-  jobOperation(opt:string, node:any) {
+  jobOperation(opt: string, node: any) {
     console.log(node);
     if (opt === 'add') {
       this.modal
@@ -354,7 +355,7 @@ export class SetupContactComponent implements OnInit {
       const value = {
         id: node.key
       };
-      this.http.post(`/service/contact/admin/job/remove`, value).subscribe((res:any) => {
+      this.http.post(`/service/contact/admin/job/remove`, value).subscribe((res: any) => {
         if (res.success) {
           this.msgSrv.success(res.message);
         } else {
@@ -382,7 +383,7 @@ export class SetupContactComponent implements OnInit {
       nzTitle: '删除确认?',
       nzContent: '是否确认删除 [' + tag.name + '] 标签?',
       nzOnOk: () => {
-        this.http.post(`/service/contact/admin/tag/remove`, tag).subscribe((res:any) => {
+        this.http.post(`/service/contact/admin/tag/remove`, tag).subscribe((res: any) => {
           if (res.success) {
             this.msgSrv.success('删除成功');
             this.loadTagList();
@@ -394,7 +395,7 @@ export class SetupContactComponent implements OnInit {
 
   loadTagList() {
     this.orgTreeLoading = true;
-    this.http.get(`/service/contact/admin/tag/list`).subscribe((res:any) => {
+    this.http.get(`/service/contact/admin/tag/list`).subscribe((res: any) => {
       if (res.success) {
         this.tagList = [...res.data];
       }
@@ -407,7 +408,7 @@ export class SetupContactComponent implements OnInit {
     });
   }
 
-  activeTag(tag:any) {
+  activeTag(tag: any) {
     this.tagId = tag.id;
     this.loadEmployeeTable('tag', null, null, null, null, this.tagId, null);
     this.employeeTableTitle = '【标签人员信息】' + tag.name;
