@@ -64,7 +64,7 @@ export class OrganizationManagementComponent implements OnInit {
   ];
   columnsApp: STColumn[] = [
     {title: '应用名称', index: 'name'},
-    {title: '公司', index: 'companyId'},
+    {title: '公司', index: 'companyName'},
     {title: '访问地址', index: 'url', render: 'renderAppAuthUrl'},
     {title: '应用类型', index: 'category', type: 'enum', enum: {'app': 'app访问', 'web': 'web端访问', 'contact': '通讯录'}},
     {title: '企业微信通讯录secret', index: 'secret'},

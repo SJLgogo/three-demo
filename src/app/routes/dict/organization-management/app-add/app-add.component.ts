@@ -29,7 +29,7 @@ export class AppAddComponent implements OnInit {
       name: {type: 'string', title: '应用名称', maxLength: 100, ui: {placeHolder: '请输入'}},
       companyId: {
         type: 'string', title: '接入公司', maxLength: 100, ui: {
-          width:100,
+          // width:100,
           placeHolder: '请输入', widget: 'select',
           asyncData: () => {
             return this.organizationService.allPro().pipe(

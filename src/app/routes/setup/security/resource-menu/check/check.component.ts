@@ -135,9 +135,9 @@ export class SetupSecurityResourceMenuCheckComponent implements OnInit, OnChange
     this.http.get(`/security/service/security/admin/security-resource/menu-tree/` + this.role.id).subscribe((res) => {
       if (res.success) {
         //下拉树赋值
-        this.defaultCheckedKeys = res.data.selectedKeys;
+        this.defaultCheckedKeys = res.data.selectedMenuKeys;
         //按钮选中赋值
-        this.checkedButtonPermissionIds = res.data.selectedKeys;
+        this.checkedButtonPermissionIds = res.data.selectedButtonKeys;
         this.menuNodes = res.data.tree;
         this.orgTreeLoading = false;
         this.cdr.detectChanges();
@@ -210,25 +210,41 @@ export class SetupSecurityResourceMenuCheckComponent implements OnInit, OnChange
     this.cdr.detectChanges();
   }
 
+
+  //递归遍历选中的菜单
+  findCheckedNode(nodeList: any, menuList: string []): void {
+    if (nodeList && nodeList.length > 0) {
+      nodeList.forEach((res: any) => {
+        menuList.push(res.key);
+        if (res.children && res.children.length) {
+          this.findCheckedNode(res.children, menuList);
+        }
+      });
+    }
+  }
+
+
   saveCheckMenu(): void {
     // 获取半选状态的数据
     const halfChecked = this.roleTreeComponent.getHalfCheckedNodeList();
-
-    // if (this.checkedMenuIds.length === 0) {
-    //   this.msgSrv.warning('没有修改任何菜单权限,请改变数据后提交！');
-    //   return;
-    // }
 
     halfChecked.forEach((value, number) => {
       this.halfCheckedIds.push(value.key);
     });
 
-    // console.log('checkedButtonPermissionIds', this.checkedButtonPermissionIds);
-    // console.log('checkedMenuIds', this.checkedMenuIds);
+    const checkedNodeList = this.roleTreeComponent.getCheckedNodeList();
+    if ((!checkedNodeList || checkedNodeList.length === 0) && (!this.checkedButtonPermissionIds || this.checkedButtonPermissionIds.length === 0)) {
+      this.msgSrv.error('请选择菜单或菜单对应的按钮、标签！');
+      return;
+    }
+
+    const menuIds: any[] = [];
+    this.findCheckedNode(checkedNodeList, menuIds);
+
 
     const requestParams = {
       roleId: this.role.id,
-      permissionIds: this.checkedButtonPermissionIds.concat(this.checkedMenuIds),
+      permissionIds: this.checkedButtonPermissionIds.concat(menuIds),
       halfCheckedIds: this.halfCheckedIds
     };
 
