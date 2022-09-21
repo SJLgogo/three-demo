@@ -35,7 +35,7 @@ export class SetupCheckUserTableComponent  implements OnInit {
     },
   };
 
-  url = `//base/service/security/admin/actor/user/findUserSearch`;
+  url = `/org/service/organization/admin/account/page-all`;
   searchSchema: SFSchema = {
     properties: {
       name: {
@@ -51,9 +51,9 @@ export class SetupCheckUserTableComponent  implements OnInit {
       index: 'id',
       type: 'checkbox',
     },
-    { title: '名称', index: 'name', width: '100px' },
-    { title: '登陆账号', index: 'account', width: '100px' },
+    { title: '名称', index: 'thirdPartyName', width: '100px' },
     { title: '手机号', index: 'mobilePhone', width: '100px' },
+    { title: 'email', index: 'user.email', width: '100px' },
   ];
 
   constructor(public http: _HttpClient, private modal: NzModalRef, private msgSrv: NzMessageService) {
@@ -109,7 +109,7 @@ export class SetupCheckUserTableComponent  implements OnInit {
     console.log('checkedIds:', checkedIds);
     value.userIds = checkedIds;
     value.roleId = this.i.roleId;
-    this.http.post(`//base/service/security/admin/authorization/batch-assign-role-to-user`, value).subscribe((res) => {
+    this.http.post(`/security/service/security/admin/authorization/batch-assign-role-to-user`, value).subscribe((res) => {
       if (res.success) {
         this.msgSrv.success('角色授权成功');
         this.modal.close(true);
