@@ -17,6 +17,7 @@ export class SetupSecurityRoleEditComponent implements OnInit {
   schema: SFSchema = {
     properties: {
       name: { type: 'string', title: '角色名称' },
+      code: { type: 'string', title: '角色编码' },
       remark: { type: 'string', title: '描述' },
     },
     required: ['name'],
@@ -42,11 +43,11 @@ export class SetupSecurityRoleEditComponent implements OnInit {
   }
 
   save(value: any) {
-    let url = `//base/service/security/admin/authority/role/create`;
+    let url = `/security/service/security/admin/authority/role/create`;
     if (this.mode === 'add') {
       value.parentId = this.editNode.key;
     } else if (this.mode === 'edit') {
-      url = `//base/service/security/admin/authority/role/edit-name`;
+      url = `/security/service/security/admin/authority/role/edit-name`;
     }
 
     this.http.post(url, value).subscribe((res) => {
