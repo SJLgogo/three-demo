@@ -1,37 +1,42 @@
-import {ChangeDetectionStrategy, Component, Inject} from '@angular/core';
-import {Router} from '@angular/router';
-import {DA_SERVICE_TOKEN, ITokenService} from '@delon/auth';
-import {SettingsService, User} from '@delon/theme';
+import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
+import { SettingsService, User } from '@delon/theme';
 
 @Component({
   selector: 'header-user',
   template: `
-      <div class="alain-default__nav-item d-flex align-items-center px-sm" nz-dropdown nzPlacement="bottomRight"
-           [nzDropdownMenu]="userMenu">
-          <nz-avatar [nzSrc]="user.avatar" nzSize="small" class="mr-sm"></nz-avatar>
-          {{ user.name }}
+    <div class='alain-default__nav-item d-flex align-items-center px-sm' nz-dropdown nzPlacement='bottomRight'
+         [nzDropdownMenu]='userMenu'>
+      <nz-avatar [nzSrc]='user.avatar' nzSize='small' class='mr-sm'></nz-avatar>
+      {{ user.name }}
+    </div>
+    <nz-dropdown-menu #userMenu='nzDropdownMenu'>
+      <div nz-menu class='width-sm'>
+        <!--          <div nz-menu-item routerLink="/pro/account/center">-->
+        <!--            <i nz-icon nzType="user" class="mr-sm"></i>-->
+        <!--            {{ 'menu.account.center' | i18n }}-->
+        <!--          </div>-->
+        <!--          <div nz-menu-item routerLink="/pro/account/settings">-->
+        <!--            <i nz-icon nzType="setting" class="mr-sm"></i>-->
+        <!--            {{ 'menu.account.settings' | i18n }}-->
+        <!--          </div>-->
+        <!--          <div nz-menu-item routerLink="/exception/trigger">-->
+        <!--            <i nz-icon nzType="close-circle" class="mr-sm"></i>-->
+        <!--            {{ 'menu.account.trigger' | i18n }}-->
+        <!--          </div>-->
+        <!--          <li nz-menu-divider></li>-->
+        <!--          <div nz-menu-item (click)="logout()">-->
+        <!--            <i nz-icon nzType="logout" class="mr-sm"></i>-->
+        <!--            {{ 'menu.account.logout' | i18n }}-->
+        <!--          </div>-->
+        <li nz-menu-divider></li>
+        <div nz-menu-item (click)='logout()'>
+          <i nz-icon nzType='logout' class='mr-sm'></i>
+          {{ 'menu.account.logout' | i18n }}
+        </div>
       </div>
-      <nz-dropdown-menu #userMenu="nzDropdownMenu">
-          <div nz-menu class="width-sm">
-              <div nz-menu-item routerLink="/pro/account/center">
-                  <i nz-icon nzType="user" class="mr-sm"></i>
-                  {{ 'menu.account.center' | i18n }}
-              </div>
-              <div nz-menu-item routerLink="/pro/account/settings">
-                  <i nz-icon nzType="setting" class="mr-sm"></i>
-                  {{ 'menu.account.settings' | i18n }}
-              </div>
-              <div nz-menu-item routerLink="/exception/trigger">
-                  <i nz-icon nzType="close-circle" class="mr-sm"></i>
-                  {{ 'menu.account.trigger' | i18n }}
-              </div>
-              <li nz-menu-divider></li>
-              <div nz-menu-item (click)="logout()">
-                  <i nz-icon nzType="logout" class="mr-sm"></i>
-                  {{ 'menu.account.logout' | i18n }}
-              </div>
-          </div>
-      </nz-dropdown-menu>
+    </nz-dropdown-menu>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -44,8 +49,13 @@ export class HeaderUserComponent {
   }
 
   logout(): void {
-    const appId = localStorage.getItem('appId')
+    // const appId = localStorage.getItem('appId');
     this.tokenService.clear();
-    this.router.navigate([this.tokenService.login_url!], {queryParams: {appId: appId}});
+
+    const appData: any = null;
+    this.settings.setApp(appData);
+    this.settings.setUser(appData);
+    this.router.navigateByUrl('/passport/logout');
+    // this.router.navigate([this.tokenService.login_url!], {queryParams: {appId: appId}});
   }
 }
