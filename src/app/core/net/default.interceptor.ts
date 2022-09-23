@@ -187,7 +187,7 @@ export class DefaultInterceptor implements HttpInterceptor {
           const body = ev.body;
           if (body && body.code !== 200) {
             if (body.code === 401) {
-              this.injector.get(NzMessageService).error(body.message);
+              this.injector.get(NzMessageService).error(body.msg);
               // this.toLogin();
             }
             // 注意：这里如果继续抛出错误会被行254的 catchError 二次拦截，导致外部实现的 Pipe、subscribe 操作被中断，例如：this.http.get('/').subscribe() 不会触发

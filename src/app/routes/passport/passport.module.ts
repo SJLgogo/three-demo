@@ -9,9 +9,8 @@ import { UserRegisterResultComponent } from './register-result/register-result.c
 import { UserRegisterComponent } from './register/register.component';
 import {HTTP_INTERCEPTORS} from "@angular/common/http";
 import {SimpleInterceptor} from "@delon/auth";
-import { UserLogoutComponent } from './logout/logout.component';
 
-const COMPONENTS = [UserLoginComponent, UserRegisterResultComponent, UserRegisterComponent, UserLockComponent, CallbackComponent,UserLogoutComponent];
+const COMPONENTS = [UserLoginComponent, UserRegisterResultComponent, UserRegisterComponent, UserLockComponent, CallbackComponent];
 
 @NgModule({
   imports: [SharedModule, PassportRoutingModule],

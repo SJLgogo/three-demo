@@ -1,63 +1,53 @@
-<!--<form *ngIf="oauthLogin" nz-form [formGroup]="form" (ngSubmit)="submit()" role="form">-->
-<!--  <nz-tabset [nzAnimated]="false" class="tabs" (nzSelectChange)="switch($event)">-->
-<!--    <nz-tab   [nzTitle]="'app.login.tab-login-credentials' | i18n">-->
-<!--      <nz-alert *ngIf="error" [nzType]="'error'" [nzMessage]="error" [nzShowIcon]="true" class="mb-lg"></nz-alert>-->
-<!--      <nz-form-item>-->
-<!--        <nz-form-control nzErrorTip="请输入正确账号">-->
-<!--          <nz-input-group nzSize="large" nzPrefixIcon="user">-->
-<!--            <input nz-input formControlName="userName" placeholder="请输入账号" />-->
-<!--          </nz-input-group>-->
-<!--        </nz-form-control>-->
-<!--      </nz-form-item>-->
-<!--      <nz-form-item>-->
-<!--        <nz-form-control nzErrorTip="请输入正确的密码">-->
-<!--          <nz-input-group nzSize="large" nzPrefixIcon="lock">-->
-<!--            <input nz-input type="password" formControlName="password" placeholder="请输入密码" />-->
-<!--          </nz-input-group>-->
-<!--        </nz-form-control>-->
-<!--      </nz-form-item>-->
-<!--      <nz-form-item>-->
-<!--        <nz-col [nzSpan]="12">-->
-<!--          <label nz-checkbox formControlName="remember">{{ 'app.login.remember-me' | i18n }}</label>-->
-<!--        </nz-col>-->
-<!--        &lt;!&ndash;    <nz-col [nzSpan]="12" class="text-right">&ndash;&gt;-->
-<!--        &lt;!&ndash;      <a class="forgot" routerLink="/passport/register">{{ 'app.login.forgot-password' | i18n }}</a>&ndash;&gt;-->
-<!--        &lt;!&ndash;    </nz-col>&ndash;&gt;-->
-<!--      </nz-form-item>-->
-<!--      <nz-form-item>-->
-<!--        <button nz-button type="submit" nzType="primary" nzSize="large" [nzLoading]="loading" nzBlock>-->
-<!--          {{ 'app.login.login' | i18n }}-->
-<!--        </button>-->
-<!--      </nz-form-item>-->
-<!--    </nz-tab>-->
-<!--    <nz-tab [nzTitle]="'app.login.scan' | i18n">-->
-<!--      <div nz-col [nzSpan]="6" [nzOffset]="3" id="wx_reg"></div>-->
-<!--    </nz-tab>-->
-<!--  </nz-tabset>-->
+<form *ngIf="oauthLogin" nz-form [formGroup]="form" (ngSubmit)="submit()" role="form">
+  <nz-tabset [nzAnimated]="false" class="tabs" (nzSelectChange)="switch($event)">
+    <nz-tab   [nzTitle]="'app.login.tab-login-credentials' | i18n">
+      <nz-alert *ngIf="error" [nzType]="'error'" [nzMessage]="error" [nzShowIcon]="true" class="mb-lg"></nz-alert>
+      <nz-form-item>
+        <nz-form-control nzErrorTip="请输入正确账号">
+          <nz-input-group nzSize="large" nzPrefixIcon="user">
+            <input nz-input formControlName="userName" placeholder="请输入账号" />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control nzErrorTip="请输入正确的密码">
+          <nz-input-group nzSize="large" nzPrefixIcon="lock">
+            <input nz-input type="password" formControlName="password" placeholder="请输入密码" />
+          </nz-input-group>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-col [nzSpan]="12">
+          <label nz-checkbox formControlName="remember">{{ 'app.login.remember-me' | i18n }}</label>
+        </nz-col>
+        <!--    <nz-col [nzSpan]="12" class="text-right">-->
+        <!--      <a class="forgot" routerLink="/passport/register">{{ 'app.login.forgot-password' | i18n }}</a>-->
+        <!--    </nz-col>-->
+      </nz-form-item>
+      <nz-form-item>
+        <button nz-button type="submit" nzType="primary" nzSize="large" [nzLoading]="loading" nzBlock>
+          {{ 'app.login.login' | i18n }}
+        </button>
+      </nz-form-item>
+    </nz-tab>
+    <nz-tab [nzTitle]="'app.login.scan' | i18n">
+      <div nz-col [nzSpan]="6" [nzOffset]="3" id="wx_reg"></div>
+    </nz-tab>
+  </nz-tabset>
 
-<!--</form>-->
-<!--<div *ngIf="!oauthLogin" class="preloader">-->
-<!--  <div class="cs-loader">-->
-<!--    <div class="cs-loader-inner">-->
-<!--      <label> ●</label>-->
-<!--      <label> ●</label>-->
-<!--      <label> ●</label>-->
-<!--      <label> ●</label>-->
-<!--      <label> ●</label>-->
-<!--      <label> ●</label>-->
-<!--    </div>-->
-<!--  </div>-->
-<!--</div>-->
-
-
-<!--<style>.preloader{position:fixed;top:0;left:0;z-index:9999;width:100%;height:100%;overflow:hidden;background:#49a9ee;transition:opacity .65s}.preloader-hidden-add{display:block;opacity:1}.preloader-hidden-add-active{opacity:0}.preloader-hidden{display:none}.cs-loader{position:absolute;top:0;left:0;width:100%;height:100%}.cs-loader-inner{position:absolute;top:50%;width:100%;color:#fff;text-align:center;transform:translateY(-50%)}.cs-loader-inner label{display:inline-block;font-size:20px;opacity:0}@keyframes lol{0%{transform:translateX(-300px);opacity:0}33%{transform:translateX(0);opacity:1}66%{transform:translateX(0);opacity:1}100%{transform:translateX(300px);opacity:0}}.cs-loader-inner label:nth-child(6){animation:lol 3s infinite ease-in-out}.cs-loader-inner label:nth-child(5){animation:lol 3s .1s infinite ease-in-out}.cs-loader-inner label:nth-child(4){animation:lol 3s .2s infinite ease-in-out}.cs-loader-inner label:nth-child(3){animation:lol 3s .3s infinite ease-in-out}.cs-loader-inner label:nth-child(2){animation:lol 3s .4s infinite ease-in-out}.cs-loader-inner label:nth-child(1){animation:lol 3s .5s infinite ease-in-out}</style>-->
-
-
-<div class="login">
-  <div class="login-form">
-    <img class="loading-animation" src="assets/tmp/img/login_loading.gif" alt="" />
-    <div class="loading-tip">
-      <span>系统登录中,请稍后...</span>
+</form>
+<div *ngIf="!oauthLogin" class="preloader">
+  <div class="cs-loader">
+    <div class="cs-loader-inner">
+      <label> ●</label>
+      <label> ●</label>
+      <label> ●</label>
+      <label> ●</label>
+      <label> ●</label>
+      <label> ●</label>
     </div>
   </div>
 </div>
+
+
+<style>.preloader{position:fixed;top:0;left:0;z-index:9999;width:100%;height:100%;overflow:hidden;background:#49a9ee;transition:opacity .65s}.preloader-hidden-add{display:block;opacity:1}.preloader-hidden-add-active{opacity:0}.preloader-hidden{display:none}.cs-loader{position:absolute;top:0;left:0;width:100%;height:100%}.cs-loader-inner{position:absolute;top:50%;width:100%;color:#fff;text-align:center;transform:translateY(-50%)}.cs-loader-inner label{display:inline-block;font-size:20px;opacity:0}@keyframes lol{0%{transform:translateX(-300px);opacity:0}33%{transform:translateX(0);opacity:1}66%{transform:translateX(0);opacity:1}100%{transform:translateX(300px);opacity:0}}.cs-loader-inner label:nth-child(6){animation:lol 3s infinite ease-in-out}.cs-loader-inner label:nth-child(5){animation:lol 3s .1s infinite ease-in-out}.cs-loader-inner label:nth-child(4){animation:lol 3s .2s infinite ease-in-out}.cs-loader-inner label:nth-child(3){animation:lol 3s .3s infinite ease-in-out}.cs-loader-inner label:nth-child(2){animation:lol 3s .4s infinite ease-in-out}.cs-loader-inner label:nth-child(1){animation:lol 3s .5s infinite ease-in-out}</style>

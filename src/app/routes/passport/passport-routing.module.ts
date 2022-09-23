@@ -7,7 +7,6 @@ import { UserLockComponent } from './lock/lock.component';
 import { UserLoginComponent } from './login/login.component';
 import { UserRegisterResultComponent } from './register-result/register-result.component';
 import { UserRegisterComponent } from './register/register.component';
-import { UserLogoutComponent } from './logout/logout.component';
 
 const routes: Routes = [
   // passport
@@ -34,8 +33,7 @@ const routes: Routes = [
         path: 'lock',
         component: UserLockComponent,
         data: { title: '锁屏', titleI18n: 'app.lock' }
-      },
-      { path: 'logout', component: UserLogoutComponent, data: { title: '退出登录' } },
+      }
     ]
   },
   // 单页不包裹Layout
