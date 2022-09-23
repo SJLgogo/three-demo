@@ -7,6 +7,7 @@ import {ProAddComponent} from "./pro-add/pro-add.component";
 import {OrganizationService} from "../../../api/dict/organization-management/organization.service.ts";
 import {HttpResult, variable} from "../../../api/common-interface/common-interface";
 import {NzMessageService} from "ng-zorro-antd/message";
+import { SelectProjectPersonComponent } from '../../../shared/select-person/select-project-person/select-project-person.component';
 
 declare var ClipboardJS: any;
 
@@ -122,7 +123,13 @@ export class OrganizationManagementComponent implements OnInit {
 
 
   choosePerson(): void {
-
+    this.modal
+      .createStatic(SelectProjectPersonComponent, {
+        chooseMode: 'employee', // department organization employee
+        functionName: 'not-clock'
+      })
+      .subscribe(res => {
+      });
   }
 
   deleteProHttp(id: string): void {

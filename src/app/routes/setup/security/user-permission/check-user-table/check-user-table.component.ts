@@ -103,13 +103,13 @@ export class SetupCheckUserTableComponent  implements OnInit {
     let checkedIds = new Array();
     this.st._data.map((i: any) => {
       if (i.checked) {
-        checkedIds.push(i.id);
+        checkedIds.push(i.user.id);
       }
     });
     console.log('checkedIds:', checkedIds);
     value.userIds = checkedIds;
     value.roleId = this.i.roleId;
-    this.http.post(`/security/service/security/admin/authorization/batch-assign-role-to-user`, value).subscribe((res) => {
+    this.http.post(`/security/service/security/admin/authorization/assign-role-to-user`, value).subscribe((res) => {
       if (res.success) {
         this.msgSrv.success('角色授权成功');
         this.modal.close(true);
