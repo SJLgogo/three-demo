@@ -48,33 +48,12 @@ export class SetupContactComponent implements OnInit {
   jobsNodes: any = [];
   confirmModal!: NzModalRef;
 
-  url = `/org/service/organization/rpc/user/findByOrgId`;
-  // employeeTableRequest: any = {
-  //   lazyLoad: true,
-  //   allInBody: true,
-  //   method: 'POST',
-  //   reName: {
-  //     pi: 'page',
-  //     ps: 'pageSize'
-  //   },
-  //   params: {
-  //     orgId: 'root',
-  //     mode: 'organization'
-  //   }
-  // };
-  // employeeTableResponse: any = {
-  //   reName: {
-  //     total: 'data.totalElements',
-  //     list: 'data.content'
-  //   }
-  // };
-
-
+  url = `/org/service/organization/admin/account/page-all`;
   @ViewChild('st', { static: false }) st!: STComponent;
   columns: STColumn[] = [
     // { title: '头像', type: 'img', width: 60, index: 'wxAvatar', fixed: 'left' },
     { title: '公司', index: 'companyName', fixed: 'left' },
-    { title: '姓名', index: 'loginUserName', fixed: 'left' },
+    { title: '姓名', index: 'thirdPartyName', fixed: 'left' },
     { title: '账号', index: 'mobilePhone', fixed: 'left' },
     {
       title: '来源', index: 'scene',
@@ -85,6 +64,8 @@ export class SetupContactComponent implements OnInit {
           return '小程序';
         } else if (item.scene == 'ding') {
           return '钉钉';
+        } else if (item.scene == '' || item.scene == null) {
+          return '其它平台';
         } else {
           return item.scene;
         }
@@ -164,15 +145,17 @@ export class SetupContactComponent implements OnInit {
   }
 
   loadEmployeeTable(mode: string, searchName: any, orgId: any, postId: any, jobId: any, tagId: any, employeeId: any) {
-    this.st.reload({
-      mode: mode,
-      searchName: searchName,
-      employeeId: orgId,
-      parentOrgId: orgId,
-      postId: postId,
-      jobId: jobId,
-      tagId: tagId
-    });
+    // this.st.reload({
+    //   mode: mode,
+    //   searchName: searchName,
+    //   employeeId: orgId,
+    //   parentOrgId: orgId,
+    //   postId: postId,
+    //   jobId: jobId,
+    //   tagId: tagId
+    // });
+
+    this.st.reload({ orgId: orgId });
   }
 
   activeTab(tabIndex: number) {
