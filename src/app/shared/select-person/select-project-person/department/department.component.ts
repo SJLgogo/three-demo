@@ -202,7 +202,7 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
     if (node.origin['category'] === 'employee') {
       this.addPerson(node);
     }
-    if (node.origin['category'] === 'organization') {
+    if (node.origin['category'] === 'organization' || node.origin['category'] === 'org') {
       this.addSelectedOrganizationList(
         node.origin!['category'],
         node.key,
