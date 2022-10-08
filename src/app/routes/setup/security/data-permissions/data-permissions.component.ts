@@ -17,7 +17,7 @@ export class SetupDataPermissionsComponent implements OnInit, OnChanges {
   checkedOrgIds: string[] = [];
   checkedPermissionIds: string[] = [];
   // 权限范围组列表列表
-  selectedScope: any = null;
+  selectedScope: any = [];
   appList = [
     { name: '组织机构', id: '1', category: 'org' },
     { name: '线路', id: '3', category: 'line' },
@@ -43,11 +43,11 @@ export class SetupDataPermissionsComponent implements OnInit, OnChanges {
   }
 
   loadAppList() {
-    this.http.get(`/security/service/security/admin/scopePermission/findAllDTO`).subscribe((res) => {
-      if (res.success) {
-        // this.selectedScope = res.data;
-      }
-    });
+    // this.http.post(`/security/service/security/admin/scopePermission/findAllDTO`).subscribe((res) => {
+    //   if (res.success) {
+    //     // this.selectedScope = res.data;
+    //   }
+    // });
   }
 
   optDataPermission(scope: any) {
