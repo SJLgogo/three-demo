@@ -23,16 +23,16 @@ import { debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
       <ng-template #loadingTpl>
         <i *ngIf="loading" nz-icon nzType="loading"></i>
       </ng-template>
-      <input
-        type="text"
-        nz-input
-        [(ngModel)]="q"
-        [nzAutocomplete]="auto"
-        (input)="search($event)"
-        (focus)="qFocus()"
-        (blur)="qBlur()"
-        [attr.placeholder]="'menu.search.placeholder' | i18n"
-      />
+<!--      <input-->
+<!--        type="text"-->
+<!--        nz-input-->
+<!--        [(ngModel)]="q"-->
+<!--        [nzAutocomplete]="auto"-->
+<!--        (input)="search($event)"-->
+<!--        (focus)="qFocus()"-->
+<!--        (blur)="qBlur()"-->
+<!--        [attr.placeholder]="'menu.search.placeholder' | i18n"-->
+<!--      />-->
     </nz-input-group>
     <nz-autocomplete nzBackfill #auto>
       <nz-auto-option *ngFor="let i of options" [nzValue]="i">{{ i }}</nz-auto-option>
