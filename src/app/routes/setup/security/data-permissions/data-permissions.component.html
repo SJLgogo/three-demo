@@ -22,9 +22,9 @@
 
         <nz-tree
           #dataPermissionsTreeComponent
-          [nzData]="orgNodes"
+          [nzData]="treeNodes"
           nzCheckable
-          nzMultiple
+          [nzCheckedKeys]="defaultCheckedKeys"
           (nzClick)="orgEvent($event)"
           (nzExpandChange)="orgEvent($event)"
           (nzCheckBoxChange)="orgEvent($event)"
