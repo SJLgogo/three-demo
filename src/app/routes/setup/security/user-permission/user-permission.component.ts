@@ -46,7 +46,7 @@ export class SetupUserPermissionComponent implements AfterViewInit, OnChanges {
           icon: 'delete',
           click: (record, _modal, comp) => {
             this.http
-              .delete('//base/service/security/admin/authorization/delete', {
+              .delete('/security/service/security/admin/authorization/delete', {
                 userId: record.id,
                 roleId: this.role.id,
               })
