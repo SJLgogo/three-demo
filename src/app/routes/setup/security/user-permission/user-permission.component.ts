@@ -10,8 +10,9 @@ import { SetupCheckUserTableComponent } from './check-user-table/check-user-tabl
 @Component({
   selector: 'app-setup-user-permission',
   templateUrl: './user-permission.component.html',
+  styleUrls: ['./user-permission.component.less']
 })
-export class SetupUserPermissionComponent  implements AfterViewInit, OnChanges {
+export class SetupUserPermissionComponent implements AfterViewInit, OnChanges {
   record: any = {};
   confirmModal?: NzModalRef; // For testing by now
 
@@ -24,9 +25,9 @@ export class SetupUserPermissionComponent  implements AfterViewInit, OnChanges {
     properties: {
       name: {
         type: 'string',
-        title: '用户名称',
-      },
-    },
+        title: '用户名称'
+      }
+    }
   };
   @ViewChild('st', { static: false }) st!: STComponent;
   columns: STColumn[] = [
@@ -61,8 +62,8 @@ export class SetupUserPermissionComponent  implements AfterViewInit, OnChanges {
         //       );
         //   },
         // },
-      ],
-    },
+      ]
+    }
   ];
 
   constructor(
@@ -70,7 +71,7 @@ export class SetupUserPermissionComponent  implements AfterViewInit, OnChanges {
     private modal: ModalHelper,
     public settingsService: SettingsService,
     private messageService: NzMessageService,
-    private nzModal: NzModalService,
+    private nzModal: NzModalService
   ) {
   }
 
@@ -89,7 +90,7 @@ export class SetupUserPermissionComponent  implements AfterViewInit, OnChanges {
     this.modal
       .createStatic(SetupCheckUserTableComponent, {
         i: { roleId: this.role.id },
-        mode: 'add',
+        mode: 'add'
       })
       .subscribe(() => {
         this.st.req.body = { roleId: this.role.id }; // 给body赋值
@@ -110,7 +111,7 @@ export class SetupUserPermissionComponent  implements AfterViewInit, OnChanges {
           this.st.req.body = { roleId: this.role.id }; // 给body赋值
           this.st.reload();
         });
-      },
+      }
     });
   }
 
@@ -138,7 +139,8 @@ export class SetupUserPermissionComponent  implements AfterViewInit, OnChanges {
     if (this.role.index == 3) {
       // this.st.reload(this.customRequest.body);
       this.st.req.body = { roleId: this.role.id }; // 给body赋值
-      this.st.reload();
+      this.st.reload();  // 引起页面问题
+
     }
   }
 }

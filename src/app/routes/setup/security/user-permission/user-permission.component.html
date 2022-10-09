@@ -1,14 +1,14 @@
-<nz-card>
-  <!--  <sf mode="search" *ngIf="isPermission('emergency-area:button:search',settingsService.app.identifiers)" [schema]="searchSchema" (formSubmit)="st.reset($event)" (formReset)="st.reset($event)"></sf>-->
 
-  <sf #sf mode="search" [button]="null" [schema]="searchSchema" (formSubmit)="st.reset($event)" (formReset)="st.reset($event)">
-    <button type="submit" nz-button nzType="primary" [disabled]="!sf.valid">搜索</button>
-    <button (click)="reset()" type="button" nz-button>重置</button>
-    <button (click)="addUserRole()" nz-button nzType="primary">授权用户角色</button>
-    <button (click)="transferToNormalRole()" nz-button nzType="primary">一键转角色</button>
-  </sf>
-<!--  <st #st [data]="url" [req]="customRequest" [scroll]="{ x: '1300px' }" [page]="customPage" [res]="customResponse" [columns]="columns">-->
-<!--  </st>-->
+      <nz-card>
+        <!--  <sf mode="search" *ngIf="isPermission('emergency-area:button:search',settingsService.app.identifiers)" [schema]="searchSchema" (formSubmit)="st.reset($event)" (formReset)="st.reset($event)"></sf>-->
+        <sf #sf mode="search" [button]="null" [schema]="searchSchema" (formSubmit)="st.reset($event)" (formReset)="st.reset($event)">
+          <button type="submit" nz-button nzType="primary" [disabled]="!sf.valid">搜索</button>
+          <button (click)="reset()" type="button" nz-button>重置</button>
+          <button (click)="addUserRole()" nz-button nzType="primary">授权用户角色</button>
+          <button (click)="transferToNormalRole()" nz-button nzType="primary">一键转角色</button>
+        </sf>
+        <!--  <st #st [data]="url" [req]="customRequest" [scroll]="{ x: '1300px' }" [page]="customPage" [res]="customResponse" [columns]="columns">-->
+        <!--  </st>-->
+        <st #st [data]="url"  [scroll]="{ x: '1300px' }"  [columns]="columns" ></st>
+      </nz-card>
 
-  <st #st [data]="url"  [scroll]="{ x: '1300px' }"  [columns]="columns"></st>
-</nz-card>

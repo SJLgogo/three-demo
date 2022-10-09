@@ -1,7 +1,7 @@
 <div nz-row nzGutter="18" *ngIf="role != null">
   <div nz-col nzSpan="6" style="width: 100px; overflow-x: auto">
-    <button nz-button nzType="primary" (click)="saveCheckMenu()" nzBlock>保存</button>
-    <nz-tree
+    <button nz-button nzType="primary" (click)="saveCheckMenu()"  nzBlock  class='save'  >保存</button>
+    <nz-tree class='tree'
       #roleTreeComponent
       [nzData]="menuNodes"
       nzCheckable

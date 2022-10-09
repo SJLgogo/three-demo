@@ -1,7 +1,16 @@
 :host ::ng-deep .ant-tree {
-  overflow: hidden;
-  margin: 0 -24px;
-  padding: 0 24px;
+  //overflow: hidden;
+  //margin: 0 -24px;
+  //padding: 0 24px;
+  margin: 0!important;
+  padding: 0 !important;
+}
+
+
+.tree{
+  height: 58vh;
+  width: 100%;
+  overflow: auto;
 }
 
 :host ::ng-deep .ant-tree li {
@@ -41,7 +50,6 @@
   color: #666666;
   display: inline-block;
   padding: 0 8px;
-  display: block;
   line-height: 24px;
   position: relative;
   left: 12px;
@@ -61,3 +69,7 @@
   left: 4px;
   display: none;
 }
+.save{
+  margin-bottom: 12px;
+}
+

@@ -21,7 +21,6 @@ export class SetupSecurityRolePermissionComponent implements OnInit {
   confirmModal!: NzModalRef;
   index: number = 0;
   @ViewChild('appUsePermission', { static: false }) sf!: SetupUserPermissionComponent;
-
   //----------------角色树,用于角色继承关系
   ngOnInit() {
     this.loadRoleTree();
@@ -128,7 +127,9 @@ export class SetupSecurityRolePermissionComponent implements OnInit {
   activeRole(roleNode:any, index:number) {
     this.cdr.reattach();
     this.index = index;
+    console.log(this.index,'INDEX');
     this.selectedRole = { id: roleNode.key, name: roleNode.title, index: this.index };
+    console.log(this.selectedRole,'this.selectedRole')
     this.roleTitle = this.selectedRole.name;
   }
 
@@ -136,7 +137,6 @@ export class SetupSecurityRolePermissionComponent implements OnInit {
     // console.log('args:', args);
     this.index = args.index;
     this.selectedRole.index = args.index;
-
     this.sf.reloadTable();
   }
 
