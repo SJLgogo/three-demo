@@ -34,34 +34,33 @@ export class SetupUserPermissionComponent implements AfterViewInit, OnChanges {
     { title: '名称', index: 'thirdPartyName', width: '100px' },
     { title: '登陆账号', index: 'account', width: '100px' },
     { title: '邮箱', index: 'user.email', width: '100px' },
-    // { title: '是否显示', index: 'disabled', width: '100px' },
     { title: '手机号', index: 'mobilePhone', width: '100px' },
     {
       title: '操作',
       width: '100px',
       buttons: [
-        // {
-        //   text: '删除',
-        //   tooltip: '删除',
-        //   type: 'del',
-        //   icon: 'delete',
-        //   click: (record, _modal, comp) => {
-        //     this.http
-        //       .delete('//base/service/security/admin/authorization/delete', {
-        //         userId: record.id,
-        //         roleId: this.role.id,
-        //       })
-        //       .subscribe(
-        //         (res) => {
-        //           this.messageService.success(`成功移除【${record.name}】角色权限`);
-        //           this.st.reload();
-        //         },
-        //         (error) => {
-        //           this.messageService.success(`移除失败【${record.name}】`);
-        //         },
-        //       );
-        //   },
-        // },
+        {
+          text: '删除',
+          tooltip: '删除',
+          type: 'del',
+          icon: 'delete',
+          click: (record, _modal, comp) => {
+            this.http
+              .delete('//base/service/security/admin/authorization/delete', {
+                userId: record.id,
+                roleId: this.role.id,
+              })
+              .subscribe(
+                (res) => {
+                  this.messageService.success(`成功移除【${record.name}】角色权限`);
+                  this.st.reload();
+                },
+                (error) => {
+                  this.messageService.success(`移除失败【${record.name}】`);
+                },
+              );
+          },
+        },
       ]
     }
   ];
@@ -136,11 +135,10 @@ export class SetupUserPermissionComponent implements AfterViewInit, OnChanges {
    * 刷新表格数据
    */
   reloadTable() {
-    if (this.role.index == 3) {
+    if (this.role.index == 2) {
       // this.st.reload(this.customRequest.body);
       this.st.req.body = { roleId: this.role.id }; // 给body赋值
       this.st.reload();  // 引起页面问题
-
     }
   }
 }
