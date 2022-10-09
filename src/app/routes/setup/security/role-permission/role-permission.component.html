@@ -69,8 +69,10 @@
                 </nz-tab>
 
                 <nz-tab nzTitle="基础数据权限" [nzForceRender]="true">
+                  <span class="app-title">基础数据权限授权前请确认角色是否关联了人员、如果没有关联授权基础数据保存无效、数据范围权限是落到每个人上面的!</span>
                   <app-setup-data-permissions [role]="selectedRole"></app-setup-data-permissions>
                 </nz-tab>
+
 
                 <nz-tab nzTitle="应用权限" [nzForceRender]="true">
                   <app-setup-app-permissions [role]="selectedRole"></app-setup-app-permissions>
