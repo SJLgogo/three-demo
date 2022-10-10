@@ -136,7 +136,6 @@ export class SetupSecurityRolePermissionComponent implements OnInit {
     // console.log('args:', args);
     this.index = args.index;
     this.selectedRole.index = args.index;
-
     this.sf.reloadTable();
   }
 
