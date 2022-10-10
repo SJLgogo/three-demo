@@ -42,7 +42,7 @@
             </span>
           </span>
 
-          <nz-dropdown-menu #roleOptMenu>
+          <nz-dropdown-menu #roleOptMenu >
             <ul nz-menu>
               <li nz-menu-item nzDisabled>编辑角色: {{ node.title }}</li>
               <li nz-menu-divider></li>
@@ -72,13 +72,17 @@
           <app-setup-data-permissions [role]='selectedRole'></app-setup-data-permissions>
         </nz-tab>
 
-        <nz-tab nzTitle='用户授权' [nzForceRender]='true'>
-          <app-setup-user-permission #appUsePermission [role]='selectedRole'></app-setup-user-permission>
-        </nz-tab>
 
         <nz-tab nzTitle='应用权限' [nzForceRender]='true'>
           <app-setup-app-permissions [role]='selectedRole'></app-setup-app-permissions>
         </nz-tab>
+
+        <nz-tab nzTitle='用户授权' [nzForceRender]='true'>
+          <app-setup-user-permission #appUsePermission [role]='selectedRole'></app-setup-user-permission>
+        </nz-tab>
+
+
+
 
 
       </nz-tabset>
