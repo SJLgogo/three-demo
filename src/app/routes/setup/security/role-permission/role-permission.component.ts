@@ -21,7 +21,6 @@ export class SetupSecurityRolePermissionComponent implements OnInit {
   confirmModal!: NzModalRef;
   index: number = 0;
   @ViewChild('appUsePermission', { static: false }) sf!: SetupUserPermissionComponent;
-
   //----------------角色树,用于角色继承关系
   ngOnInit() {
     this.loadRoleTree();
@@ -79,7 +78,8 @@ export class SetupSecurityRolePermissionComponent implements OnInit {
             editNode: {
               id: node.key,
               name: node.title,
-              remark: node.origin.remark
+              remark: node.origin.remark,
+              code:node.origin.code
             },
             mode: 'edit'
           },
@@ -93,10 +93,7 @@ export class SetupSecurityRolePermissionComponent implements OnInit {
         nzTitle: '删除确认?',
         nzContent: '是否确认删除角色 [' + node.title + '] ?',
         nzOnOk: () => {
-          let params = {
-            roleId: node.key
-          };
-          this.http.post(`//base/service/security/admin/authority/role/delete/` + node.key).subscribe((res) => {
+          this.http.post(`/security/service/security/admin/authority/role/delete/` + node.key).subscribe((res) => {
             if (res.success) {
               this.messageService.success('删除成功');
               this.loadRoleTree();
@@ -128,7 +125,9 @@ export class SetupSecurityRolePermissionComponent implements OnInit {
   activeRole(roleNode:any, index:number) {
     this.cdr.reattach();
     this.index = index;
+    console.log(this.index,'INDEX');
     this.selectedRole = { id: roleNode.key, name: roleNode.title, index: this.index };
+    console.log(this.selectedRole,'this.selectedRole')
     this.roleTitle = this.selectedRole.name;
   }
 
