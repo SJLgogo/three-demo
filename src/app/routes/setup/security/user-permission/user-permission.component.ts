@@ -135,7 +135,7 @@ export class SetupUserPermissionComponent  implements AfterViewInit, OnChanges {
    * 刷新表格数据
    */
   reloadTable() {
-    if (this.role.index == 3) {
+    if (this.role.index === 3) {
       // this.st.reload(this.customRequest.body);
       this.st.req.body = { roleId: this.role.id }; // 给body赋值
       this.st.reload();
