@@ -78,8 +78,6 @@ export class SetupCheckUserTableComponent  implements OnInit {
   // }
 
   change(e: any) {
-    console.log('change', e);
-
     if (e.type === 'click') {
       // 点击行就选中。如果是选中状态再点击一次就取消选中
       this.st._data.map((i: any) => {
@@ -106,7 +104,7 @@ export class SetupCheckUserTableComponent  implements OnInit {
         checkedIds.push(i.user.id);
       }
     });
-    console.log('checkedIds:', checkedIds);
+    // console.log('checkedIds:', checkedIds);
     value.userIds = checkedIds;
     value.roleId = this.i.roleId;
     this.http.post(`/security/service/security/admin/authorization/assign-role-to-user`, value).subscribe((res) => {

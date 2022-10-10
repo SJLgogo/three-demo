@@ -9,8 +9,7 @@ import { SetupCheckUserTableComponent } from './check-user-table/check-user-tabl
 
 @Component({
   selector: 'app-setup-user-permission',
-  templateUrl: './user-permission.component.html',
-  styleUrls: ['./user-permission.component.less']
+  templateUrl: './user-permission.component.html'
 })
 export class SetupUserPermissionComponent implements AfterViewInit, OnChanges {
   record: any = {};
@@ -105,7 +104,7 @@ export class SetupUserPermissionComponent implements AfterViewInit, OnChanges {
       nzTitle: '确定要赋予所有人' + this.role.name + '的角色吗?',
       nzContent: '此操作会把所有人赋予角色权限,请谨慎操作!',
       nzOnOk: () => {
-        this.http.post(`//base/service/security/admin/authorization/transferToNormalRole`, { roleId: this.role.id }).subscribe((res) => {
+        this.http.post(`/security/service/security/admin/authorization/transferToNormalRole`, { roleId: this.role.id }).subscribe((res) => {
           this.messageService.success('所有人赋予' + this.role.name + '角色成功');
           this.st.req.body = { roleId: this.role.id }; // 给body赋值
           this.st.reload();
@@ -131,12 +130,35 @@ export class SetupUserPermissionComponent implements AfterViewInit, OnChanges {
     this.reloadTable();
   }
 
+  customRequest: any = {
+    allInBody: true,
+    method: 'POST',
+    reName: {
+      pi: 'page',
+      ps: 'pageSize',
+    },
+  };
+
+  customPage: any = {
+    zeroIndexed: true,
+    pageSizes: [10, 20, 30, 40, 50],
+    front: false,
+    showSize: true,
+    showQuickJumper: true,
+  };
+
+  customResponse: any = {
+    reName: {
+      total: 'data.totalElements',
+      list: 'data.content',
+    },
+  };
+
   /**
    * 刷新表格数据
    */
   reloadTable() {
     if (this.role.index == 2) {
-      // this.st.reload(this.customRequest.body);
       this.st.req.body = { roleId: this.role.id }; // 给body赋值
       this.st.reload();  // 引起页面问题
     }
