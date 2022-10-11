@@ -46,16 +46,16 @@ export class SetupUserPermissionComponent implements AfterViewInit, OnChanges {
           click: (record, _modal, comp) => {
             this.http
               .delete('/security/service/security/admin/authorization/delete', {
-                userId: record.id,
+                userId: record.user.id,
                 roleId: this.role.id,
               })
               .subscribe(
                 (res) => {
-                  this.messageService.success(`成功移除【${record.name}】角色权限`);
+                  this.messageService.success(`成功移除【${record.thirdPartyName}】角色权限`);
                   this.st.reload();
                 },
                 (error) => {
-                  this.messageService.success(`移除失败【${record.name}】`);
+                  this.messageService.success(`移除失败【${record.thirdPartyName}】`);
                 },
               );
           },
@@ -158,7 +158,7 @@ export class SetupUserPermissionComponent implements AfterViewInit, OnChanges {
    * 刷新表格数据
    */
   reloadTable() {
-    if (this.role.index === 3) {
+    if (this.role.index === 2) {
       this.st.req.body = { roleId: this.role.id }; // 给body赋值
       this.st.reload();  // 引起页面问题
     }
