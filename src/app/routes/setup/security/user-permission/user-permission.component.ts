@@ -148,9 +148,7 @@ export class SetupUserPermissionComponent implements AfterViewInit, OnChanges {
     if (e.click) {
       // @ts-ignore
       let data = e.click?.item;
-      console.log(data, 'd');
       this.userId = data?.user?.id;
-      console.log(this.userId,'AA');
     }
   }
 }

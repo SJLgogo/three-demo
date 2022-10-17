@@ -105,10 +105,10 @@ export class SetupDataPermissionsComponent implements OnInit, OnChanges {
     this.findCheckedNode(checkedNodeList, scopeVos, this.selectedScope.category);
     // console.log('scopeVos:', scopeVos);
     const params = {
-      // roleId: this.role.id,
+      roleId: this.role.id,
       scopeVos: scopeVos,
       // category: this.selectedScope.category,
-      userId:this.permissionUserId,
+      userIds:this.permissionUserId,
     };
     this.http.post(`/security/service/security/admin/scopePermission/batchAssignRoleToScope`, params).subscribe((res) => {
       if (res.success) {
