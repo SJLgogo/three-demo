@@ -40,29 +40,29 @@ export class SetupUserPermissionComponent implements AfterViewInit, OnChanges {
       title: '操作',
       width: '100px',
       buttons: [
-        // {
-        //   text: '删除',
-        //   tooltip: '删除',
-        //   type: 'del',
-        //   icon: 'delete',
-        //   click: (record, _modal, comp) => {
-        //     this.http
-        //       .delete('//base/service/security/admin/authorization/delete', {
-        //         userId: record.id,
-        //         roleId: this.role.id,
-        //       })
-        //       .subscribe(
-        //         (res) => {
-        //           this.messageService.success(`成功移除【${record.name}】角色权限`);
-        //           this.st.reload();
-        //         },
-        //         (error) => {
-        //           this.messageService.success(`移除失败【${record.name}】`);
-        //         },
-        //       );
-        //   },
-        // },
-      ],
+        {
+          text: '删除',
+          tooltip: '删除',
+          type: 'del',
+          icon: 'delete',
+          click: (record, _modal, comp) => {
+            this.http
+              .delete('/security/service/security/admin/authorization/delete', {
+                userId: record.user.id,
+                roleId: this.role.id,
+              })
+              .subscribe(
+                (res) => {
+                  this.messageService.success(`成功移除【${record.thirdPartyName}】角色权限`);
+                  this.st.reload();
+                },
+                (error) => {
+                  this.messageService.success(`移除失败【${record.thirdPartyName}】`);
+                },
+              );
+          },
+        },
+      ]
     },
   ];
 
@@ -146,10 +146,10 @@ export class SetupUserPermissionComponent implements AfterViewInit, OnChanges {
 
   clickContent(e: STChange): void {
     if (e.click) {
-      console.log('AQSWED');
       // @ts-ignore
       let data = e.click?.item;
       this.userId = data?.user?.id;
+
     }
   }
 }

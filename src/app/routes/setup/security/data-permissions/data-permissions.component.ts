@@ -72,6 +72,7 @@ export class SetupDataPermissionsComponent implements OnInit, OnChanges {
   }
 
   optDataPermission(scope: any) {
+    console.log(scope,'AQSWDEFRTGHY');
     this.selectedScope = scope;
     this.permissions.emit('');
     if (scope.category == 'org') {
@@ -105,10 +106,10 @@ export class SetupDataPermissionsComponent implements OnInit, OnChanges {
     this.findCheckedNode(checkedNodeList, scopeVos, this.selectedScope.category);
     // console.log('scopeVos:', scopeVos);
     const params = {
-      roleId: this.role.id,
+      // roleId: this.role.id,
       scopeVos: scopeVos,
       // category: this.selectedScope.category,
-      userIds:this.permissionUserId,
+      userIds:[this.permissionUserId],
     };
     this.http.post(`/security/service/security/admin/scopePermission/assignRoleToScope`, params).subscribe((res) => {
       if (res.success) {

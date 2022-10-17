@@ -158,6 +158,6 @@ export class SetupSecurityRolePermissionComponent implements OnInit {
   permissionsAll(value: any): any {
     this.contentDate = value;
     this.permissionUserId = this.permission.userId;
-     console.log(this.permissionUserId,'用户点击人ID');
+     console.log(this.permissionUserId,'用户点击人ID',this.cdr);
   }
 }
