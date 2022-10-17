@@ -75,7 +75,7 @@
           </nz-tab>
 
           <nz-tab nzTitle="用户授权">
-            <app-setup-user-permission #appUsePermission [role]="selectedRole" #permission ></app-setup-user-permission>
+            <app-setup-user-permission #appUsePermission [role]="selectedRole" #permission (permission)="permissionAll($event)" ></app-setup-user-permission>
           </nz-tab>
         </nz-tabset>
       </div>

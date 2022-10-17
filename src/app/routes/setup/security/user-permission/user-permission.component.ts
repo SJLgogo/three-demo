@@ -1,5 +1,14 @@
 /* eslint-disable */
-import {AfterViewInit, Component, Input, OnChanges, SimpleChanges, ViewChild} from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import {STChange, STColumn, STComponent,STClickRowClassNameType} from '@delon/abc/st';
 import {SFComponent, SFSchema} from '@delon/form';
 import {_HttpClient, ModalHelper, SettingsService} from '@delon/theme';
@@ -16,7 +25,7 @@ export class SetupUserPermissionComponent implements AfterViewInit, OnChanges {
   confirmModal?: NzModalRef; // For testing by now
   @Input() role: any;
   userId: string = '';
-
+  @Output() permission = new EventEmitter<string>();
   //获取角色下的人信息
   url = `/org/service/organization/admin/account/getUserIdsByRole`;
   @ViewChild('sf', {static: false}) sf!: SFComponent;
@@ -149,7 +158,7 @@ export class SetupUserPermissionComponent implements AfterViewInit, OnChanges {
       // @ts-ignore
       let data = e.click?.item;
       this.userId = data?.user?.id;
-
+        this.permission.emit(this.userId);
     }
   }
 }

@@ -106,7 +106,7 @@ export class SetupDataPermissionsComponent implements OnInit, OnChanges {
     this.findCheckedNode(checkedNodeList, scopeVos, this.selectedScope.category);
     // console.log('scopeVos:', scopeVos);
     const params = {
-      // roleId: this.role.id,
+      roleId: this.role.id,
       scopeVos: scopeVos,
       // category: this.selectedScope.category,
       userIds:[this.permissionUserId],
