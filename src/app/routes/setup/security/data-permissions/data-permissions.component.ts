@@ -110,7 +110,7 @@ export class SetupDataPermissionsComponent implements OnInit, OnChanges {
       // category: this.selectedScope.category,
       userIds:this.permissionUserId,
     };
-    this.http.post(`/security/service/security/admin/scopePermission/batchAssignRoleToScope`, params).subscribe((res) => {
+    this.http.post(`/security/service/security/admin/scopePermission/assignRoleToScope`, params).subscribe((res) => {
       if (res.success) {
         this.msgSrv.success(res.message);
       }

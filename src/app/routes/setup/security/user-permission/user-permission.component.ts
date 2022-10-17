@@ -146,6 +146,7 @@ export class SetupUserPermissionComponent implements AfterViewInit, OnChanges {
 
   clickContent(e: STChange): void {
     if (e.click) {
+      console.log('AQSWED');
       // @ts-ignore
       let data = e.click?.item;
       this.userId = data?.user?.id;
