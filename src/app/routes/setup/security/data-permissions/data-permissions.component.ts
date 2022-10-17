@@ -1,9 +1,19 @@
 /* eslint-disable */
-import { ChangeDetectorRef, Component, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
-import { _HttpClient, ModalHelper } from '@delon/theme';
-import { NzMessageService } from 'ng-zorro-antd/message';
-import { NzFormatEmitEvent, NzTreeComponent, NzTreeNode } from 'ng-zorro-antd/tree';
-import { zip } from 'rxjs';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
+import {_HttpClient, ModalHelper} from '@delon/theme';
+import {NzMessageService} from 'ng-zorro-antd/message';
+import {NzFormatEmitEvent, NzTreeComponent, NzTreeNode} from 'ng-zorro-antd/tree';
+import {zip} from 'rxjs';
 
 @Component({
   selector: 'app-setup-data-permissions',
@@ -12,9 +22,10 @@ import { zip } from 'rxjs';
 })
 export class SetupDataPermissionsComponent implements OnInit, OnChanges {
   @Input('role') role: any;
-  @ViewChild('dataPermissionsTreeComponent', { static: false }) dataPermissionsTreeComponent!: NzTreeComponent;
-
-
+  @Input('permissionUserId') permissionUserId: any;
+  @ViewChild('dataPermissionsTreeComponent', {static: false}) dataPermissionsTreeComponent!: NzTreeComponent;
+  @ViewChild("appUsePermission") appUsePermission: any;
+  @Output() permissions = new EventEmitter<string>();
   checkedOrgIds: string[] = [];
   checkedPermissionIds: string[] = [];
   //默认选中的树
@@ -22,13 +33,13 @@ export class SetupDataPermissionsComponent implements OnInit, OnChanges {
   // 权限范围组列表列表
   selectedScope: any = [];
   appList = [
-    { name: '组织机构', id: '1', category: 'org' },
-    { name: '线路', id: '3', category: 'line' },
-    { name: '站点', id: '2', category: 'station' },
-    { name: '变电所', id: '4', category: 'main_power_supply' },
-    { name: '停车场', id: '5', category: 'park' },
-    { name: '车辆段', id: '6', category: 'depot' },
-    { name: '控制中心', id: '7', category: 'cocc' }];
+    {name: '组织机构', id: '1', category: 'org'},
+    {name: '线路', id: '3', category: 'line'},
+    {name: '站点', id: '2', category: 'station'},
+    {name: '变电所', id: '4', category: 'main_power_supply'},
+    {name: '停车场', id: '5', category: 'park'},
+    {name: '车辆段', id: '6', category: 'depot'},
+    {name: '控制中心', id: '7', category: 'cocc'}];
   // 内存中的组织数据范围权限选择数据
   checkedDataPermissionMap: Map<string, Set<string>> = new Map<string, Set<string>>();
   // ------------------------组织机构树
@@ -50,7 +61,8 @@ export class SetupDataPermissionsComponent implements OnInit, OnChanges {
   loadPermissionList(category: string) {
     this.http.post(`/security/service/security/admin/scopePermission/findAllDTO`, {
       'roleId': this.role.id,
-      'category': category
+      'category': category,
+      'userId':this.permissionUserId,
     }).subscribe((res) => {
       console.log('res', res);
       if (res.success) {
@@ -61,6 +73,7 @@ export class SetupDataPermissionsComponent implements OnInit, OnChanges {
 
   optDataPermission(scope: any) {
     this.selectedScope = scope;
+    this.permissions.emit('');
     if (scope.category == 'org') {
       this.loadOrgTree();
     } else if (scope.category == 'line') {
@@ -75,7 +88,7 @@ export class SetupDataPermissionsComponent implements OnInit, OnChanges {
   findCheckedNode(nodeList: any, menuList: any, category: string): void {
     if (nodeList && nodeList.length > 0) {
       nodeList.forEach((res: any) => {
-        menuList.push({ 'dataId': res.key, 'category': category, 'name': res.origin.title });
+        menuList.push({'dataId': res.key, 'category': category, 'name': res.origin.title});
         if (res.children && res.children.length) {
           this.findCheckedNode(res.children, menuList, category);
         }
@@ -92,9 +105,10 @@ export class SetupDataPermissionsComponent implements OnInit, OnChanges {
     this.findCheckedNode(checkedNodeList, scopeVos, this.selectedScope.category);
     // console.log('scopeVos:', scopeVos);
     const params = {
-      roleId: this.role.id,
+      // roleId: this.role.id,
       scopeVos: scopeVos,
-      category: this.selectedScope.category
+      // category: this.selectedScope.category,
+      userId:this.permissionUserId,
     };
     this.http.post(`/security/service/security/admin/scopePermission/batchAssignRoleToScope`, params).subscribe((res) => {
       if (res.success) {
@@ -105,7 +119,7 @@ export class SetupDataPermissionsComponent implements OnInit, OnChanges {
 
 
   // 点击加载下级树节点
-  orgEvent(event: NzFormatEmitEvent): void {
+  orgEvent(event: NzFormatEmitEvent): any {
     const node: any = event.node;
     if (event.eventName === 'expand') {
       if (node && node.getChildren().length === 0 && node.isExpanded) {
@@ -120,7 +134,14 @@ export class SetupDataPermissionsComponent implements OnInit, OnChanges {
         }
       }
     } else if (event.eventName === 'click') {
+      console.log('2');
     } else if (event.eventName === 'check') {
+      let Checked = [];
+      for (let i = 0; i < this.dataPermissionsTreeComponent.getCheckedNodeList().length; i++) {
+        // @ts-ignore
+        Checked.push(this.dataPermissionsTreeComponent.getCheckedNodeList()[i].origin.title);
+      }
+      this.permissions.emit(Checked.toString());
     }
   }
 
@@ -131,7 +152,8 @@ export class SetupDataPermissionsComponent implements OnInit, OnChanges {
   loadOrgTree(): void {
     zip(this.http.post(`/security/service/security/admin/scopePermission/findAllDTO`, {
       'roleId': this.role.id,
-      'category': 'org'
+      'category': 'org',
+      'userId':this.permissionUserId,
     }), this.http.get(`/org/service/organization/admin/organization/tree/child/root`)).subscribe(([orgScope, orgTree]) => {
       if (orgTree.success && orgScope.success) {
         this.treeNodes = [];
@@ -155,7 +177,8 @@ export class SetupDataPermissionsComponent implements OnInit, OnChanges {
   loadLine(): void {
     zip(this.http.post(`/security/service/security/admin/scopePermission/findAllDTO`, {
       'roleId': this.role.id,
-      'category': 'line'
+      'category': 'line',
+       'userId':this.permissionUserId,
     }), this.http.get(`/service/metro-network/service/metro-network/metro-line/find-all`)).subscribe(([lineScope, lineTree]) => {
       if (lineTree.success && lineScope.success) {
         this.treeNodes = [];
@@ -180,7 +203,8 @@ export class SetupDataPermissionsComponent implements OnInit, OnChanges {
   loadLineTree(): void {
     this.http.post(`/security/service/security/admin/scopePermission/findScopeBaseData`, {
       'roleId': this.role.id,
-      'category': this.selectedScope.category
+      'category': this.selectedScope.category,
+      'userId':this.permissionUserId,
     }).subscribe((res) => {
       if (res.success) {
         //下拉树赋值

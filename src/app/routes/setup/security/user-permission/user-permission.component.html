@@ -7,7 +7,7 @@
       <button (click)="transferToNormalRole()" nz-button nzType="primary">一键转角色</button>
     </sf>
 <!--    <st #st [data]="url"  [scroll]="{ x: '1300px' }"  [columns]="columns" ></st>-->
-    <st #st [data]="url"  [scroll]="{ x: '1300px' }" [columns]="columns">
+    <st #st [data]="url"  [scroll]="{ x: '1300px' }" [columns]="columns"   (change)="clickContent($event)" [clickRowClassName]="clickRowClassName">
     </st>
 <!--  </nz-card>-->
 </div>

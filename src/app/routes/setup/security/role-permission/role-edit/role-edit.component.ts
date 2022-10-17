@@ -4,6 +4,8 @@ import { _HttpClient } from '@delon/theme';
 import { SFSchema, SFUISchema } from '@delon/form';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import {map} from "rxjs/operators";
+import {CommonSelect} from "../../../../../api/common-interface/common-interface";
 
 @Component({
   selector: 'app-setup-security-role-edit',
@@ -16,9 +18,27 @@ export class SetupSecurityRoleEditComponent implements OnInit {
   editNode: any;
   schema: SFSchema = {
     properties: {
+      companyId: {
+        type: 'string', title: '应用名称', maxLength: 100, ui: {
+          // width:100,
+          placeHolder: '请输入', widget: 'select',
+          asyncData: () => {
+            // return this.organizationService.allPro().pipe(
+            //   map((item: any) => {
+            //     const children: CommonSelect[] = item.data.map(
+            //       (element: any) => {
+            //         return {label: element.name, value: element.id};
+            //       }
+            //     );
+            //     return children;
+            //   })
+            // );
+          },
+        }
+      },
       name: { type: 'string', title: '角色名称' },
       code: { type: 'string', title: '角色编码' },
-      remark: { type: 'string', title: '描述' },
+      remark: { type: 'string', title: '描述',maxLength:255 },
     },
     required: ['name'],
   };
@@ -28,6 +48,8 @@ export class SetupSecurityRoleEditComponent implements OnInit {
     },
     $remark: {
       widget: 'textarea',
+      grid: { span: 24 },
+      autosize: { minRows: 4, maxRows: 6 }
     },
   };
 
