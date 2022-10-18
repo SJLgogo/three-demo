@@ -181,10 +181,7 @@ export class SetupSecurityResourceMenuComponent implements OnInit {
         nzTitle: '删除确认?',
         nzContent: '是否确认删除菜单 [' + node.title + '] ?',
         nzOnOk: () => {
-          let params = {
-            menuId: node.key
-          };
-          this.http.post(`//base/service/security/admin/security-resource/menu-delete`, params).subscribe((res) => {
+          this.http.delete(`/security/service/security/admin/authority/permission/delete/`+node.key).subscribe((res) => {
             if (res.success) {
               this.msgSrv.success('删除成功');
               this.loadMenuTree();

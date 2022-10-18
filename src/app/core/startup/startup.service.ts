@@ -84,7 +84,7 @@ export class StartupService {
   private afterLogin(): Observable<any> {
     const defaultLang = this.i18n.defaultLang;
     return zip(this.i18n.loadLangData(defaultLang),
-      this.httpClient.get('assets/tmp/app-data.json'),
+      this.httpClient.get('/security/service/security/admin/security-resource/myAlainAppData'),
       this.httpClient.get(`/service/dictionary/dict-data/find-all`)).pipe(
       // 接收其他拦截器后产生的异常消息
       catchError(res => {
