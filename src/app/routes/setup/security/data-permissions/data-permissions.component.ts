@@ -51,6 +51,7 @@ export class SetupDataPermissionsComponent implements OnInit, OnChanges {
   treeNodes: any = [];
 
   ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes,'SSSSSSS');
     this.optDataPermission(this.selectedScope);
   }
 
@@ -72,16 +73,16 @@ export class SetupDataPermissionsComponent implements OnInit, OnChanges {
   }
 
   optDataPermission(scope: any) {
-    console.log(scope,'AQSWDEFRTGHY');
-    this.selectedScope = scope;
-    this.permissions.emit('');
-    if (scope.category == 'org') {
-      this.loadOrgTree();
-    } else if (scope.category == 'line') {
-      this.loadLine();
-    } else if (scope.category == 'station' || scope.category == 'main_power_supply' || scope.category == 'park' || scope.category == 'depot' || scope.category == 'cocc') {
-      this.loadLineTree();
-    }
+      this.selectedScope = scope;
+      console.log(this.selectedScope,'123456789');
+      this.permissions.emit('');
+      if (scope.category == 'org') {
+        this.loadOrgTree();
+      } else if (scope.category == 'line') {
+        this.loadLine();
+      } else if (scope.category == 'station' || scope.category == 'main_power_supply' || scope.category == 'park' || scope.category == 'depot' || scope.category == 'cocc') {
+        this.loadLineTree();
+      }
   }
 
 
@@ -122,6 +123,7 @@ export class SetupDataPermissionsComponent implements OnInit, OnChanges {
   // 点击加载下级树节点
   orgEvent(event: NzFormatEmitEvent): any {
     const node: any = event.node;
+    console.log(node,'NODE');
     if (event.eventName === 'expand') {
       if (node && node.getChildren().length === 0 && node.isExpanded) {
         if (this.selectedScope.category == 'org') {
@@ -135,7 +137,6 @@ export class SetupDataPermissionsComponent implements OnInit, OnChanges {
         }
       }
     } else if (event.eventName === 'click') {
-      console.log('2');
     } else if (event.eventName === 'check') {
       let Checked = [];
       for (let i = 0; i < this.dataPermissionsTreeComponent.getCheckedNodeList().length; i++) {
@@ -151,24 +152,31 @@ export class SetupDataPermissionsComponent implements OnInit, OnChanges {
    * 加载组织机构树
    */
   loadOrgTree(): void {
-    zip(this.http.post(`/security/service/security/admin/scopePermission/findAllDTO`, {
-      'roleId': this.role.id,
-      'category': 'org',
-      'userId':this.permissionUserId,
-    }), this.http.get(`/org/service/organization/admin/organization/tree/child/root`)).subscribe(([orgScope, orgTree]) => {
-      if (orgTree.success && orgScope.success) {
-        this.treeNodes = [];
-        if (orgScope.data != '' && orgScope.data != null) {
-          this.defaultCheckedKeys = orgScope.data;
-          orgTree.data.forEach((value: any) => {
-            this.treeNodes.push(value);
-          });
-        } else {
-          this.treeNodes = orgTree.data;
+    if(!this.permissionUserId){
+      this.msgSrv.error('请先选择人员');
+    }
+    else{
+      zip(this.http.post(`/security/service/security/admin/scopePermission/findAllDTO`, {
+        'roleId': this.role.id,
+        'category': 'org',
+        'userId':this.permissionUserId,
+      }), this.http.get(`/org/service/organization/admin/organization/tree/child/root`)).subscribe(([orgScope, orgTree]) => {
+        if (orgTree.success && orgScope.success) {
+          this.treeNodes = [];
+          if (orgScope.data != '' && orgScope.data != null) {
+            this.defaultCheckedKeys = orgScope.data;
+            console.log(this.defaultCheckedKeys,'测试1');
+            orgTree.data.forEach((value: any) => {
+              this.treeNodes.push(value);
+            });
+          } else {
+            this.treeNodes = orgTree.data;
+            console.log(this.defaultCheckedKeys,'测试2');
+          }
         }
-      }
-      this.cdr.detectChanges();
-    });
+        this.cdr.detectChanges();
+      });
+    }
   }
 
 
@@ -176,25 +184,31 @@ export class SetupDataPermissionsComponent implements OnInit, OnChanges {
    *  加载线路
    */
   loadLine(): void {
-    zip(this.http.post(`/security/service/security/admin/scopePermission/findAllDTO`, {
-      'roleId': this.role.id,
-      'category': 'line',
-       'userId':this.permissionUserId,
-    }), this.http.get(`/service/metro-network/service/metro-network/metro-line/find-all`)).subscribe(([lineScope, lineTree]) => {
-      if (lineTree.success && lineScope.success) {
-        this.treeNodes = [];
-        this.defaultCheckedKeys = lineScope.data;
-        lineTree.data.forEach((value: any) => {
-          const orgNode = {
-            'title': value.name,
-            'key': value.id,
-            'isLeaf': true
-          };
-          this.treeNodes.push(orgNode);
-        });
-      }
-      this.cdr.detectChanges();
-    });
+    if(!this.permissionUserId){
+      this.msgSrv.error('请先选择人员');
+    }
+    else{
+      zip(this.http.post(`/security/service/security/admin/scopePermission/findAllDTO`, {
+        'roleId': this.role.id,
+        'category': 'line',
+        'userId':this.permissionUserId,
+      }), this.http.get(`/service/metro-network/service/metro-network/metro-line/find-all`)).subscribe(([lineScope, lineTree]) => {
+        if (lineTree.success && lineScope.success) {
+          this.treeNodes = [];
+          this.defaultCheckedKeys = lineScope.data;
+          lineTree.data.forEach((value: any) => {
+            const orgNode = {
+              'title': value.name,
+              'key': value.id,
+              'isLeaf': true
+            };
+            this.treeNodes.push(orgNode);
+            console.log(this.defaultCheckedKeys,'测试3');
+          });
+        }
+        this.cdr.detectChanges();
+      });
+    }
   }
 
 
@@ -202,17 +216,22 @@ export class SetupDataPermissionsComponent implements OnInit, OnChanges {
    *  节点类型（all():所有,station:车站,block:区间,power_supply:供电所,cocc:控制中心,depot:车辆段,park:停车场,depot_park:场段）,查询多个用,号隔开，默认值：all
    */
   loadLineTree(): void {
-    this.http.post(`/security/service/security/admin/scopePermission/findScopeBaseData`, {
-      'roleId': this.role.id,
-      'category': this.selectedScope.category,
-      'userId':this.permissionUserId,
-    }).subscribe((res) => {
-      if (res.success) {
-        //下拉树赋值
-        this.defaultCheckedKeys = res.data.selectedMenuKeys;
-        this.treeNodes = res.data.treeNodes;
-      }
-    });
+    if(!this.permissionUserId){
+      this.msgSrv.error('请先选择人员');
+    }
+    else{
+      this.http.post(`/security/service/security/admin/scopePermission/findScopeBaseData`, {
+        'roleId': this.role.id,
+        'category': this.selectedScope.category,
+        'userId':this.permissionUserId,
+      }).subscribe((res) => {
+        if (res.success) {
+          //下拉树赋值
+          this.defaultCheckedKeys = res.data.selectedMenuKeys;
+          this.treeNodes = res.data.treeNodes;
+        }
+      });
+    }
   }
 
 

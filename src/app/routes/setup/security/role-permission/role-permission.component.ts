@@ -24,12 +24,14 @@ export class SetupSecurityRolePermissionComponent implements OnInit {
   contentDate: string = '';
   opacityNumber: string = "20"
   @ViewChild("permission") permission: any;
+  @ViewChild("permissions") permissions: any;
   permissionUserId: string = '';
 
   //----------------角色树,用于角色继承关系
   ngOnInit() {
     this.loadRoleTree();
     this.index = 0;
+    console.log(this.permissions, 'A1');
   }
 
 
@@ -39,6 +41,11 @@ export class SetupSecurityRolePermissionComponent implements OnInit {
     if (event.eventName === 'click') {
       this.activeRoleNode = node;
       this.activeRole(this.activeRoleNode, this.index);
+      if (this.index == 2) {
+        this.permissions.optDataPermission([]);
+        this.permissions.permissionUserId = "";
+        this.permissions.treeNodes = [];
+      }
     }
   }
 
@@ -132,7 +139,6 @@ export class SetupSecurityRolePermissionComponent implements OnInit {
     this.cdr.reattach();
     this.index = index;
     this.selectedRole = {id: roleNode.key, name: roleNode.title, index: this.index};
-    console.log(this.selectedRole, 'this.selectedRole')
     this.roleTitle = this.selectedRole.name;
   }
 
@@ -158,11 +164,12 @@ export class SetupSecurityRolePermissionComponent implements OnInit {
   permissionsAll(value: any): any {
     this.contentDate = value;
     this.permissionUserId = this.permission.userId;
-     console.log(this.permissionUserId,'用户点击人ID');
   }
-  permissionAll(value:any):any{
-    if(value){
-      console.log('存在点击数据','111');
+
+  permissionAll(value: any): any {
+    // console.log(this.permissions,'AA')
+    if (value) {
+      this.permissions.optDataPermission(this.permissions.selectedScope);
     }
   }
 

@@ -91,7 +91,7 @@
       </div>
       <header class="headerTop">
       </header>
-      <app-setup-data-permissions [role]="selectedRole" (permissions)="permissionsAll($event)" [permissionUserId]="permissionUserId" ></app-setup-data-permissions>
+      <app-setup-data-permissions [role]="selectedRole" (permissions)="permissionsAll($event)" [permissionUserId]="permissionUserId" #permissions ></app-setup-data-permissions>
     </nz-card>
   </div>
 
