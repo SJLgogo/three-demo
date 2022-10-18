@@ -1,11 +1,10 @@
 /* eslint-disable */
-import { Component, OnInit } from '@angular/core';
-import { _HttpClient } from '@delon/theme';
-import { SFSchema, SFUISchema } from '@delon/form';
-import { NzModalRef } from 'ng-zorro-antd/modal';
-import { NzMessageService } from 'ng-zorro-antd/message';
+import {Component, OnInit} from '@angular/core';
+import {_HttpClient} from '@delon/theme';
+import {SFSchema, SFSchemaEnumType, SFUISchema} from '@delon/form';
+import {NzModalRef} from 'ng-zorro-antd/modal';
+import {NzMessageService} from 'ng-zorro-antd/message';
 import {map} from "rxjs/operators";
-import {CommonSelect} from "../../../../../api/common-interface/common-interface";
 
 @Component({
   selector: 'app-setup-security-role-edit',
@@ -18,27 +17,36 @@ export class SetupSecurityRoleEditComponent implements OnInit {
   editNode: any;
   schema: SFSchema = {
     properties: {
-      companyId: {
-        type: 'string', title: '应用名称', maxLength: 100, ui: {
+      appId: {
+        type: 'string', title: '应用名称', maxLength: 100,
+        ui: {
           // width:100,
           placeHolder: '请输入', widget: 'select',
           asyncData: () => {
-            // return this.organizationService.allPro().pipe(
-            //   map((item: any) => {
-            //     const children: CommonSelect[] = item.data.map(
-            //       (element: any) => {
-            //         return {label: element.name, value: element.id};
-            //       }
-            //     );
-            //     return children;
-            //   })
-            // );
+            return this.http.get(`/base/api/agent/app/find-all`).pipe(
+              map((item) => {
+                const children = item.data.map((element: any) => {
+                  return {label: element.name, value: element.id};
+                });
+                const type: SFSchemaEnumType = [
+                  {
+                    label: '应用列表',
+                    group: true,
+                    children
+                  }
+                ];
+                return type;
+              })
+            );
           },
-        }
+          hidden: this.appIdHide(),
+        },
+
       },
-      name: { type: 'string', title: '角色名称' },
-      code: { type: 'string', title: '角色编码' },
-      remark: { type: 'string', title: '描述',maxLength:255 },
+
+      name: {type: 'string', title: '角色名称'},
+      code: {type: 'string', title: '角色编码'},
+      remark: {type: 'string', title: '描述', maxLength: 255},
     },
     required: ['name'],
   };
@@ -48,12 +56,13 @@ export class SetupSecurityRoleEditComponent implements OnInit {
     },
     $remark: {
       widget: 'textarea',
-      grid: { span: 24 },
-      autosize: { minRows: 4, maxRows: 6 }
+      grid: {span: 24},
+      autosize: {minRows: 4, maxRows: 6}
     },
   };
 
-  constructor(private modal: NzModalRef, private msgSrv: NzMessageService, public http: _HttpClient) {}
+  constructor(private modal: NzModalRef, private msgSrv: NzMessageService, public http: _HttpClient) {
+  }
 
   ngOnInit(): void {
     if (this.mode === 'add') {
@@ -71,7 +80,6 @@ export class SetupSecurityRoleEditComponent implements OnInit {
     } else if (this.mode === 'edit') {
       url = `/security/service/security/admin/authority/role/edit-name`;
     }
-
     this.http.post(url, value).subscribe((res) => {
       if (res.success) {
         this.msgSrv.success('保存成功');
@@ -84,5 +92,15 @@ export class SetupSecurityRoleEditComponent implements OnInit {
 
   close() {
     this.modal.destroy();
+  }
+
+  appIdHide(): any {
+     let appId=localStorage.getItem('appId')
+    // @ts-ignore
+    if (appId == 0) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }
