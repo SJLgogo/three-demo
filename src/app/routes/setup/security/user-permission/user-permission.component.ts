@@ -115,7 +115,7 @@ export class SetupUserPermissionComponent implements AfterViewInit, OnChanges {
       nzTitle: '确定要赋予所有人' + this.role.name + '的角色吗?',
       nzContent: '此操作会把所有人赋予角色权限,请谨慎操作!',
       nzOnOk: () => {
-        this.http.post(`//base/service/security/admin/authorization/transferToNormalRole`, {roleId: this.role.id}).subscribe((res) => {
+        this.http.post(`/security/service/security/admin/authorization/transferToNormalRole`, {roleId: this.role.id}).subscribe((res) => {
           this.messageService.success('所有人赋予' + this.role.name + '角色成功');
           this.st.req.body = {roleId: this.role.id}; // 给body赋值
           this.st.reload();

@@ -47,7 +47,8 @@ export class SetupResourceMenuEditComponent implements OnInit {
       url = `/security/service/security/admin/authority/permission/create`;
     } else if (this.menu.mode === 'edit') {
       value.id = this.menu.id;
-      url = `/security/service/security/admin/authority/permission/create/update`;
+      url = `/security/service/security/admin/authority/permission/update`;
+
     }
 
     this.http.post(url, value).subscribe((res) => {
