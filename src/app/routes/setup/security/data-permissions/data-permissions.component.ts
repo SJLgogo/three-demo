@@ -51,7 +51,6 @@ export class SetupDataPermissionsComponent implements OnInit, OnChanges {
   treeNodes: any = [];
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes,'SSSSSSS');
     this.optDataPermission(this.selectedScope);
   }
 
@@ -74,7 +73,6 @@ export class SetupDataPermissionsComponent implements OnInit, OnChanges {
 
   optDataPermission(scope: any) {
       this.selectedScope = scope;
-      console.log(this.selectedScope,'123456789');
       this.permissions.emit('');
       if (scope.category == 'org') {
         this.loadOrgTree();
@@ -229,6 +227,7 @@ export class SetupDataPermissionsComponent implements OnInit, OnChanges {
           //下拉树赋值
           this.defaultCheckedKeys = res.data.selectedMenuKeys;
           this.treeNodes = res.data.treeNodes;
+          console.log(this.defaultCheckedKeys,'this.defaultCheckedKeys',this.treeNodes)
         }
       });
     }

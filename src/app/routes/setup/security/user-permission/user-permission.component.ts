@@ -40,6 +40,7 @@ export class SetupUserPermissionComponent implements AfterViewInit, OnChanges {
   @ViewChild('st', {static: false}) st!: STComponent;
   clickRowClassName: STClickRowClassNameType = { exclusive: true, fn: () => 'text-processing' };
   columns: STColumn[] = [
+    // { title: '', index: 'id', type: 'checkbox' ,width:'60px'},
     {title: '名称', index: 'thirdPartyName', width: '100px'},
     {title: '登陆账号', index: 'account', width: '100px'},
     {title: '邮箱', index: 'user.email', width: '100px'},

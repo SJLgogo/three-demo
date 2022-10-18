@@ -31,7 +31,6 @@ export class SetupSecurityRolePermissionComponent implements OnInit {
   ngOnInit() {
     this.loadRoleTree();
     this.index = 0;
-    console.log(this.permissions, 'A1');
   }
 
 
@@ -162,13 +161,15 @@ export class SetupSecurityRolePermissionComponent implements OnInit {
   }
 
   permissionsAll(value: any): any {
-    this.contentDate = value;
-    this.permissionUserId = this.permission.userId;
+    if(value){
+      this.contentDate = value;
+      this.permissionUserId = this.permission.userId;
+    }
   }
 
   permissionAll(value: any): any {
-    // console.log(this.permissions,'AA')
     if (value) {
+      this.permissions.permissionUserId = value;
       this.permissions.optDataPermission(this.permissions.selectedScope);
     }
   }
