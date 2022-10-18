@@ -1,0 +1,15 @@
+<div nz-col [nzSpan]="24">
+  <!--  <nz-card>-->
+  <sf #sf mode="search" [button]="null" [schema]="searchSchema" (formSubmit)="st.reset($event)" (formReset)="st.reset($event)">
+    <button type="submit" nz-button nzType="primary" [disabled]="!sf.valid">搜索</button>
+    <button (click)="reset()" type="button" nz-button>重置</button>
+  </sf>
+  <st #st [data]="url"   [columns]="columns"   (change)="clickContent($event)"   [res]="{ process: dataProcess }">
+    <ng-template let-item let-index="index" let-column="column" st-row="checkedTrue">
+      <div class="divBox"><input type="checkbox" id="{{item.user.id}}" class={{item?.user.id}} value="{{item.user.id}}"></div>
+    </ng-template>
+  </st>
+
+</div>
+
+<!--[scroll]="{ x: '1300px' }"-->

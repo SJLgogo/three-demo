@@ -38,6 +38,7 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { UserManagementComponent } from './user-management/user-management.component';
 import { SelectPersonModule } from 'src/app/shared/select-person/select-person.module';
+import {BatchIncreaseConfigurationComponent} from "./security/user-permission/batch-increase-configuration/batch-increase-configuration.component";
 
 const COMPONENTS: Array<Type<void>> = [
   SetupIndexComponent,
@@ -47,6 +48,7 @@ const COMPONENTS: Array<Type<void>> = [
   SetupAppPermissionsComponent,
   SetupUserPermissionComponent,
   SetupCheckUserTableComponent,
+  BatchIncreaseConfigurationComponent,
   SetupContactComponent,
   SetupAccountComponent,
   SetupSynchronizeComponent,
