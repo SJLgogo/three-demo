@@ -95,6 +95,13 @@ export class SetupUserPermissionComponent implements AfterViewInit, OnChanges {
     this.st.req.body = {roleId: this.role.id}; // 给body赋值
     this.st.reload();
   }
+  /**
+   * 批量增减操作
+   */
+  batchIncrease(){
+    console.log('批量增减');
+  }
+
 
   addUserRole() {
     this.modal
@@ -146,7 +153,7 @@ export class SetupUserPermissionComponent implements AfterViewInit, OnChanges {
    * 刷新表格数据
    */
   reloadTable() {
-    if (this.role.index === 2) {
+    if (this.role.index === 1) {
       // this.st.reload(this.customRequest.body);
       this.st.req.body = {roleId: this.role.id}; // 给body赋值
       this.st.reload();

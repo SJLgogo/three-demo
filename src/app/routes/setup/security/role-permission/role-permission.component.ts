@@ -40,7 +40,7 @@ export class SetupSecurityRolePermissionComponent implements OnInit {
     if (event.eventName === 'click') {
       this.activeRoleNode = node;
       this.activeRole(this.activeRoleNode, this.index);
-      if (this.index == 2) {
+      if (this.index == 1) {
         this.permissions.optDataPermission([]);
         this.permissions.permissionUserId = "";
         this.permissions.treeNodes = [];
@@ -145,7 +145,7 @@ export class SetupSecurityRolePermissionComponent implements OnInit {
     // console.log('args:', args);
     this.index = args.index;
     this.selectedRole.index = args.index;
-    this.opacityNumber = this.index == 2 ? "14" : "20";
+    this.opacityNumber = this.index == 1 ? "14" : "20";
     this.sf.reloadTable();
   }
 

@@ -107,7 +107,7 @@ export class SetupDataPermissionsComponent implements OnInit, OnChanges {
     const params = {
       roleId: this.role.id,
       scopeVos: scopeVos,
-      // category: this.selectedScope.category,
+      category: this.selectedScope.category,
       userIds:[this.permissionUserId],
     };
     this.http.post(`/security/service/security/admin/scopePermission/assignRoleToScope`, params).subscribe((res) => {
@@ -121,7 +121,6 @@ export class SetupDataPermissionsComponent implements OnInit, OnChanges {
   // 点击加载下级树节点
   orgEvent(event: NzFormatEmitEvent): any {
     const node: any = event.node;
-    console.log(node,'NODE');
     if (event.eventName === 'expand') {
       if (node && node.getChildren().length === 0 && node.isExpanded) {
         if (this.selectedScope.category == 'org') {

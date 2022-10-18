@@ -60,6 +60,7 @@ export class SetupSecurityRoleEditComponent implements OnInit {
       autosize: {minRows: 4, maxRows: 6}
     },
   };
+  subAdmin: any;
 
   constructor(private modal: NzModalRef, private msgSrv: NzMessageService, public http: _HttpClient) {
   }
@@ -71,12 +72,29 @@ export class SetupSecurityRoleEditComponent implements OnInit {
       this.formData = this.editNode;
       this.modalTitle = '编辑角色 [' + this.formData.name + ']';
     }
+    this.http.get(`/security/service/security/admin/authority/role/role-tree`).subscribe((res) => {
+      if (res.success) {
+        if (res.data[0].children.length > 0) {
+          this.subAdmin = res.data[0].children;
+          console.log(this.subAdmin, 'A')
+        }
+      }
+    });
   }
 
   save(value: any) {
     let url = `/security/service/security/admin/authority/role/create`;
     if (this.mode === 'add') {
       value.parentId = this.editNode.key;
+      let appIdIndex = localStorage.getItem('appId');
+      // @ts-ignore
+      if (appIdIndex == 0) {
+        for (let i = 0; i < this.subAdmin.length; i++) {
+          if (this.subAdmin[i].key == value.parentId) {
+            value.type = 'sub-admin';
+          }
+        }
+      }
     } else if (this.mode === 'edit') {
       url = `/security/service/security/admin/authority/role/edit-name`;
     }
@@ -95,7 +113,7 @@ export class SetupSecurityRoleEditComponent implements OnInit {
   }
 
   appIdHide(): any {
-     let appId=localStorage.getItem('appId')
+    let appId = localStorage.getItem('appId')
     // @ts-ignore
     if (appId == 0) {
       return false;

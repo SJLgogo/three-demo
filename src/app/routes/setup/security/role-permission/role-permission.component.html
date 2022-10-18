@@ -70,10 +70,6 @@
             <app-setup-security-resource-menu-check [role]="selectedRole"></app-setup-security-resource-menu-check>
           </nz-tab>
 
-          <nz-tab nzTitle="应用权限" >
-            <app-setup-app-permissions [role]="selectedRole"></app-setup-app-permissions>
-          </nz-tab>
-
           <nz-tab nzTitle="用户授权">
             <app-setup-user-permission #appUsePermission [role]="selectedRole" #permission (permission)="permissionAll($event)" ></app-setup-user-permission>
           </nz-tab>
@@ -83,7 +79,7 @@
     <!--        </div>-->
   </div>
 
-  <div nz-col [nzSpan]="6"  *ngIf="index==2">
+  <div nz-col [nzSpan]="6"  *ngIf="index==1">
     <nz-card>
       <div>
         <h3>权限配置</h3>
