@@ -71,6 +71,7 @@ export class SetupSecurityResourceMenuCheckComponent implements OnInit, OnChange
   ];
 
   loadPageElementResourceTable(menuId: string): void {
+    console.log(menuId,this.optMenuId,'AAA');
     if (this.st != null) {
       this.st.reload({
         menuId: this.optMenuId
@@ -119,6 +120,7 @@ export class SetupSecurityResourceMenuCheckComponent implements OnInit, OnChange
     if (event.eventName === 'click' || event.eventName === 'dblclick') {
       this.optMenuId = node.key;
       this.optMenuName = node.title;
+      console.log(this.optMenuId,'ASDFGHJHGFD');
       this.loadPageElementResourceTable(this.optMenuId);
       this.activeMenuNode = node;
     } else if (event.eventName === 'check') {

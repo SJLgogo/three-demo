@@ -9,7 +9,7 @@ import {
   SimpleChanges,
   ViewChild
 } from '@angular/core';
-import {STChange, STClickRowClassNameType, STColumn, STComponent} from '@delon/abc/st';
+import {STClickRowClassNameType, STColumn, STComponent, STData} from '@delon/abc/st';
 import {SFComponent, SFSchema} from '@delon/form';
 import {_HttpClient, ModalHelper, SettingsService} from '@delon/theme';
 import {NzMessageService} from 'ng-zorro-antd/message';
@@ -22,6 +22,7 @@ import {NzModalRef, NzModalService} from 'ng-zorro-antd/modal';
 })
 export class BatchIncreaseConfigurationComponent implements AfterViewInit, OnChanges {
   record: any = {};
+  dataAll = [];
   confirmModal?: NzModalRef; // For testing by now
   @Input() role: any;
   userId: string = '';
@@ -29,7 +30,8 @@ export class BatchIncreaseConfigurationComponent implements AfterViewInit, OnCha
   //获取角色下的人信息
   url = `/org/service/organization/admin/account/getUserIdsByRole`;
   @ViewChild('sf', {static: false}) sf!: SFComponent;
-
+  //选中的按钮权限id
+  checkedButtonPermissionIds: any = [];
   searchSchema: SFSchema = {
     properties: {
       name: {
@@ -41,7 +43,7 @@ export class BatchIncreaseConfigurationComponent implements AfterViewInit, OnCha
   @ViewChild('st', {static: false}) st!: STComponent;
   clickRowClassName: STClickRowClassNameType = {exclusive: true, fn: () => 'text-processing'};
   columns: STColumn[] = [
-    {title: '选择',render: 'checkedTrue', width: '60px'},
+    {title: '选择', index: 'permissionId',type: 'checkbox',width: '60px'},
     {title: '名称', index: 'thirdPartyName', width: 100},
     {title: '登陆账号', index: 'account', width: 100},
     {title: '邮箱', index: 'user.email', width: 100},
@@ -97,26 +99,56 @@ export class BatchIncreaseConfigurationComponent implements AfterViewInit, OnCha
     }
   }
 
-  selectChange:any=[];
+  selectChange: any = [];
+  pageAll = 0;
+
+  clickEvent(item: {}): void {
+    // @ts-ignore
+    this.dataAll = this.st._data;
+    this.selectChange = [];
+    // @ts-ignore
+    item['user']['select'] = !item['user']['select'];
+    if (this.dataAll.length > 0) {
+      this.dataAll.forEach(item => {
+        if (item['user']['select']) {
+          this.selectChange.push(item['user']['id']);
+        }
+      })
+    }
+    console.log(item, 'AAM', this.selectChange, this.dataAll);
+  }
+
   clickContent(e: any): void {
-    if(e.target){
-      console.log(e.target,'ASWQ',e.target.value);
-      this.selectChange.push(e.target.value);
-      console.log(this.selectChange,'SDFGHJK');
+    if (e.total / e.ps != 0) {
+      let numberMark: any = e.total / e.ps;
+      if (!(/(^[1-9]\d*$)/.test(numberMark))) {
+        this.pageAll = ~~(++numberMark);
+        console.log(this.pageAll, 'AAAALLLL', this.dataAll);
+      }
     }
 
-    // if (e.checkbox) {
-    //   this.selcectAll = e.checkbox.map((item: any) => item.id);
-    //   console.log(this.selcectAll,'AA');
-    // }
   }
 
 
-  dataProcess(data: any): any {
-    console.log(data, 'ASDFGHJKL');
-    return data.map((i: any, index: any) => {
-      if (index === 1) i.checked = true;
+  // 数据前端再处理一次
+  dataProcess = (data: STData[]): STData[] => {
+    return data.map((i: any, index) => {
+      if (this.checkedButtonPermissionIds != null && this.checkedButtonPermissionIds.includes(i.id)) {
+        i.checked = true;
+      }
       return i;
     });
+  };
+
+  // 表格点击事件
+  permissionTableChange(e: any): void {
+    if (e.type === 'checkbox') {
+      //点击一行的数据
+      for (const permission of e.checkbox) {
+        this.checkedButtonPermissionIds.push(permission.id);
+      }
+    }
   }
+
+
 }
