@@ -10,13 +10,8 @@
         <nz-spin nzSimple></nz-spin>
       </div>
       <nz-input-group [nzSuffix]="suffixIconSearch" style="width: 100%">
-        <input
-          type="text"
-          nz-input
-          [(ngModel)]="searchValue"
-          (change)="globalSearch()"
-          placeholder="搜索组织、成员、岗位、职务、标签"
-        />
+        <input type="text" nz-input [(ngModel)]="searchValue" (change)="globalSearch()"
+          placeholder="搜索组织、成员、岗位、职务、标签" />
       </nz-input-group>
       <ng-template #suffixIconSearch>
         <i nz-icon nzType="search"></i>
@@ -24,15 +19,8 @@
 
       <nz-tabset (nzSelectedIndexChange)="activeTab($event)" [nzSize]="'small'" *ngIf="!showSearchResult">
         <nz-tab nzTitle="组织">
-          <nz-tree
-            [nzData]="orgNodes"
-            [nzAsyncData]="'true'"
-            (nzExpandChange)="orgEvent($event)"
-            nzExpandAll="true"
-            (nzClick)="orgEvent($event)"
-            (nzDblClick)="orgEvent($event)"
-            [nzTreeTemplate]="nzTreeTemplate"
-          ></nz-tree>
+          <nz-tree [nzData]="orgNodes" [nzAsyncData]="'true'" (nzExpandChange)="orgEvent($event)" nzExpandAll="true"
+            (nzClick)="orgEvent($event)" (nzDblClick)="orgEvent($event)" [nzTreeTemplate]="nzTreeTemplate"></nz-tree>
 
           <ng-template #nzTreeTemplate let-node>
             <span class="custom-node" [class.active]="activedOrgNode?.key === node.key">
@@ -58,9 +46,8 @@
                 <i nz-icon nzType="file"></i>
                 <span class="file-name">{{ node.title }}</span>
                 <span class="file-desc">
-                  <a nz-dropdown [nzDropdownMenu]="orgOptMenu" nzTrigger="click"
-                    ><i nz-icon nzType="menu" (click)="optOrg(node)" nzTheme="outline"></i
-                  ></a>
+                  <a nz-dropdown [nzDropdownMenu]="orgOptMenu" nzTrigger="click"><i nz-icon nzType="menu"
+                      (click)="optOrg(node)" nzTheme="outline"></i></a>
                 </span>
               </span>
 
@@ -71,8 +58,10 @@
                   <li nz-menu-item (click)="orgOperation('add', node)">
                     <i nz-icon nzType="plus-circle" nzTheme="outline"></i>添加下级部门
                   </li>
-                  <li nz-menu-item (click)="orgOperation('edit-name', node)"><i nz-icon nzType="edit" nzTheme="outline"></i>修改名称</li>
-                  <li nz-menu-item (click)="orgOperation('remove', node)"><i nz-icon nzType="delete" nzTheme="outline"></i>删除</li>
+                  <li nz-menu-item (click)="orgOperation('edit-name', node)"><i nz-icon nzType="edit"
+                      nzTheme="outline"></i>修改名称</li>
+                  <li nz-menu-item (click)="orgOperation('remove', node)"><i nz-icon nzType="delete"
+                      nzTheme="outline"></i>删除</li>
                   <li nz-menu-item (click)="orgOperation('setup-post', node)">
                     <i nz-icon nzType="deployment-unit" nzTheme="outline"></i>设置岗位
                   </li>
@@ -99,13 +88,7 @@
 
   <div nz-col nzSpan="18">
     <nz-card [nzTitle]="employeeTableTitle" [nzExtra]="extraTemplate">
-      <st
-        #st
-        [data]="url"
-        [size]="'small'"
-        [columns]="columns"
-        [scroll]="{ x: '1300px' }"
-      ></st>
+      <st #st [data]="url" [size]="'small'" [columns]="columns" [scroll]="{ x: '1300px' }"></st>
 
     </nz-card>
     <ng-template #extraTemplate>
@@ -116,3 +99,6 @@
     </ng-template>
   </div>
 </div>
+
+<button nz-button (click)="choosePerson1()">选人1</button>
+<button nz-button (click)="choosePerson2()">选人2</button>

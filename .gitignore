@@ -13,6 +13,7 @@ scripts/var.less
 # dependencies
 /node_modules
 /yarn.lock
+/.history
 
 # IDEs and editors
 /.idea

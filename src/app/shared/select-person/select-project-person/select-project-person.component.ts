@@ -21,12 +21,12 @@ export class SelectProjectPersonComponent implements OnInit {
 
   chooseMode: variable<string>; // 必填，organization | employee | department
   functionName: variable<string>; // 必填，自定义功能名称
-  singleChoice: boolean = false; // 是否多选 默认不多选
+  singleChoice: boolean = false; // 是否多选 默认多选
   selectList: selected[] = [];
   pageSize: number = 10; // 常用部门查询
 
   ngOnInit(): void {
-    Promise.all([this.judge(), this.getSelectedByCatch()]);
+    Promise.all([this.judge()]);
   }
 
   judge(): void {
@@ -45,7 +45,9 @@ export class SelectProjectPersonComponent implements OnInit {
   }
 
   getSelectedByCatch(): void {
-    localStorage.getItem(this.functionName!) ? (this.selectList = JSON.parse(<string>localStorage.getItem(this.functionName!))) : '';
+    localStorage.getItem(this.functionName!) && !this.selectList.length
+      ? (this.selectList = JSON.parse(<string>localStorage.getItem(this.functionName!)))
+      : '';
   }
 
   close(): void {

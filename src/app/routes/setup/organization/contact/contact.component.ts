@@ -12,6 +12,7 @@ import { SystemContactOrgEditComponent } from '../org/org-edit.component';
 import { SystemContactJobEditComponent } from '../job/job-edit.component';
 import { SystemContactTagEditComponent } from '../tag/tag-edit.component';
 import { SetupAccountEditComponent } from '../../account/edit/edit.component';
+import { SelectProjectPersonComponent } from 'src/app/shared/select-person/select-project-person/select-project-person.component';
 
 @Component({
   selector: 'app-setup-contact',
@@ -56,7 +57,8 @@ export class SetupContactComponent implements OnInit {
     { title: '姓名', index: 'thirdPartyName', fixed: 'left' },
     { title: '账号', index: 'mobilePhone', fixed: 'left' },
     {
-      title: '来源', index: 'scene',
+      title: '来源',
+      index: 'scene',
       format: (item: any) => {
         if (item.scene == 'wxCp') {
           return '企业微信';
@@ -69,7 +71,6 @@ export class SetupContactComponent implements OnInit {
         } else {
           return item.scene;
         }
-
       }
     },
     // { title: '工号', index: 'name', fixed: 'left', width: '80px'   },
@@ -174,9 +175,11 @@ export class SetupContactComponent implements OnInit {
     const node: any = event.node;
     if (event.eventName === 'expand') {
       if (node && node.getChildren().length === 0 && node.isExpanded) {
-        this.http.get(`/org/service/organization/admin/organization/tree/child/` + node.origin!.key + '/' + node.origin['companyId']).subscribe((res: any) => {
-          res.success && node.addChildren(res.data);
-        });
+        this.http
+          .get(`/org/service/organization/admin/organization/tree/child/` + node.origin!.key + '/' + node.origin['companyId'])
+          .subscribe((res: any) => {
+            res.success && node.addChildren(res.data);
+          });
       }
     } else if (event.eventName === 'click') {
       this.activedOrgNode = node;
@@ -199,7 +202,6 @@ export class SetupContactComponent implements OnInit {
         this.selectedOrgId = this.orgNodes[0].key;
         // console.log('test:', this.orgNodes[0]);
 
-
         this.loadEmployeeTable('index', '', this.orgNodes[0].key, null, null, null, null);
       }
     });
@@ -220,8 +222,7 @@ export class SetupContactComponent implements OnInit {
             name: node.title
           }
         })
-        .subscribe(() => {
-        });
+        .subscribe(() => {});
     } else if (opt === 'add') {
       this.modal
         .createStatic(
@@ -416,17 +417,38 @@ export class SetupContactComponent implements OnInit {
     private modalSrv: NzModalService,
     private msgSrv: NzMessageService,
     private nzContextMenuService: NzContextMenuService
-  ) {
-  }
+  ) {}
 
   selectUser() {
     const mode = ['employee', 'organization', 'post', 'job', 'tag'];
   }
 
-  openFolder(node: any): void {
-  }
+  openFolder(node: any): void {}
 
   ngOnInit() {
     this.loadOrgTree();
+  }
+
+  choosePerson1() {
+    this.modal
+      .createStatic(SelectProjectPersonComponent, {
+        chooseMode: 'organization', // department organization employee
+        functionName: '1',
+        singleChoice: true
+      })
+      .subscribe(res => {
+        console.log(res);
+      });
+  }
+
+  choosePerson2() {
+    this.modal
+      .createStatic(SelectProjectPersonComponent, {
+        chooseMode: 'employee', // department organization employee
+        functionName: '2'
+      })
+      .subscribe(res => {
+        console.log(res);
+      });
   }
 }
