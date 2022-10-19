@@ -1,27 +1,25 @@
 <main>
   <div nz-col [nzSpan]="14">
     <!--  <nz-card>-->
-    <sf #sf mode="search" [button]="null" [schema]="searchSchema" (formSubmit)="st.reset($event)" (formReset)="st.reset($event)">
+    <sf #sf mode="search" [button]="null" [schema]="searchSchema" (formSubmit)="st.reset($event)"
+        (formReset)="st.reset($event)">
       <button type="submit" nz-button nzType="primary" [disabled]="!sf.valid">搜索</button>
       <button (click)="reset()" type="button" nz-button>重置</button>
     </sf>
-    <st #st [data]="url"   [columns]="columns"   (change)="permissionTableChange($event)"  [res]="{ process: dataProcess }">
-      <ng-template let-item let-index="index" let-column="column" st-row="checkedTrue">
-        <div class="divBox" ><input (click)="clickEvent(item)" type="checkbox" id="{{item.user.id}}" class={{item?.user.id}} value="{{item.user.id}}"></div>
-      </ng-template>
-    </st>
+    <st #st [data]="url" [columns]="columns" (change)="permissionTableChange($event)" [res]="{ process: dataProcess }"></st>
   </div>
 
   <div nz-col [nzSpan]="8">
-    <app-setup-data-permissions></app-setup-data-permissions>
+    <app-volume-increase #increase></app-volume-increase>
   </div>
 
 </main>
 <style>
-  main{
+  main {
     display: flex;
   }
-  main>div:nth-of-type(2){
+
+  main > div:nth-of-type(2) {
     margin-left: 5%;
     margin-top: 5%;
   }

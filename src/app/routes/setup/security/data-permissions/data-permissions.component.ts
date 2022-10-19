@@ -99,11 +99,9 @@ export class SetupDataPermissionsComponent implements OnInit, OnChanges {
 
   // 数据范围权限-某个角色可以看到哪些数据
   saveRolePermission(): void {
-    // console.log('selectedScope:', this.selectedScope.category);
     const scopeVos: any[] = [];
     const checkedNodeList = this.dataPermissionsTreeComponent.getCheckedNodeList();
     this.findCheckedNode(checkedNodeList, scopeVos, this.selectedScope.category);
-    // console.log('scopeVos:', scopeVos);
     const params = {
       roleId: this.role.id,
       scopeVos: scopeVos,
@@ -124,6 +122,7 @@ export class SetupDataPermissionsComponent implements OnInit, OnChanges {
     console.log(node,'NODE');
     if (event.eventName === 'expand') {
       if (node && node.getChildren().length === 0 && node.isExpanded) {
+        console.log('点击事件-操作');
         if (this.selectedScope.category == 'org') {
           this.http.get(`/org/service/organization/admin/organization/findChildOrgTree/` + node.key + '/' + node.origin.companyId).subscribe((res) => {
             if (res.success) {
@@ -135,17 +134,19 @@ export class SetupDataPermissionsComponent implements OnInit, OnChanges {
         }
       }
     } else if (event.eventName === 'click') {
+      console.log('点击事件-操作');
     } else if (event.eventName === 'check') {
-      let Checked = [];
-      for (let i = 0; i < this.dataPermissionsTreeComponent.getCheckedNodeList().length; i++) {
-        // @ts-ignore
-        Checked.push(this.dataPermissionsTreeComponent.getCheckedNodeList()[i].origin.title);
-      }
-      this.permissions.emit(Checked.toString());
+      console.log('点击事件-操作',this.dataPermissionsTreeComponent.getCheckedNodeList(),this.dataPermissionsTreeComponent.getCheckedNodeList().length);
+      // if(this.dataPermissionsTreeComponent.getCheckedNodeList().length>0){
+      //   let Checked = [];
+      //   for (let i = 0; i < this.dataPermissionsTreeComponent.getCheckedNodeList().length; i++) {
+      //     // @ts-ignore
+      //     Checked.push(this.dataPermissionsTreeComponent.getCheckedNodeList()[i].origin.title);
+      //   }
+      //   this.permissions.emit(Checked.toString());
+      // }
     }
   }
-
-
   /**
    * 加载组织机构树
    */
@@ -163,21 +164,17 @@ export class SetupDataPermissionsComponent implements OnInit, OnChanges {
           this.treeNodes = [];
           if (orgScope.data != '' && orgScope.data != null) {
             this.defaultCheckedKeys = orgScope.data;
-            console.log(this.defaultCheckedKeys,'测试1');
             orgTree.data.forEach((value: any) => {
               this.treeNodes.push(value);
             });
           } else {
             this.treeNodes = orgTree.data;
-            console.log(this.defaultCheckedKeys,'测试2');
           }
         }
         this.cdr.detectChanges();
       });
     }
   }
-
-
   /**
    *  加载线路
    */
@@ -208,8 +205,6 @@ export class SetupDataPermissionsComponent implements OnInit, OnChanges {
       });
     }
   }
-
-
   /**
    *  节点类型（all():所有,station:车站,block:区间,power_supply:供电所,cocc:控制中心,depot:车辆段,park:停车场,depot_park:场段）,查询多个用,号隔开，默认值：all
    */
@@ -232,16 +227,12 @@ export class SetupDataPermissionsComponent implements OnInit, OnChanges {
       });
     }
   }
-
-
   // ------------------------组织机构树
   openFolder(node: any): void {
   }
-
   ngOnInit() {
     // this.loadMenuPermissionList();
   }
-
   add() {
   }
 }

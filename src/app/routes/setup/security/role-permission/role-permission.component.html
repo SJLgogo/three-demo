@@ -59,7 +59,7 @@
     </nz-card>
   </div>
 
-  <div nz-col [nzSpan]=this.opacityNumber>
+  <div nz-col [nzSpan]=this.opacityNumber style="overflow:hidden">
     <!--        <div nz-row nzGutter="18">-->
     <nz-card [nzTitle]="'授权信息: ' + roleTitle">
       <div>
@@ -78,15 +78,15 @@
   </div>
 
 
-<!--  <div nz-col [nzSpan]="6"  *ngIf="index==1">-->
-<!--    <nz-card>-->
-<!--      <div>-->
-<!--        <h3>权限配置</h3>-->
-<!--        <p>已选权限：{{contentDate}}</p>-->
-<!--      </div>-->
-<!--      <header class="headerTop">-->
-<!--      </header>-->
-<!--      <app-setup-data-permissions [role]="selectedRole" (permissions)="permissionsAll($event)" [permissionUserId]="permissionUserId" #permissions ></app-setup-data-permissions>-->
-<!--    </nz-card>-->
-<!--  </div>-->
+  <div nz-col [nzSpan]="6"  *ngIf="index==1">
+    <nz-card>
+      <div>
+        <h3>权限配置</h3>
+        <p>已选权限：{{contentDate}}</p>
+      </div>
+      <header class="headerTop">
+      </header>
+      <app-setup-data-permissions [role]="selectedRole" (permissions)="permissionsAll($event)" [permissionUserId]="permissionUserId" #permissions ></app-setup-data-permissions>
+    </nz-card>
+  </div>
 </div>

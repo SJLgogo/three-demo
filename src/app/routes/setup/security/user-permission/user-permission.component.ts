@@ -100,7 +100,6 @@ export class SetupUserPermissionComponent implements AfterViewInit, OnChanges {
    * 批量增减操作 BatchIncreaseConfigurationComponent
    */
   batchIncrease(){
-    console.log('批量增减');
     this.modal
       .createStatic(BatchIncreaseConfigurationComponent, {
         i: {roleId: this.role.id},

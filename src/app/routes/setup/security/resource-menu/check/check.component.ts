@@ -50,7 +50,7 @@ export class SetupSecurityResourceMenuCheckComponent implements OnInit, OnChange
       ps: 'pageSize'
     },
     params: {
-      menuId: this.optMenuId
+      parentId: this.optMenuId
     }
   };
 
@@ -71,10 +71,9 @@ export class SetupSecurityResourceMenuCheckComponent implements OnInit, OnChange
   ];
 
   loadPageElementResourceTable(menuId: string): void {
-    console.log(menuId,this.optMenuId,'AAA');
     if (this.st != null) {
       this.st.reload({
-        menuId: this.optMenuId
+        parentId: this.optMenuId
       });
     }
   }
@@ -120,12 +119,10 @@ export class SetupSecurityResourceMenuCheckComponent implements OnInit, OnChange
     if (event.eventName === 'click' || event.eventName === 'dblclick') {
       this.optMenuId = node.key;
       this.optMenuName = node.title;
-      console.log(this.optMenuId,'ASDFGHJHGFD');
       this.loadPageElementResourceTable(this.optMenuId);
       this.activeMenuNode = node;
     } else if (event.eventName === 'check') {
       const checkedMenuIdArray = this.getCheckedMenuIds(this.roleTreeComponent.getCheckedNodeList());
-      // console.log('checkedMenuIdArray:', checkedMenuIdArray);
       this.updateMenuCheckNodes(checkedMenuIdArray);
       this.updateCheckIds();
     }
@@ -242,7 +239,6 @@ export class SetupSecurityResourceMenuCheckComponent implements OnInit, OnChange
 
     const menuIds: any[] = [];
     this.findCheckedNode(checkedNodeList, menuIds);
-
 
     const requestParams = {
       roleId: this.role.id,

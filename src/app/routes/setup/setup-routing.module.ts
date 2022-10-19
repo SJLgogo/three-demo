@@ -14,6 +14,7 @@ import {SetupSynchronizeComponent} from './account/synchronize/synchronize.compo
 import {SetupDataPermissionsComponent} from './security/data-permissions/data-permissions.component';
 import {NzCollapseModule} from "ng-zorro-antd/collapse";
 import {UserManagementComponent} from "./user-management/user-management.component";
+import {VolumeIncreaseComponent} from "./security/volume-increase/volume-increase.component";
 
 const routes: Routes = [
   {path: '', redirectTo: 'security/contact', pathMatch: 'full'},
@@ -22,6 +23,7 @@ const routes: Routes = [
   {path: 'user-permission', component: SetupUserPermissionComponent},
   {path: 'check-user-table', component: SetupCheckUserTableComponent},
   {path: 'batch-increase-configuration', component: BatchIncreaseConfigurationComponent},
+  {path: 'volume-increase', component: VolumeIncreaseComponent},
   {path: 'data-permissions', component: SetupDataPermissionsComponent},
   {
     path: 'security/resource-menu',
