@@ -18,35 +18,11 @@ export class SetupAccountEditComponent implements OnInit {
   @ViewChild('sf', { static: false }) sf!: SFComponent;
   schema: SFSchema = {
     properties: {
-      // account: { type: 'string', title: '登陆账号' },
       mobilePhone: { type: 'string', title: '手机号', format: 'mobile' },
-      name: { type: 'string', title: '姓名' },
+      thirdPartyName: { type: 'string', title: '姓名' },
       password: { type: 'string', title: '密码' }
-      // attendanceGroupEmployeeIds: {
-      //   type: 'string',
-      //   title: '考勤组',
-      //   enum: this.attendanceGroupEmployeeData,
-      //   ui: {
-      //     widget: 'tree-select',
-      //     multiple: true,
-      //     grid: { span: 11 },
-      //   } as SFTreeSelectWidgetSchema,
-      // },
-      // attendanceGroupEmployeeSelect: {
-      //   type: 'string',
-      //   title: '',
-      //   ui: {
-      //     spanLabelFixed: 10,
-      //     grid: { span: 1 },
-      //     widget: 'range-input', // 自定义小部件的KEY
-      //     change: () => {
-      //       // 调用选人控件
-      //       this.selectUser();
-      //     },
-      //   },
-      // },
     },
-    required: ['mobilePhone', 'name', 'password']
+    required: ['mobilePhone', 'thirdPartyName', 'password']
   };
   ui: SFUISchema = {
     '*': {
@@ -72,14 +48,15 @@ export class SetupAccountEditComponent implements OnInit {
     // if (this.record.id > 0) this.http.get(`/user/${this.record.id}`).subscribe((res) => (this.i = res));
   }
 
+
   save(value: any): void {
     // 默认账号就是手机号
-    value.account = value.mobilePhone;
+    // value.account = value.mobilePhone;
     let url = 'register';
     if (this.i.id) {
-      url = 'updateUser';
+      url = 'update';
     }
-    this.http.post(`//base/service/security/admin/actor/user/` + url, value).subscribe((res) => {
+    this.http.post(`/org/service/organization/admin/account/` + url, value).subscribe((res) => {
       if (res.success) {
         this.msgSrv.success('保存成功');
         this.modalRef.close(true);

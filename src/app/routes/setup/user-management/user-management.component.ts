@@ -18,10 +18,10 @@ export class UserManagementComponent implements OnInit {
   url = '/org/service/organization/admin/user/page-all';
   columns: STColumn[] = [
     { title: '名称', index: 'name' },
-    { title: '公司Id', index: 'corpId' },
+    { title: 'email', index: 'email' },
     // {title: '应用Id', index: 'agentId'},
-    { title: '应用', index: 'category', type: 'enum', enum: { wxCp: '企业微信', ding: '钉钉', yzj: '云之家', other: '其他' } },
-    { title: '通讯录自动同步', index: 'automaticUpdate', type: 'yn' },
+    // { title: '应用', index: 'category', type: 'enum', enum: { wxCp: '企业微信', ding: '钉钉', yzj: '云之家', other: '其他' } },
+    { title: '数据来源', index: 'type',type: 'enum', enum: { auto: '自动同步', other: '其他' } },
     {
       title: '操作',
       buttons: [

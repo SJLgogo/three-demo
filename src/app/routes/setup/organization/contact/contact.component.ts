@@ -118,7 +118,7 @@ export class SetupContactComponent implements OnInit {
       this.showSearchResult = false;
     } else {
       this.showSearchResult = true;
-      this.http.post(`/org/service/organization/admin/employee/global-search`, params).subscribe((res: any) => {
+      this.http.post(`/org/service/organization/admin/account/global-search`, params).subscribe((res: any) => {
         if (res.success) {
           this.panels = res.data;
         }
@@ -200,7 +200,6 @@ export class SetupContactComponent implements OnInit {
         this.employeeTableTitle = '【组织人员信息】' + this.orgNodes[0].title;
 
         this.selectedOrgId = this.orgNodes[0].key;
-        // console.log('test:', this.orgNodes[0]);
 
         this.loadEmployeeTable('index', '', this.orgNodes[0].key, null, null, null, null);
       }
