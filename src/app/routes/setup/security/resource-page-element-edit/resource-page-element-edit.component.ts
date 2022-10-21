@@ -33,16 +33,6 @@ export class SetupSecurityResourcePageElementEditComponent implements OnInit {
         } as SFSelectWidgetSchema
       },
       remark: { type: 'string', title: '备注', maxLength: 140 }
-      // isPermissionElement: {
-      //   type: 'boolean',
-      //   title: '是否权限授权元素',
-      //   ui: {
-      //     checkedChildren: '是',
-      //     unCheckedChildren: '否',
-      //   },
-      // },
-      // permissionName: { type: 'string', title: '权限名称', ui: { visibleIf: { isPermissionElement: [true] } } },
-      // permissionIdentifier: { type: 'string', title: '权限标识符', ui: { visibleIf: { isPermissionElement: [true] } } },
     },
     required: ['name']
   };
@@ -60,17 +50,6 @@ export class SetupSecurityResourcePageElementEditComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // if (this.pageElement.id != null) {
-    //   this.http
-    //     .get('/security/service/security/admin/security-resource/page-element-view', { pageElementId: this.pageElement.id })
-    //     .subscribe((res) => {
-    //       if (res.success) {
-    //         this.pageElement = res.data;
-    //       } else {
-    //         this.msgSrv.error('数据获取失败:' + res.message);
-    //       }
-    //     });
-    // }
   }
 
   save(value: any) {
@@ -78,7 +57,7 @@ export class SetupSecurityResourcePageElementEditComponent implements OnInit {
     //添加的按钮所属于哪个菜单下面
     value.parentId = this.menuId;
     if (this.pageElement.id != null) {
-      url = `/security/service/security/admin/authority/permission/create/update`;
+      url = `/security/service/security/admin/authority/permission/update`;
     }
 
     this.http.post(url, value).subscribe((res) => {

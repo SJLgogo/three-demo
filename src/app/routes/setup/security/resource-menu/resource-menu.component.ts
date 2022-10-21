@@ -57,9 +57,6 @@ export class SetupSecurityResourceMenuComponent implements OnInit {
   columns: STColumn[] = [
     { title: '元素名称', index: 'name' },
     { title: '页面标识符', index: 'identifier' },
-    // { title: '权限受控', index: 'isPermissionElement', type: 'badge' },
-    // { title: '权限名称', index: 'permissionName' },
-    // { title: '权限标识符', index: 'permissionIdentifier' },
     { title: '备注', index: 'remark' },
     {
       title: '',
@@ -74,7 +71,7 @@ export class SetupSecurityResourceMenuComponent implements OnInit {
               nzTitle: '删除确认?',
               nzContent: '是否确认删除元素 [' + item.name + '] ?',
               nzOnOk: () => {
-                this.http.post(`//base/service/security/admin/security-resource/page-element-delete`, item).subscribe((res) => {
+                this.http.delete(`/security/service/security/admin/authority/permission/delete/` + item.id).subscribe((res) => {
                   if (res.success) {
                     this.msgSrv.success('删除成功');
                     this.loadPageElementResourceTable(this.optMenuId);
@@ -99,8 +96,7 @@ export class SetupSecurityResourceMenuComponent implements OnInit {
     private modal: ModalHelper,
     private msgSrv: NzMessageService,
     private cdr: ChangeDetectorRef,
-    private modalSrv: NzModalService,
-
+    private modalSrv: NzModalService
   ) {
   }
 
@@ -110,7 +106,7 @@ export class SetupSecurityResourceMenuComponent implements OnInit {
 
   // 点击加载下级树节点
   menuEvent(event: NzFormatEmitEvent): void {
-    const node:any = event.node;
+    const node: any = event.node;
     if (event.eventName === 'click') {
       this.activedMenuNode = node;
       this.optMenuId = node.key;
@@ -132,7 +128,7 @@ export class SetupSecurityResourceMenuComponent implements OnInit {
     });
   }
 
-  optMenu(node:any) {
+  optMenu(node: any) {
     this.activedMenuNode = node;
     this.optMenuId = node.key;
     this.optMenuName = node.title;
@@ -141,7 +137,7 @@ export class SetupSecurityResourceMenuComponent implements OnInit {
   openFolder(node: any): void {
   }
 
-  menuOperation(opt:string, node:any) {
+  menuOperation(opt: string, node: any) {
     // console.log(opt,node);
     if (opt === 'add') {
       this.modal
@@ -181,7 +177,7 @@ export class SetupSecurityResourceMenuComponent implements OnInit {
         nzTitle: '删除确认?',
         nzContent: '是否确认删除菜单 [' + node.title + '] ?',
         nzOnOk: () => {
-          this.http.delete(`/security/service/security/admin/authority/permission/delete/`+node.key).subscribe((res) => {
+          this.http.delete(`/security/service/security/admin/authority/permission/delete/` + node.key).subscribe((res) => {
             if (res.success) {
               this.msgSrv.success('删除成功');
               this.loadMenuTree();
@@ -208,7 +204,7 @@ export class SetupSecurityResourceMenuComponent implements OnInit {
     }
   }
 
-  updatePageElementResource(item:any) {
+  updatePageElementResource(item: any) {
     this.modal
       .createStatic(
         SetupSecurityResourcePageElementEditComponent,
