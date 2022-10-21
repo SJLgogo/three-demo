@@ -15,7 +15,6 @@ import {_HttpClient, ModalHelper, SettingsService} from '@delon/theme';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {NzModalRef, NzModalService} from 'ng-zorro-antd/modal';
 import {SetupCheckUserTableComponent} from './check-user-table/check-user-table.component';
-import {BatchIncreaseConfigurationComponent} from "./batch-increase-configuration/batch-increase-configuration.component";
 
 @Component({
   selector: 'app-setup-user-permission',
@@ -97,18 +96,10 @@ export class SetupUserPermissionComponent implements AfterViewInit, OnChanges {
     this.st.reload();
   }
   /**
-   * 批量增减操作 BatchIncreaseConfigurationComponent
+   * 批量增减操作
    */
   batchIncrease(){
-    this.modal
-      .createStatic(BatchIncreaseConfigurationComponent, {
-        i: {roleId: this.role.id},
-        mode: 'add',
-      }, { size: 1200 })
-      .subscribe(() => {
-        this.st.req.body = {roleId: this.role.id}; // 给body赋值
-        this.st.reload();
-      });
+    console.log('批量增减');
   }
 
 

@@ -5,6 +5,8 @@
       <button (click)="reset()" type="button" nz-button>重置</button>
       <button (click)="addUserRole()" nz-button nzType="primary">授权用户角色</button>
       <button (click)="transferToNormalRole()" nz-button nzType="primary">一键转角色</button>
+      <button (click)="batchIncrease()" nz-button nzType="primary">批量增减配置</button>
+
     </sf>
 <!--    <st #st [data]="url"  [scroll]="{ x: '1300px' }"  [columns]="columns" [clickRowClassName]="clickRowClassName" ></st>-->
     <st #st [data]="url"  [scroll]="{ x: '1300px' }" [columns]="columns"   (change)="clickContent($event)"  [clickRowClassName]="clickRowClassName">

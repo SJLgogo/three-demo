@@ -40,7 +40,6 @@ export class SetupSecurityRolePermissionComponent implements OnInit {
     if (event.eventName === 'click') {
       this.activeRoleNode = node;
       this.activeRole(this.activeRoleNode, this.index);
-      console.log(this.activeRoleNode,this.index);
       if (this.index == 1) {
         this.permissions.optDataPermission([]);
         this.permissions.permissionUserId = "";

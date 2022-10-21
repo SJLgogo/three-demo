@@ -119,7 +119,6 @@ export class SetupDataPermissionsComponent implements OnInit, OnChanges {
   // 点击加载下级树节点
   orgEvent(event: NzFormatEmitEvent): any {
     const node: any = event.node;
-    console.log(node,'NODE');
     if (event.eventName === 'expand') {
       if (node && node.getChildren().length === 0 && node.isExpanded) {
         console.log('点击事件-操作');
