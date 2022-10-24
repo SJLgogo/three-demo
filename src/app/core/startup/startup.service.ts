@@ -33,7 +33,6 @@ export class StartupService {
     iconSrv.addIcon(...ICONS_AUTO, ...ICONS);
   }
 
-
   load(): Observable<void> {
     let user: any = this.tokenService.get();
     if (user != null && user.loginUserId && user.loginUserId.length > 0) {
@@ -43,16 +42,13 @@ export class StartupService {
     }
   }
 
-
   /**
    * 登录前调用、用的是默认配置
    * @private
    */
   private beforeLogin(): Observable<any> {
     const defaultLang = this.i18n.defaultLang;
-    return zip(this.i18n.loadLangData(defaultLang),
-      this.httpClient.get('assets/tmp/app-data.json')
-    ).pipe(
+    return zip(this.i18n.loadLangData(defaultLang), this.httpClient.get('assets/tmp/app-data.json')).pipe(
       catchError(res => {
         console.warn(`StartupService.load: Network request failed`, res);
         setTimeout(() => this.router.navigateByUrl(`/exception/500`));
@@ -76,19 +72,19 @@ export class StartupService {
     );
   }
 
-
   /**
    * 登录后调用
    * @private
    */
   private afterLogin(): Observable<any> {
     const defaultLang = this.i18n.defaultLang;
-    return zip(this.i18n.loadLangData(defaultLang),
+    return zip(
+      this.i18n.loadLangData(defaultLang),
       this.httpClient.get('/security/service/security/admin/security-resource/myAlainAppData'),
-      this.httpClient.get(`/service/dictionary/dict-data/find-all`)).pipe(
+      this.httpClient.get(`/service/dictionary/dict-data/find-all`)
+    ).pipe(
       // 接收其他拦截器后产生的异常消息
       catchError(res => {
-        console.warn(`StartupService.load: Network request failed`, res);
         setTimeout(() => this.router.navigateByUrl(`/exception/500`));
         return [];
       }),
@@ -113,6 +109,4 @@ export class StartupService {
       })
     );
   }
-
-
 }
