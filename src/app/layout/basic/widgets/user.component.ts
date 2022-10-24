@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
 import { _HttpClient, SettingsService, User } from '@delon/theme';
+import { environment } from '@env/environment';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
@@ -56,7 +57,7 @@ export class HeaderUserComponent {
         const appId = localStorage.getItem('appId');
         this.tokenService.clear();
         localStorage.clear();
-        window.location.href = 'http://116.63.95.133:8252/';
+        window.location.href = environment['logout_url'];
         // this.router.navigate([this.tokenService.login_url!], {queryParams: {appId: appId}});
       } else {
         this.msgSrv.error(res.message);

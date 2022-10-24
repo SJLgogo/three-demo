@@ -17,6 +17,7 @@ export const environment = {
   },
   SERVER_URL: '',
   RESOURCE_SERVER_URL: '',
+  logout_url: 'http://116.63.95.133:8252/',
   modules: [DelonMockModule.forRoot({ data: MOCKDATA })]
 } as Environment;
 
