@@ -36,6 +36,7 @@ const routes: Routes = [
         data: { title: '锁屏', titleI18n: 'app.lock' }
       },
       { path: 'logout', component: UserLogoutComponent, data: { title: '退出登录' } },
+
     ]
   },
   // 单页不包裹Layout

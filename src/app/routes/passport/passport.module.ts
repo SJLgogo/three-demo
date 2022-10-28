@@ -13,6 +13,7 @@ import { UserLogoutComponent } from './logout/logout.component';
 
 const COMPONENTS = [UserLoginComponent, UserRegisterResultComponent, UserRegisterComponent, UserLockComponent, CallbackComponent,UserLogoutComponent];
 
+
 @NgModule({
   imports: [SharedModule, PassportRoutingModule],
   declarations: [...COMPONENTS],
