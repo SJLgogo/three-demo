@@ -21,4 +21,5 @@ const COMPONENTS = [UserLoginComponent, UserRegisterResultComponent, UserRegiste
     { provide: HTTP_INTERCEPTORS, useClass: SimpleInterceptor, multi: true}
   ]
 })
+
 export class PassportModule {}
