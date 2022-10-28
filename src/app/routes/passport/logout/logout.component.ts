@@ -8,5 +8,6 @@ import { Component, OnInit } from '@angular/core';
 export class UserLogoutComponent implements OnInit {
   constructor() {}
 
+
   ngOnInit(): void {}
 }
