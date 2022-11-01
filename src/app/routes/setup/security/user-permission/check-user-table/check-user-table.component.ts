@@ -2,10 +2,19 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { _HttpClient } from '@delon/theme';
 import { SFSchema, SFUISchema } from '@delon/form';
-import { STColumn, STComponent } from '@delon/abc/st';
+import { STColumn, STColumnTag, STComponent } from '@delon/abc/st';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 
+
+/**
+ * 账户状态
+ */
+const statusTAG: STColumnTag = {
+  '1': { text: '激活状态', color: '#45d703' },
+  '2': { text: '休眠状态', color: '#708090' },
+  '3': { text: '注销账号', color: '#E02020' },
+};
 @Component({
   selector: 'app-setup-check-user-table',
   templateUrl: './check-user-table.component.html',
@@ -54,6 +63,7 @@ export class SetupCheckUserTableComponent  implements OnInit {
     { title: '名称', index: 'thirdPartyName', width: '100px' },
     { title: '手机号', index: 'mobilePhone', width: '100px' },
     { title: 'email', index: 'user.email', width: '100px' },
+    {title: '账户状态', index: 'status', width: '100px',type: 'tag', tag: statusTAG},
   ];
 
   constructor(public http: _HttpClient, private modal: NzModalRef, private msgSrv: NzMessageService) {

@@ -9,13 +9,24 @@ import {
   SimpleChanges,
   ViewChild
 } from '@angular/core';
-import {STChange, STColumn, STComponent,STClickRowClassNameType} from '@delon/abc/st';
+import { STChange, STColumn, STComponent, STClickRowClassNameType, STColumnTag } from '@delon/abc/st';
 import {SFComponent, SFSchema} from '@delon/form';
 import {_HttpClient, ModalHelper, SettingsService} from '@delon/theme';
 import {NzMessageService} from 'ng-zorro-antd/message';
 import {NzModalRef, NzModalService} from 'ng-zorro-antd/modal';
 import {SetupCheckUserTableComponent} from './check-user-table/check-user-table.component';
+import {BatchIncreaseConfigurationComponent} from "./batch-increase-configuration/batch-increase-configuration.component";
 
+
+
+/**
+ * 账户状态
+ */
+const statusTAG: STColumnTag = {
+  '1': { text: '激活状态', color: '#45d703' },
+  '2': { text: '休眠状态', color: '#708090' },
+  '3': { text: '注销账号', color: '#E02020' },
+};
 @Component({
   selector: 'app-setup-user-permission',
   templateUrl: './user-permission.component.html',
@@ -40,15 +51,9 @@ export class SetupUserPermissionComponent implements AfterViewInit, OnChanges {
   @ViewChild('st', {static: false}) st!: STComponent;
   clickRowClassName: STClickRowClassNameType = { exclusive: true, fn: () => 'text-processing' };
   columns: STColumn[] = [
-    // { title: '', index: 'id', type: 'checkbox' ,width:'60px'},
-    {title: '名称', index: 'thirdPartyName', width: '100px'},
-    {title: '登陆账号', index: 'account', width: '100px'},
-    {title: '邮箱', index: 'user.email', width: '100px'},
-    // { title: '是否显示', index: 'disabled', width: '100px' },
-    {title: '手机号', index: 'mobilePhone', width: '100px'},
     {
       title: '操作',
-      width: '100px',
+      width: 50,
       buttons: [
         {
           text: '删除',
@@ -74,6 +79,13 @@ export class SetupUserPermissionComponent implements AfterViewInit, OnChanges {
         },
       ]
     },
+    // { title: '', index: 'id', type: 'checkbox' ,width:'60px'},
+    {title: '名称', index: 'thirdPartyName', width: '100px'},
+    // {title: '登陆账号', index: 'account', width: '100px'},
+    {title: '邮箱', index: 'user.email', width: '100px'},
+    { title: '第三方账号', index: 'englishName', width: '100px' },
+    {title: '手机号', index: 'mobilePhone', width: '100px'},
+    {title: '账户状态', index: 'status', width: '100px',type: 'tag', tag: statusTAG},
   ];
 
   constructor(
@@ -96,10 +108,18 @@ export class SetupUserPermissionComponent implements AfterViewInit, OnChanges {
     this.st.reload();
   }
   /**
-   * 批量增减操作
+   * 批量增减操作 BatchIncreaseConfigurationComponent
    */
   batchIncrease(){
-    console.log('批量增减');
+    this.modal
+      .createStatic(BatchIncreaseConfigurationComponent, {
+        i: {roleId: this.role.id},
+        mode: 'add',
+      }, { size: 1200 })
+      .subscribe(() => {
+        this.st.req.body = {roleId: this.role.id}; // 给body赋值
+        this.st.reload();
+      });
   }
 
 
