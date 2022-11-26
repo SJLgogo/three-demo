@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, Optional } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Inject,
+  OnDestroy,
+  OnInit,
+  Optional
+} from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StartupService } from '@core';
@@ -52,6 +60,7 @@ export class UserLoginComponent implements OnInit, OnDestroy {
   agentId: variable<string>;
   corpId: variable<string>;
   appId: variable<string>;
+  accountId: variable<string>;
   loginWay: variable<string>;
 
   get userName(): AbstractControl {
@@ -119,9 +128,14 @@ export class UserLoginComponent implements OnInit, OnDestroy {
     this.activeRoute.queryParams.subscribe((params: any) => {
       const code = params.code;
       const appId = params.appId;
+      const accountId = params.accountId;
       if (code !== undefined && code !== '' && appId !== undefined && appId !== '') {
         this.oauthLogin = false;
       }
+      if (accountId !== undefined && accountId !== '') {
+        this.accountId = accountId;
+      }
+
     });
     const appId = await this.obtainUrlId();
     appId == '0' ? this.clearCookie() : '';
@@ -153,6 +167,17 @@ export class UserLoginComponent implements OnInit, OnDestroy {
         this.appId = location.href.split('appId=')[1].split('&')[0];
         localStorage.setItem('appId', this.appId);
       }
+
+      //accountId 处理
+      if (!location.href.includes('accountId=')) {
+        this.accountId = localStorage.getItem('accountId');
+      } else {
+        if (location.href.includes('accountId=')) {
+          this.accountId = location.href.split('accountId=')[1].split('&')[0];
+          localStorage.setItem('accountId', this.accountId);
+        }
+      }
+
       resolve(this.appId as string);
     });
   }
@@ -197,26 +222,15 @@ export class UserLoginComponent implements OnInit, OnDestroy {
       }
     });
   }
+
   postDataGet(): any {
     //打开注释可以本地测试
-    // localStorage.setItem(
-    //   'production_FawkesMain_user',
-    //   '{"id":"LvShiXin","createBy":null,"createDate":null,"updateBy":"fawkes","updateDate":"2022-09-22 14:53:00","deleteFlag":0,"userName":"admin","userNo":"","password":null,"userFullname":"系统管理员","sex":"","phone":"17760489254","email":"admin@ecidi.com","userType":2,"tenantId":100000,"accountStatus":1,"accountPeriod":1,"lastActiveTime":"2022-09-22 14:52:59","formerName":null,"citizenship":null,"age":null,"birthDay":null,"politics":null,"idcardType":null,"idcardNumber":null,"education":null,"degree":null,"majorName":null,"stature":"0000","weight":null,"nation":null,"nativePlace":null,"nationality":null,"jobNumber":null,"marriageState":null,"emergencyPhone":null,"emergencyName":null,"officeLocation":null,"signToken":null,"photoToken":"7B0EDF63AE26C16F343CF6B746BF7E40","isInitPwd":false,"officePhone":null,"otherPhone":null,"title":null,"workingSeniority":null,"hiredate":null,"remark":null,"lastUpdatePwdTime":"2022-03-04 11:25:35","avatarToken":null,"nickname":null,"introduction":null,"sort":null,"ext1":null,"ext2":null,"ext3":null,"ext4":null,"ext5":null,"postList":[{"id":"1509052210313433089","createBy":"admin","createDate":"2022-04-27 16:31:27","updateBy":"admin","updateDate":"2022-04-27 16:31:27","deleteFlag":0,"postType":null,"postCode":"Maintenance_scheduling","postName":"维修调度","sort":null,"remark":"维修调度","type":null,"portalId":null,"tenantId":100000,"ext1":null,"ext2":null,"ext3":null,"ext4":null,"ext5":null}],"orgList":[],"pwdIsExpired":false}'
-    // );
-    //拿到凤翎门户登录信息
-    let fawkesUser: any = localStorage.getItem('production_FawkesMain_user')
-      ? JSON.parse(<string>localStorage.getItem('production_FawkesMain_user'))
-      : '';
-    if (fawkesUser == '') {
-      this.message.error('没有获取到用户信息、登录失败！');
-      return;
-    }
-    let userId = fawkesUser.id;
+    // this.accountId="1539562808276983810";
+
     const post: any = {
-      type: this.type,
-      thirdPartyId: userId,
+      account: this.accountId,
       appId: this.appId,
-      loginWay: 'thirdPartyId'
+      loginWay: 'accountId'
     };
     return post;
   }
