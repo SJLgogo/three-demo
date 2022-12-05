@@ -166,7 +166,6 @@ export class DefaultInterceptor implements HttpInterceptor {
   }
 
   // #endregion
-
   private toLogin(): void {
     this.notification.error(`未登录或登录已过期，请重新登录。`, ``);
     this.goTo(this.tokenSrv.login_url!);
@@ -187,7 +186,7 @@ export class DefaultInterceptor implements HttpInterceptor {
           if (body && body.code !== 200) {
             if (body.code === 401) {
               this.injector.get(NzMessageService).error(body.message);
-              // this.toLogin();
+              this.toLogin();
             }
             // 注意：这里如果继续抛出错误会被行254的 catchError 二次拦截，导致外部实现的 Pipe、subscribe 操作被中断，例如：this.http.get('/').subscribe() 不会触发
             // 如果你希望外部实现，需要手动移除行254

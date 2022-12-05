@@ -14,9 +14,9 @@ import { ReuseTabService } from '@delon/abc/reuse-tab';
 import { DA_SERVICE_TOKEN, ITokenService, SocialService } from '@delon/auth';
 import { _HttpClient, SettingsService } from '@delon/theme';
 import { NzTabChangeEvent } from 'ng-zorro-antd/tabs';
-import { finalize } from 'rxjs/operators';
 import { variable } from '../../../api/common-interface/common-interface';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { environment } from '@env/environment';
 
 declare global {
   interface Window {
@@ -84,10 +84,8 @@ export class UserLoginComponent implements OnInit, OnDestroy {
   loading = false;
 
   // #region get captcha
-
   count = 0;
   interval$: any;
-
   // #endregion
 
   switch({ index }: NzTabChangeEvent): void {
@@ -125,6 +123,9 @@ export class UserLoginComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit(): Promise<any> {
+    //此处写死、读取配置文件
+    let appId = environment.api['appId'];
+    this.appId = appId;
     this.activeRoute.queryParams.subscribe((params: any) => {
       const code = params.code;
       const appId = params.appId;
@@ -137,15 +138,12 @@ export class UserLoginComponent implements OnInit, OnDestroy {
       }
 
     });
-    const appId = await this.obtainUrlId();
+
     appId == '0' ? this.clearCookie() : '';
     //获取软件系统信息
     await this.obtainCorpId(appId);
 
-    //自动登录
-    if (!this.appId) {
-      this.message.error('无效链接');
-    }
+
     this.loading = true;
     this.loginHttp();
   }
@@ -159,28 +157,6 @@ export class UserLoginComponent implements OnInit, OnDestroy {
     document.cookie = name + '=0;expires=' + new Date(0).toUTCString();
   }
 
-  obtainUrlId(): Promise<string> {
-    return new Promise<string>((resolve, reject) => {
-      if (!location.href.includes('appId=')) {
-        this.appId = localStorage.getItem('appId');
-      } else {
-        this.appId = location.href.split('appId=')[1].split('&')[0];
-        localStorage.setItem('appId', this.appId);
-      }
-
-      //accountId 处理
-      if (!location.href.includes('accountId=')) {
-        this.accountId = localStorage.getItem('accountId');
-      } else {
-        if (location.href.includes('accountId=')) {
-          this.accountId = location.href.split('accountId=')[1].split('&')[0];
-          localStorage.setItem('accountId', this.accountId);
-        }
-      }
-
-      resolve(this.appId as string);
-    });
-  }
 
   obtainCorpId(appId: string): void {
     if (!this.appId) {
@@ -225,7 +201,7 @@ export class UserLoginComponent implements OnInit, OnDestroy {
 
   postDataGet(): any {
     //打开注释可以本地测试
-    // this.accountId="1539562808276983810";
+    this.accountId="1539562808276983810";
 
     const post: any = {
       account: this.accountId,
