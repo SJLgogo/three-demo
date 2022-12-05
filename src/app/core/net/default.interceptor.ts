@@ -86,7 +86,6 @@ export class DefaultInterceptor implements HttpInterceptor {
   }
 
   // #region 刷新Token方式一：使用 401 重新刷新 Token
-
   private tryRefreshToken(ev: HttpResponseBase, req: HttpRequest<any>, next: HttpHandler): Observable<any> {
     // 1、若请求为刷新Token请求，表示来自刷新Token可以直接跳转登录页
     if ([`/api/auth/refresh`].some(url => req.url.includes(url))) {
@@ -167,7 +166,6 @@ export class DefaultInterceptor implements HttpInterceptor {
   }
 
   // #endregion
-
   private toLogin(): void {
     this.notification.error(`未登录或登录已过期，请重新登录。`, ``);
     this.goTo(this.tokenSrv.login_url!);
@@ -187,8 +185,8 @@ export class DefaultInterceptor implements HttpInterceptor {
           const body = ev.body;
           if (body && body.code !== 200) {
             if (body.code === 401) {
-              this.injector.get(NzMessageService).error(body.msg);
-              // this.toLogin();
+              this.injector.get(NzMessageService).error(body.message);
+              this.toLogin();
             }
             // 注意：这里如果继续抛出错误会被行254的 catchError 二次拦截，导致外部实现的 Pipe、subscribe 操作被中断，例如：this.http.get('/').subscribe() 不会触发
             // 如果你希望外部实现，需要手动移除行254

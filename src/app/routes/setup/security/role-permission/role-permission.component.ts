@@ -1,13 +1,13 @@
 /* eslint-disable */
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
-import { _HttpClient, ModalHelper } from '@delon/theme';
-import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd/core/tree';
-import { NzMessageService } from 'ng-zorro-antd/message';
-import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
-import { PermissionService } from '../../service/permission.service';
-import { SetupUserPermissionComponent } from '../user-permission/user-permission.component';
-import { SetupSecurityRoleEditComponent } from './role-edit/role-edit.component';
+import {ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
+import {Router} from '@angular/router';
+import {_HttpClient, ModalHelper} from '@delon/theme';
+import {NzFormatEmitEvent, NzTreeNode} from 'ng-zorro-antd/core/tree';
+import {NzMessageService} from 'ng-zorro-antd/message';
+import {NzModalRef, NzModalService} from 'ng-zorro-antd/modal';
+import {PermissionService} from '../../service/permission.service';
+import {SetupUserPermissionComponent} from '../user-permission/user-permission.component';
+import {SetupSecurityRoleEditComponent} from './role-edit/role-edit.component';
 
 @Component({
   selector: 'app-setup-security-role-permission',
@@ -20,7 +20,12 @@ export class SetupSecurityRolePermissionComponent implements OnInit {
   activeRoleNode!: NzTreeNode;
   confirmModal!: NzModalRef;
   index: number = 0;
-  @ViewChild('appUsePermission', { static: false }) sf!: SetupUserPermissionComponent;
+  @ViewChild('appUsePermission', {static: false}) sf!: SetupUserPermissionComponent;
+  contentDate: string = '';
+  opacityNumber: string = "20"
+  @ViewChild("permission") permission: any;
+  @ViewChild("permissions") permissions: any;
+  permissionUserId: string = '';
 
   //----------------角色树,用于角色继承关系
   ngOnInit() {
@@ -28,12 +33,18 @@ export class SetupSecurityRolePermissionComponent implements OnInit {
     this.index = 0;
   }
 
+
   //点击加载下级树节点
   roleEvent(event: NzFormatEmitEvent): void {
-    const node:any = event.node;
+    const node: any = event.node;
     if (event.eventName === 'click') {
       this.activeRoleNode = node;
       this.activeRole(this.activeRoleNode, this.index);
+      if (this.index == 1) {
+        this.permissions.optDataPermission([]);
+        this.permissions.permissionUserId = "";
+        this.permissions.treeNodes = [];
+      }
     }
   }
 
@@ -49,14 +60,14 @@ export class SetupSecurityRolePermissionComponent implements OnInit {
     });
   }
 
-  optRole(node:any) {
+  optRole(node: any) {
     this.activeRoleNode = node;
   }
 
   openFolder(node: any): void {
   }
 
-  roleOperation(opt:string, node:any): void {
+  roleOperation(opt: string, node: any): void {
     console.log('node:', node);
     if (opt === 'add') {
       this.modal
@@ -66,7 +77,7 @@ export class SetupSecurityRolePermissionComponent implements OnInit {
             editNode: node,
             mode: 'add'
           },
-          { size: 'md' }
+          {size: 'md'}
         )
         .subscribe(() => {
           this.loadRoleTree();
@@ -79,11 +90,12 @@ export class SetupSecurityRolePermissionComponent implements OnInit {
             editNode: {
               id: node.key,
               name: node.title,
-              remark: node.origin.remark
+              remark: node.origin.remark,
+              code: node.origin.code
             },
             mode: 'edit'
           },
-          { size: 'md' }
+          {size: 'md'}
         )
         .subscribe(() => {
           this.loadRoleTree();
@@ -93,10 +105,7 @@ export class SetupSecurityRolePermissionComponent implements OnInit {
         nzTitle: '删除确认?',
         nzContent: '是否确认删除角色 [' + node.title + '] ?',
         nzOnOk: () => {
-          let params = {
-            roleId: node.key
-          };
-          this.http.post(`//base/service/security/admin/authority/role/delete/` + node.key).subscribe((res) => {
+          this.http.post(`/security/service/security/admin/authority/role/delete/` + node.key).subscribe((res) => {
             if (res.success) {
               this.messageService.success('删除成功');
               this.loadRoleTree();
@@ -115,7 +124,7 @@ export class SetupSecurityRolePermissionComponent implements OnInit {
   // confirmModal: NzModalRef;
   roleList = [];
   roleTitle = '';
-  selectedRole :any= null;
+  selectedRole: any = null;
 
   loadRoleList() {
     this.http.get(`/service/contact/admin/role/list`).subscribe((res) => {
@@ -125,10 +134,10 @@ export class SetupSecurityRolePermissionComponent implements OnInit {
     });
   }
 
-  activeRole(roleNode:any, index:number) {
+  activeRole(roleNode: any, index: number) {
     this.cdr.reattach();
     this.index = index;
-    this.selectedRole = { id: roleNode.key, name: roleNode.title, index: this.index };
+    this.selectedRole = {id: roleNode.key, name: roleNode.title, index: this.index};
     this.roleTitle = this.selectedRole.name;
   }
 
@@ -136,7 +145,7 @@ export class SetupSecurityRolePermissionComponent implements OnInit {
     // console.log('args:', args);
     this.index = args.index;
     this.selectedRole.index = args.index;
-
+    this.opacityNumber = this.index == 1 ? "14" : "20";
     this.sf.reloadTable();
   }
 
@@ -150,4 +159,19 @@ export class SetupSecurityRolePermissionComponent implements OnInit {
     private permissionService: PermissionService
   ) {
   }
+
+  permissionsAll(value: any): any {
+    if(value){
+      this.contentDate = value;
+      this.permissionUserId = this.permission.userId;
+    }
+  }
+
+  permissionAll(value: any): any {
+    if (value) {
+      this.permissions.permissionUserId = value;
+      this.permissions.optDataPermission(this.permissions.selectedScope);
+    }
+  }
+
 }

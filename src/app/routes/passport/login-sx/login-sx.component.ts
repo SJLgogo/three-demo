@@ -7,32 +7,25 @@ import {
   OnInit,
   Optional
 } from '@angular/core';
+import { _HttpClient, SettingsService } from '@delon/theme';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { StartupService } from '@core';
-import { ReuseTabService } from '@delon/abc/reuse-tab';
 import { DA_SERVICE_TOKEN, ITokenService, SocialService } from '@delon/auth';
-import { _HttpClient, SettingsService } from '@delon/theme';
-import { NzTabChangeEvent } from 'ng-zorro-antd/tabs';
-import { variable } from '../../../api/common-interface/common-interface';
+import { ReuseTabService } from '@delon/abc/reuse-tab';
+import { StartupService } from '@core';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { variable } from '../../../api/common-interface/common-interface';
+import { NzTabChangeEvent } from 'ng-zorro-antd/tabs';
 import { environment } from '@env/environment';
-import { finalize } from 'rxjs/operators';
-
-declare global {
-  interface Window {
-    WwLogin: any;
-  }
-}
 
 @Component({
   selector: 'passport-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.less'],
+  templateUrl: './login-sx.component.html',
+  styleUrls: ['./login-sx.component.less'],
   providers: [SocialService],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UserLoginComponent implements OnInit, OnDestroy {
+export class PassportLoginSxComponent implements OnInit,OnDestroy {
   constructor(
     fb: FormBuilder,
     private router: Router,
@@ -60,6 +53,8 @@ export class UserLoginComponent implements OnInit, OnDestroy {
   oauthLogin: boolean = true;
   agentId: variable<string>;
   corpId: variable<string>;
+  appId: variable<string>;
+  accountId: variable<string>;
   loginWay: variable<string>;
 
   get userName(): AbstractControl {
@@ -79,15 +74,12 @@ export class UserLoginComponent implements OnInit, OnDestroy {
   }
 
   form: FormGroup;
-  error = '';
   type = 0;
   loading = false;
 
   // #region get captcha
-
   count = 0;
   interval$: any;
-
   // #endregion
 
   switch({ index }: NzTabChangeEvent): void {
@@ -102,7 +94,6 @@ export class UserLoginComponent implements OnInit, OnDestroy {
       });
     }
   }
-
 
   getCaptcha(): void {
     if (this.mobile.invalid) {
@@ -119,38 +110,6 @@ export class UserLoginComponent implements OnInit, OnDestroy {
     }, 1000);
   }
 
-  // #endregion
-
-  submit(): void {
-    this.error = '';
-    if (this.type === 0) {
-      this.userName.markAsDirty();
-      this.userName.updateValueAndValidity();
-      this.password.markAsDirty();
-      this.password.updateValueAndValidity();
-      this.loginWay = 'accountPassword';
-      if (this.userName.invalid || this.password.invalid) {
-        return;
-      }
-    } else {
-      this.mobile.markAsDirty();
-      this.mobile.updateValueAndValidity();
-      this.captcha.markAsDirty();
-      this.captcha.updateValueAndValidity();
-      if (this.mobile.invalid || this.captcha.invalid) {
-        return;
-      }
-    }
-
-    // 默认配置中对所有HTTP请求都会强制 [校验](https://ng-alain.com/auth/getting-started) 用户 Token
-    // 然一般来说登录请求不需要校验，因此可以在请求URL加上：`/login?_allow_anonymous=true` 表示不触发用户 Token 校验
-    this.loading = true;
-    this.cdr.detectChanges();
-    this.loginHttp();
-  }
-
-  // #endregion
-
   ngOnDestroy(): void {
     if (this.interval$) {
       clearInterval(this.interval$);
@@ -160,30 +119,41 @@ export class UserLoginComponent implements OnInit, OnDestroy {
   async ngOnInit(): Promise<any> {
     //此处写死、读取配置文件
     let appId = environment.api['appId'];
+    this.appId = appId;
     this.activeRoute.queryParams.subscribe((params: any) => {
       const code = params.code;
-      if (code !== undefined && code !== '') {
+      const appId = params.appId;
+      const accountId = params.accountId;
+      if (code !== undefined && code !== '' && appId !== undefined && appId !== '') {
         this.oauthLogin = false;
-        console.log(this.oauthLogin);
       }
+      if (accountId !== undefined && accountId !== '') {
+        this.accountId = accountId;
+      }
+
     });
-    await this.judgeScanQrCodeLogin();
+
+    appId == '0' ? this.clearCookie() : '';
+    //获取软件系统信息
     await this.obtainCorpId(appId);
+
+
+    this.loading = true;
+    this.loginHttp();
   }
 
-  judgeScanQrCodeLogin(): void {
-    this.activeRoute.queryParams.subscribe((params: any) => {
-      console.log(params);
-      const code = params.code;
-      if (code !== undefined && code !== '') {
-        this.scanQrCodeTechnologicalProcess(code);
-      }
-    });
+  clearCookie(): void {
+    var temp = document.cookie.split(';');
+    temp.forEach((i: any) => this.deleteCookie(i.split('=')[0]));
+  }
+
+  deleteCookie(name: string): void {
+    document.cookie = name + '=0;expires=' + new Date(0).toUTCString();
   }
 
 
   obtainCorpId(appId: string): void {
-    if (!appId) {
+    if (!this.appId) {
       return;
     }
     this.http.get('service/portal/appId/' + appId + '?_allow_anonymous=true').subscribe(res => {
@@ -191,7 +161,6 @@ export class UserLoginComponent implements OnInit, OnDestroy {
       this.agentId = res.data.agentId;
     });
   }
-
 
   randomState(): string {
     let text = '';
@@ -202,33 +171,15 @@ export class UserLoginComponent implements OnInit, OnDestroy {
     return text;
   }
 
-
-  async scanQrCodeTechnologicalProcess(authCode: string): Promise<void> {
-    this.loginWay = 'scanCode';
-    await this.loginHttp(authCode);
-  }
-
-
-  loginHttp(authCode?: string): void {
-    const post = this.postDataGet(authCode);
-    this.http
-      .post('/service/portal/login?_allow_anonymous=true', post)
-      .pipe(
-        finalize(() => {
-          this.loading = true;
-          this.cdr.detectChanges();
-        })
-      )
-      .subscribe(res => {
-        if (res.code !== 200) {
-          this.error = res.msg;
-          this.cdr.detectChanges();
-          return;
-        }
+  loginHttp(): void {
+    let post = this.postDataGet();
+    this.http.post('/service/portal/login?_allow_anonymous=true', post).subscribe(res => {
+      if (res.success) {
         // 清空路由复用信息
         this.reuseTabService.clear();
         // 设置用户Token信息
         // res.user.expired = +new Date() + 1000 * 60 * 5;
+        this.tokenService.options.store_key = `${this.appId}_token`;
         this.tokenService.set(res.data);
         // 重新获取 StartupService 内容，我们始终认为应用信息一般都会受当前用户授权范围而影响
         this.startupSrv.load().subscribe(() => {
@@ -238,27 +189,31 @@ export class UserLoginComponent implements OnInit, OnDestroy {
           }
           this.router.navigateByUrl(url);
         });
-      });
+      }
+    });
   }
 
-  postDataGet(authCode?: string): any {
-    //此处写死、读取配置文件
-    let appId = environment.api['appId'];
+  postDataGet(): any {
+    //打开注释可以本地测试
+    // localStorage.setItem(
+    //   'production_FawkesMain_user',
+    //   '{"id":"LvShiXin","createBy":null,"createDate":null,"updateBy":"fawkes","updateDate":"2022-09-22 14:53:00","deleteFlag":0,"userName":"admin","userNo":"","password":null,"userFullname":"系统管理员","sex":"","phone":"17760489254","email":"admin@ecidi.com","userType":2,"tenantId":100000,"accountStatus":1,"accountPeriod":1,"lastActiveTime":"2022-09-22 14:52:59","formerName":null,"citizenship":null,"age":null,"birthDay":null,"politics":null,"idcardType":null,"idcardNumber":null,"education":null,"degree":null,"majorName":null,"stature":"0000","weight":null,"nation":null,"nativePlace":null,"nationality":null,"jobNumber":null,"marriageState":null,"emergencyPhone":null,"emergencyName":null,"officeLocation":null,"signToken":null,"photoToken":"7B0EDF63AE26C16F343CF6B746BF7E40","isInitPwd":false,"officePhone":null,"otherPhone":null,"title":null,"workingSeniority":null,"hiredate":null,"remark":null,"lastUpdatePwdTime":"2022-03-04 11:25:35","avatarToken":null,"nickname":null,"introduction":null,"sort":null,"ext1":null,"ext2":null,"ext3":null,"ext4":null,"ext5":null,"postList":[{"id":"1509052210313433089","createBy":"admin","createDate":"2022-04-27 16:31:27","updateBy":"admin","updateDate":"2022-04-27 16:31:27","deleteFlag":0,"postType":null,"postCode":"Maintenance_scheduling","postName":"维修调度","sort":null,"remark":"维修调度","type":null,"portalId":null,"tenantId":100000,"ext1":null,"ext2":null,"ext3":null,"ext4":null,"ext5":null}],"orgList":[],"pwdIsExpired":false}'
+    // );
+    //拿到凤翎门户登录信息
+    let fawkesUser: any = localStorage.getItem('production_FawkesMain_user')
+      ? JSON.parse(<string>localStorage.getItem('production_FawkesMain_user'))
+      : '';
+    if (fawkesUser == '') {
+      this.message.error('没有获取到用户信息、登录失败！');
+      return;
+    }
+    let userId = fawkesUser.id;
     const post: any = {
       type: this.type,
-      account: this.userName.value,
-      password: this.password.value,
-      appId: appId,
-      loginWay: this.loginWay
+      thirdPartyId: userId,
+      appId: this.appId,
+      loginWay: 'thirdPartyId'
     };
-    if (authCode && appId) {
-      post.authCode = authCode;
-      post.appId = appId;
-      delete post.password;
-      delete post.account;
-      delete post.type;
-    }
     return post;
   }
-
 }

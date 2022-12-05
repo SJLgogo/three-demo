@@ -1,6 +1,6 @@
 <div nz-row nzGutter="18" *ngIf="role != null">
   <div nz-col nzSpan="6" style="width: 100px; overflow-x: auto">
-    <button nz-button nzType="primary" (click)="saveCheckMenu()" nzBlock>保存</button>
+    <button nz-button nzType="primary" (click)="saveCheckMenu()"  nzBlock  >保存</button>
     <nz-tree
       #roleTreeComponent
       [nzData]="menuNodes"
@@ -18,7 +18,7 @@
       <span style="font-size: 16px; font-weight: bolder">页面权限资源: {{ optMenuName }}</span>
     </div>
 
-    <st #st [data]="url"    [columns]="columns" (change)="permissionTableChange($event)" [res]="{ process: dataProcess }"></st>
+    <st #st [data]="url" [columns]="columns" (change)="permissionTableChange($event)" [res]="{ process: dataProcess }"></st>
   </div>
 </div>
 

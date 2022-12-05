@@ -4,7 +4,7 @@
   "description": "ng-zorro-antd admin panel front-end framework",
   "author": "cipchk <cipchk@qq.com>",
   "config": {
-    "image": "dev.huiztech.cn:20276/platform-develop/platform-admin:0.0.1"
+    "image": "dev.huiztech.cn:20276/platform-develop/platform-admin:0.0.2"
   },
   "repository": {
     "type": "git",
@@ -26,9 +26,9 @@
   "scripts": {
     "ng-high-memory": "node --max_old_space_size=8000 ./node_modules/@angular/cli/bin/ng",
     "ng": "ng",
-    "start": "ng s -o",
+    "start": "ng s -o   --disableHostCheck --live-reload  false",
     "hmr": "ng s -o --hmr",
-    "build": "npm run ng-high-memory build -- --prod",
+    "build": "npm run ng-high-memory build -- --prod --base-href=/huiztech-construct-dispatch/",
     "analyze": "npm run ng-high-memory build -- --source-map",
     "analyze:view": "source-map-explorer dist/**/*.js",
     "image": "docker build -t $npm_package_config_image .",

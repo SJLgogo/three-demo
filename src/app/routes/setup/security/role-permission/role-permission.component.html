@@ -47,8 +47,10 @@
             <ul nz-menu>
               <li nz-menu-item nzDisabled>编辑角色: {{ node.title }}</li>
               <li nz-menu-divider></li>
-              <li nz-menu-item (click)="roleOperation('edit', node)"><i nz-icon nzType="edit" nzTheme="outline"></i>修改</li>
-              <li nz-menu-item (click)="roleOperation('add', node)"><i nz-icon nzType="plus-circle" nzTheme="outline"></i>添加角色</li>
+              <li nz-menu-item (click)="roleOperation('edit', node)"><i nz-icon nzType="edit"
+                                                                        nzTheme="outline"></i>修改</li>
+              <li nz-menu-item (click)="roleOperation('add', node)"><i nz-icon nzType="plus-circle"
+                                                                       nzTheme="outline"></i>添加角色</li>
               <li nz-menu-item (click)="roleOperation('remove', node)"><i nz-icon nzType="delete" nzTheme="outline"></i>删除</li>
             </ul>
           </nz-dropdown-menu>
@@ -57,28 +59,37 @@
     </nz-card>
   </div>
 
-  <div nz-col [nzSpan]="20">
-    <!--    <div nz-row nzGutter="18">-->
+  <div nz-col [nzSpan]=this.opacityNumber>
+    <!--        <div nz-row nzGutter="18">-->
     <nz-card [nzTitle]="'授权信息: ' + roleTitle">
-      <nz-empty *ngIf="selectedRole == null" nzNotFoundContent="请先选择角色"></nz-empty>
-      <nz-tabset *ngIf="selectedRole != null" [nzSelectedIndex]="index" (nzSelectChange)="nzSelectChange($event)">
-        <nz-tab nzTitle="功能权限" [nzForceRender]="true">
-          <app-setup-security-resource-menu-check [role]="selectedRole"></app-setup-security-resource-menu-check>
-        </nz-tab>
+      <div>
+        <nz-empty *ngIf="selectedRole == null" nzNotFoundContent="请先选择角色"></nz-empty>
+        <nz-tabset *ngIf="selectedRole != null" [nzSelectedIndex]="index" (nzSelectChange)="nzSelectChange($event)">
 
-<!--        <nz-tab nzTitle="数据权限" [nzForceRender]="true">-->
-<!--          <app-setup-data-permissions [role]="selectedRole"></app-setup-data-permissions>-->
-<!--        </nz-tab>-->
+          <nz-tab nzTitle="功能权限" >
+            <app-setup-security-resource-menu-check [role]="selectedRole"></app-setup-security-resource-menu-check>
+          </nz-tab>
 
-        <nz-tab nzTitle="应用权限" [nzForceRender]="true">
-          <app-setup-app-permissions [role]="selectedRole"></app-setup-app-permissions>
-        </nz-tab>
-
-        <nz-tab nzTitle="用户授权" [nzForceRender]="true">
-          <app-setup-user-permission #appUsePermission [role]="selectedRole"></app-setup-user-permission>
-        </nz-tab>
-      </nz-tabset>
+          <nz-tab nzTitle="用户授权">
+            <app-setup-user-permission #appUsePermission [role]="selectedRole" #permission (permission)="permissionAll($event)" ></app-setup-user-permission>
+          </nz-tab>
+        </nz-tabset>
+      </div>
     </nz-card>
-    <!--    </div>-->
+    <!--        </div>-->
   </div>
+
+  <div nz-col [nzSpan]="6"  *ngIf="index==1">
+    <nz-card>
+      <div>
+        <h3>权限配置</h3>
+        <p>已选权限：{{contentDate}}</p>
+      </div>
+      <header class="headerTop">
+      </header>
+      <app-setup-data-permissions [role]="selectedRole" (permissions)="permissionsAll($event)" [permissionUserId]="permissionUserId" #permissions ></app-setup-data-permissions>
+    </nz-card>
+  </div>
+
+
 </div>

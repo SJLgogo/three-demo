@@ -1,14 +1,17 @@
-<nz-card>
-  <!--  <sf mode="search" *ngIf="isPermission('emergency-area:button:search',settingsService.app.identifiers)" [schema]="searchSchema" (formSubmit)="st.reset($event)" (formReset)="st.reset($event)"></sf>-->
+<div nz-col [nzSpan]="24">
+<!--  <nz-card>-->
+    <sf #sf mode="search" [button]="null" [schema]="searchSchema" (formSubmit)="st.reset($event)" (formReset)="st.reset($event)">
+      <button type="submit" nz-button nzType="primary" [disabled]="!sf.valid">搜索</button>
+      <button (click)="reset()" type="button" nz-button>重置</button>
+      <button (click)="addUserRole()" nz-button nzType="primary">授权用户角色</button>
+      <button (click)="transferToNormalRole()" nz-button nzType="primary">一键转角色</button>
+      <button (click)="batchIncrease()" nz-button nzType="primary">批量增减配置</button>
 
-  <sf #sf mode="search" [button]="null" [schema]="searchSchema" (formSubmit)="st.reset($event)" (formReset)="st.reset($event)">
-    <button type="submit" nz-button nzType="primary" [disabled]="!sf.valid">搜索</button>
-    <button (click)="reset()" type="button" nz-button>重置</button>
-    <button (click)="addUserRole()" nz-button nzType="primary">授权用户角色</button>
-    <button (click)="transferToNormalRole()" nz-button nzType="primary">一键转角色</button>
-  </sf>
-<!--  <st #st [data]="url" [req]="customRequest" [scroll]="{ x: '1300px' }" [page]="customPage" [res]="customResponse" [columns]="columns">-->
-<!--  </st>-->
+    </sf>
+<!--    <st #st [data]="url"  [scroll]="{ x: '1300px' }"  [columns]="columns" [clickRowClassName]="clickRowClassName" ></st>-->
+    <st #st [data]="url"  [scroll]="{ x: '1300px' }" [columns]="columns"   (change)="clickContent($event)"  [clickRowClassName]="clickRowClassName">
+    </st>
+<!--  </nz-card>-->
+</div>
 
-  <st #st [data]="url"  [scroll]="{ x: '1300px' }"  [columns]="columns"></st>
-</nz-card>
+

@@ -9,8 +9,14 @@ import { UserRegisterResultComponent } from './register-result/register-result.c
 import { UserRegisterComponent } from './register/register.component';
 import {HTTP_INTERCEPTORS} from "@angular/common/http";
 import {SimpleInterceptor} from "@delon/auth";
+import { UserLogoutComponent } from './logout/logout.component';
+import { PassportLoginSxComponent } from './login-sx/login-sx.component';
+import { PassportLoginDlComponent } from './login-dl/login-dl.component';
 
-const COMPONENTS = [UserLoginComponent, UserRegisterResultComponent, UserRegisterComponent, UserLockComponent, CallbackComponent];
+const COMPONENTS = [UserLoginComponent, UserRegisterResultComponent, UserRegisterComponent, UserLockComponent, CallbackComponent,UserLogoutComponent,
+  PassportLoginSxComponent,
+  PassportLoginDlComponent];
+
 
 @NgModule({
   imports: [SharedModule, PassportRoutingModule],
@@ -19,4 +25,5 @@ const COMPONENTS = [UserLoginComponent, UserRegisterResultComponent, UserRegiste
     { provide: HTTP_INTERCEPTORS, useClass: SimpleInterceptor, multi: true}
   ]
 })
+
 export class PassportModule {}

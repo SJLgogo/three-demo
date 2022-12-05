@@ -113,10 +113,6 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
   }
 
   treeNodeClick(node: NzTreeNode): void {
-    if (this.singleChoice && this.selected.size >= 1) {
-      return;
-    }
-
     switch (this.chooseMode) {
       case 'employee':
         this.addPerson(node);
@@ -131,9 +127,6 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
   }
 
   optSearchResult(value: any) {
-    if (this.singleChoice && this.selected.size >= 1) {
-      return;
-    }
     this.addSelectedPersonList(
       value.type,
       value.loginUserId.toString(),
@@ -168,6 +161,7 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
       companyId: companyId,
       companyName: companyName
     };
+    this.singleChoice ? this.selected.clear() : '';
     this.selected.set(id, person);
     this.getSelectedList<Person>(this.selected as Map<string, Person>);
   }
@@ -175,7 +169,7 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
   getSelectedList<T>(map: Map<string, T>): void {
     this.selectList = [];
     map.forEach((item: T) => this.selectList.push(item as unknown as Person as Organization));
-    Promise.all([this.emitSelectFn(), this.cacheSelectList()]);
+    Promise.all([this.emitSelectFn()]);
   }
 
   receiveDeleteId(): void {
@@ -194,6 +188,7 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
       companyId: companyId,
       companyName: companyName
     };
+    this.singleChoice ? this.selected.clear() : '';
     this.selected.set(id, organization);
     this.getSelectedList<Organization>(this.selected as Map<string, Organization>);
   }
@@ -202,7 +197,7 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
     if (node.origin['category'] === 'employee') {
       this.addPerson(node);
     }
-    if (node.origin['category'] === 'organization') {
+    if (node.origin['category'] === 'organization' || node.origin['category'] === 'org') {
       this.addSelectedOrganizationList(
         node.origin!['category'],
         node.key,

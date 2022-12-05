@@ -30,7 +30,7 @@ export class SetupAccountComponent implements OnInit {
     {
       title: '',
       buttons: [
-        { text: '查看', click: (item: any) => `/form/${item.id}` },
+        // { text: '查看', click: (item: any) => `/form/${item.id}` },
         { text: '编辑', type: 'static', icon: 'edit', click: (item: any) => this.updatePageElementResource(item) },
       ]
     }

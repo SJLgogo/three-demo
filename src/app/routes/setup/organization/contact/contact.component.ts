@@ -12,6 +12,7 @@ import { SystemContactOrgEditComponent } from '../org/org-edit.component';
 import { SystemContactJobEditComponent } from '../job/job-edit.component';
 import { SystemContactTagEditComponent } from '../tag/tag-edit.component';
 import { SetupAccountEditComponent } from '../../account/edit/edit.component';
+import { SelectProjectPersonComponent } from 'src/app/shared/select-person/select-project-person/select-project-person.component';
 
 @Component({
   selector: 'app-setup-contact',
@@ -48,36 +49,16 @@ export class SetupContactComponent implements OnInit {
   jobsNodes: any = [];
   confirmModal!: NzModalRef;
 
-  url = `/org/service/organization/rpc/user/findByOrgId`;
-  // employeeTableRequest: any = {
-  //   lazyLoad: true,
-  //   allInBody: true,
-  //   method: 'POST',
-  //   reName: {
-  //     pi: 'page',
-  //     ps: 'pageSize'
-  //   },
-  //   params: {
-  //     orgId: 'root',
-  //     mode: 'organization'
-  //   }
-  // };
-  // employeeTableResponse: any = {
-  //   reName: {
-  //     total: 'data.totalElements',
-  //     list: 'data.content'
-  //   }
-  // };
-
-
+  url = `/org/service/organization/admin/account/page-all`;
   @ViewChild('st', { static: false }) st!: STComponent;
   columns: STColumn[] = [
     // { title: '头像', type: 'img', width: 60, index: 'wxAvatar', fixed: 'left' },
     { title: '公司', index: 'companyName', fixed: 'left' },
-    { title: '姓名', index: 'loginUserName', fixed: 'left' },
+    { title: '姓名', index: 'thirdPartyName', fixed: 'left' },
     { title: '账号', index: 'mobilePhone', fixed: 'left' },
     {
-      title: '来源', index: 'scene',
+      title: '来源',
+      index: 'scene',
       format: (item: any) => {
         if (item.scene == 'wxCp') {
           return '企业微信';
@@ -85,10 +66,11 @@ export class SetupContactComponent implements OnInit {
           return '小程序';
         } else if (item.scene == 'ding') {
           return '钉钉';
+        } else if (item.scene == '' || item.scene == null) {
+          return '其它平台';
         } else {
           return item.scene;
         }
-
       }
     },
     // { title: '工号', index: 'name', fixed: 'left', width: '80px'   },
@@ -136,7 +118,7 @@ export class SetupContactComponent implements OnInit {
       this.showSearchResult = false;
     } else {
       this.showSearchResult = true;
-      this.http.post(`/org/service/organization/admin/employee/global-search`, params).subscribe((res: any) => {
+      this.http.post(`/org/service/organization/admin/account/global-search`, params).subscribe((res: any) => {
         if (res.success) {
           this.panels = res.data;
         }
@@ -164,15 +146,17 @@ export class SetupContactComponent implements OnInit {
   }
 
   loadEmployeeTable(mode: string, searchName: any, orgId: any, postId: any, jobId: any, tagId: any, employeeId: any) {
-    this.st.reload({
-      mode: mode,
-      searchName: searchName,
-      employeeId: orgId,
-      parentOrgId: orgId,
-      postId: postId,
-      jobId: jobId,
-      tagId: tagId
-    });
+    // this.st.reload({
+    //   mode: mode,
+    //   searchName: searchName,
+    //   employeeId: orgId,
+    //   parentOrgId: orgId,
+    //   postId: postId,
+    //   jobId: jobId,
+    //   tagId: tagId
+    // });
+
+    this.st.reload({ orgId: orgId });
   }
 
   activeTab(tabIndex: number) {
@@ -191,9 +175,11 @@ export class SetupContactComponent implements OnInit {
     const node: any = event.node;
     if (event.eventName === 'expand') {
       if (node && node.getChildren().length === 0 && node.isExpanded) {
-        this.http.get(`/org/service/organization/admin/organization/tree/child/` + node.origin!.key + '/' + node.origin['companyId']).subscribe((res: any) => {
-          res.success && node.addChildren(res.data);
-        });
+        this.http
+          .get(`/org/service/organization/admin/organization/tree/child/` + node.origin!.key + '/' + node.origin['companyId'])
+          .subscribe((res: any) => {
+            res.success && node.addChildren(res.data);
+          });
       }
     } else if (event.eventName === 'click') {
       this.activedOrgNode = node;
@@ -214,8 +200,6 @@ export class SetupContactComponent implements OnInit {
         this.employeeTableTitle = '【组织人员信息】' + this.orgNodes[0].title;
 
         this.selectedOrgId = this.orgNodes[0].key;
-        // console.log('test:', this.orgNodes[0]);
-
 
         this.loadEmployeeTable('index', '', this.orgNodes[0].key, null, null, null, null);
       }
@@ -237,8 +221,7 @@ export class SetupContactComponent implements OnInit {
             name: node.title
           }
         })
-        .subscribe(() => {
-        });
+        .subscribe(() => {});
     } else if (opt === 'add') {
       this.modal
         .createStatic(
@@ -433,17 +416,38 @@ export class SetupContactComponent implements OnInit {
     private modalSrv: NzModalService,
     private msgSrv: NzMessageService,
     private nzContextMenuService: NzContextMenuService
-  ) {
-  }
+  ) {}
 
   selectUser() {
     const mode = ['employee', 'organization', 'post', 'job', 'tag'];
   }
 
-  openFolder(node: any): void {
-  }
+  openFolder(node: any): void {}
 
   ngOnInit() {
     this.loadOrgTree();
+  }
+
+  choosePerson1() {
+    this.modal
+      .createStatic(SelectProjectPersonComponent, {
+        chooseMode: 'organization', // department organization employee
+        functionName: '1',
+        singleChoice: true
+      })
+      .subscribe(res => {
+        console.log(res);
+      });
+  }
+
+  choosePerson2() {
+    this.modal
+      .createStatic(SelectProjectPersonComponent, {
+        chooseMode: 'employee', // department organization employee
+        functionName: '2'
+      })
+      .subscribe(res => {
+        console.log(res);
+      });
   }
 }
