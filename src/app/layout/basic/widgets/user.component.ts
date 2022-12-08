@@ -54,11 +54,9 @@ export class HeaderUserComponent {
     this.http.post('/service/portal/logout', {}).subscribe(res => {
       if (res.success) {
         this.msgSrv.success('清除后台cookies成功!');
-        const appId = localStorage.getItem('appId');
         this.tokenService.clear();
         localStorage.clear();
         window.location.href = environment['logout_url'];
-        // this.router.navigate([this.tokenService.login_url!], {queryParams: {appId: appId}});
       } else {
         this.msgSrv.error(res.message);
       }
