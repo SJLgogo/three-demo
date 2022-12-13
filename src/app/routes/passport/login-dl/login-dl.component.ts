@@ -196,7 +196,7 @@ export class PassportLoginDlComponent implements OnInit,OnDestroy {
 
   postDataGet(): any {
     //打开注释可以本地测试
-    this.accountId="1539562808276983810";
+    // this.accountId="1539562808276983810";
 
     const post: any = {
       account: this.accountId,
