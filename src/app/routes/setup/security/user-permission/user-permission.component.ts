@@ -9,7 +9,7 @@ import {
   SimpleChanges,
   ViewChild
 } from '@angular/core';
-import { STChange, STColumn, STComponent, STClickRowClassNameType, STColumnTag } from '@delon/abc/st';
+import {STChange, STColumn, STComponent,STClickRowClassNameType} from '@delon/abc/st';
 import {SFComponent, SFSchema} from '@delon/form';
 import {_HttpClient, ModalHelper, SettingsService} from '@delon/theme';
 import {NzMessageService} from 'ng-zorro-antd/message';
@@ -17,16 +17,6 @@ import {NzModalRef, NzModalService} from 'ng-zorro-antd/modal';
 import {SetupCheckUserTableComponent} from './check-user-table/check-user-table.component';
 import {BatchIncreaseConfigurationComponent} from "./batch-increase-configuration/batch-increase-configuration.component";
 
-
-
-/**
- * 账户状态
- */
-const statusTAG: STColumnTag = {
-  '1': { text: '激活状态', color: '#45d703' },
-  '2': { text: '休眠状态', color: '#708090' },
-  '3': { text: '注销账号', color: '#E02020' },
-};
 @Component({
   selector: 'app-setup-user-permission',
   templateUrl: './user-permission.component.html',
@@ -81,11 +71,11 @@ export class SetupUserPermissionComponent implements AfterViewInit, OnChanges {
     },
     // { title: '', index: 'id', type: 'checkbox' ,width:'60px'},
     {title: '名称', index: 'thirdPartyName', width: '100px'},
-    // {title: '登陆账号', index: 'account', width: '100px'},
+    {title: '登陆账号', index: 'account', width: '100px'},
+    {title: '公司', index: 'companyName', width: '100px'},
     {title: '邮箱', index: 'user.email', width: '100px'},
-    { title: '第三方账号', index: 'englishName', width: '100px' },
+    // { title: '是否显示', index: 'disabled', width: '100px' },
     {title: '手机号', index: 'mobilePhone', width: '100px'},
-    {title: '账户状态', index: 'status', width: '100px',type: 'tag', tag: statusTAG},
   ];
 
   constructor(
@@ -158,6 +148,8 @@ export class SetupUserPermissionComponent implements AfterViewInit, OnChanges {
   reset() {
     this.sf.reset();
     this.sf.refreshSchema();
+    this.st.reload({});
+    this.st.resetColumns();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -188,5 +180,13 @@ export class SetupUserPermissionComponent implements AfterViewInit, OnChanges {
       this.userId = data?.user?.id;
         this.permission.emit(this.userId);
     }
+  }
+
+  /**
+   * 搜索
+   */
+  search(event: any): void {
+    this.st.reload(event);
+    this.st.resetColumns();
   }
 }

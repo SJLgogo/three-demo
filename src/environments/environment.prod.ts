@@ -6,6 +6,25 @@ import * as MOCKDATA from '../../_mock';
 /**
  * 大连5号线配置
  */
+// export const environment = {
+//   production: true,
+//   useHash: false,
+//   api: {
+//     baseUrl: './api/',
+//     refreshTokenEnabled: true,
+//     refreshTokenType: 'auth-refresh',
+//     appId: 0
+//   },
+//   SERVER_URL: '',
+//   RESOURCE_SERVER_URL: '',
+//   logout_url: 'http://dl5.huiztech.cn/portal/passport/login',
+//   modules: [DelonMockModule.forRoot({ data: MOCKDATA })]
+// } as Environment;
+
+
+/**
+ * 测试环境配置
+ */
 export const environment = {
   production: true,
   useHash: false,
@@ -17,6 +36,6 @@ export const environment = {
   },
   SERVER_URL: '',
   RESOURCE_SERVER_URL: '',
-  logout_url: 'http://dl5.huiztech.cn/portal/passport/login',
+  logout_url: 'http://192.168.31.203:10306/portal/passport/login',
   modules: [DelonMockModule.forRoot({ data: MOCKDATA })]
 } as Environment;
