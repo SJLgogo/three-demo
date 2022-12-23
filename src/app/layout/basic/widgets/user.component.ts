@@ -4,6 +4,7 @@ import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
 import { _HttpClient, SettingsService, User } from '@delon/theme';
 import { environment } from '@env/environment';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { CookieService } from '@delon/util';
 
 @Component({
   selector: 'header-user',
@@ -43,6 +44,7 @@ export class HeaderUserComponent {
 
   constructor(
     private settings: SettingsService,
+    private cookieSrv: CookieService,
     private router: Router,
     @Inject(DA_SERVICE_TOKEN) private tokenService: ITokenService,
     private http: _HttpClient,
@@ -55,6 +57,7 @@ export class HeaderUserComponent {
       if (res.success) {
         this.msgSrv.success('清除后台cookies成功!');
         this.tokenService.clear();
+        this.cookieSrv.removeAll()
         localStorage.clear();
         window.location.href = environment['logout_url'];
       } else {
