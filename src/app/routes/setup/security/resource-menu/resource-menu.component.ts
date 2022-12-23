@@ -138,7 +138,7 @@ export class SetupSecurityResourceMenuComponent implements OnInit {
   }
 
   menuOperation(opt: string, node: any) {
-    // console.log(opt,node);
+    console.log(node);
     if (opt === 'add') {
       this.modal
         .createStatic(SetupResourceMenuEditComponent, {
@@ -164,6 +164,7 @@ export class SetupSecurityResourceMenuComponent implements OnInit {
               level: node.origin.level,
               position: node.origin.position,
               menuIcon: node.origin.icon,
+              hide: node.origin.hide,
               mode: 'edit'
             }
           },

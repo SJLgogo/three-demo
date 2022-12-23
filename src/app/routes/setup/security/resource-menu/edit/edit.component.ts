@@ -5,6 +5,7 @@ import { SFSchema, SFSchemaEnumType, SFSelectWidgetSchema, SFUISchema } from '@d
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { map } from 'rxjs/operators';
+import { Constant } from '../../../../../common/constant';
 
 @Component({
   selector: 'app-setup-resource-menu-edit',
@@ -19,7 +20,16 @@ export class SetupResourceMenuEditComponent implements OnInit {
       menuIcon: { type: 'string', title: '菜单图标' },
       // level: { type: 'number', title: '菜单级别' },
       position: { type: 'number', title: '菜单排序位置' },
-      url: { type: 'string', title: '菜单URL' }
+      url: { type: 'string', title: '菜单URL' },
+      hide: {
+        type: 'boolean',
+        title: '是否隐藏',
+        enum: Constant.trueOrFalse,
+        default: false,
+        ui: {
+          width: 300
+        }
+      }
     },
     required: ['name', 'position']
   };
@@ -35,13 +45,16 @@ export class SetupResourceMenuEditComponent implements OnInit {
 
   ngOnInit(): void {
     console.log(this.menu);
-    // if (this.record.id > 0)
-    // this.http.get(`/user/${this.record.id}`).subscribe(res => (this.i = res));
+    if (this.menu.id)
+      this.http.get(`/security/service/security/admin/authority/permission/findById/${this.menu.id}`).subscribe(res => {
+        this.menu = res.data;
+        this.menu.mode = 'edit';
+      });
   }
 
   save(value: any) {
     let url = '';
-    value.type='menu';
+    value.type = 'menu';
     if (this.menu.mode === 'add') {
       value.parentId = this.menu.key;
       url = `/security/service/security/admin/authority/permission/create`;
