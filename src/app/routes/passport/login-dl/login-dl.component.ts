@@ -24,7 +24,6 @@ import { environment } from '@env/environment';
   styleUrls: ['./login-dl.component.less'],
   providers: [SocialService],
   changeDetection: ChangeDetectionStrategy.OnPush
-
 })
 export class PassportLoginDlComponent implements OnInit,OnDestroy {
   constructor(

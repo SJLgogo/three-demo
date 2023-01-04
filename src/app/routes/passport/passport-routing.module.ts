@@ -4,12 +4,10 @@ import { RouterModule, Routes } from '@angular/router';
 import { LayoutPassportComponent } from '../../layout/passport/passport.component';
 import { CallbackComponent } from './callback.component';
 import { UserLockComponent } from './lock/lock.component';
-import { UserLoginComponent } from './login/login.component';
 import { UserRegisterResultComponent } from './register-result/register-result.component';
 import { UserRegisterComponent } from './register/register.component';
 import { UserLogoutComponent } from './logout/logout.component';
-import { PassportLoginSxComponent } from './login-sx/login-sx.component';
-import { PassportLoginDlComponent } from './login-dl/login-dl.component';
+import { PassportLoginDdComponent } from './login-dd/login-dd.component';
 
 const routes: Routes = [
   // passport
@@ -27,10 +25,15 @@ const routes: Routes = [
       //   component: PassportLoginDlComponent,
       //   data: { title: '大连登录', titleI18n: 'app.login.login' }
       // },
+      // {
+      //   path: 'login',
+      //   component: UserLoginComponent,
+      //   data: { title: '测试账号密码登录', titleI18n: 'app.login.login' }
+      // },
       {
         path: 'login',
-        component: UserLoginComponent,
-        data: { title: '测试账号密码登录', titleI18n: 'app.login.login' }
+        component: PassportLoginDdComponent,
+        data: { title: '钉钉扫码', titleI18n: 'app.login.login' }
       },
       {
         path: 'register',
@@ -52,10 +55,7 @@ const routes: Routes = [
     ]
   },
   // 单页不包裹Layout
-  { path: 'passport/callback/:type', component: CallbackComponent }
-,
-  { path: 'login-sx', component: PassportLoginSxComponent },
-  { path: 'login-dl', component: PassportLoginDlComponent }];
+  { path: 'passport/callback/:type', component: CallbackComponent }];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
