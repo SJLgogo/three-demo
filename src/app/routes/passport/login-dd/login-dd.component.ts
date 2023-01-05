@@ -89,44 +89,74 @@ export class PassportLoginDdComponent implements OnInit, OnDestroy {
   switch({ index }: NzTabChangeEvent): void {
     this.type = index!;
     if (this.type === 1) {
-      const url = encodeURIComponent(window.location.href);
-      const goto = encodeURIComponent(
-        `https://oapi.dingtalk.com/connect/oauth2/sns_authorize?appid=${this.appKey}&response_type=code&scope=snsapi_login&state=STATE&redirect_uri=` +
-        url
-      );
+      //旧版本登录
+      // const url = encodeURIComponent(window.location.href);
+      // const goto = encodeURIComponent(
+      //   `https://oapi.dingtalk.com/connect/oauth2/sns_authorize?appid=${this.appKey}&response_type=code&scope=snsapi_login&state=STATE&redirect_uri=` +
+      //   url
+      // );
       // @ts-ignore
       //生成内嵌二维码
-      DDLogin({
-        id: 'wx_reg',
-        goto,
-        style: 'border:none;background-color:#FFFFFF;',
-        width: '365',
-        height: '500'
-      });
-      // tslint:disable-next-line:only-arrow-functions
-      const handleMessage = (event: any) => {
-        const origin = event.origin;
-        // console.log('origin', event.origin);
-        console.log('appKey:', this.appKey);
-        if (origin == 'https://login.dingtalk.com') {
-          // 判断是否来自ddLogin扫码事件。
-          const loginTmpCode = event.data;
-          // 获取到loginTmpCode后就可以在这里构造跳转链接进行跳转了
-          console.log('loginTmpCode', loginTmpCode);
-          let href = `https://oapi.dingtalk.com/connect/oauth2/sns_authorize?appid=${this.appKey}&response_type=code&scope=snsapi_login&state=STATE&redirect_uri=${url}&loginTmpCode=${loginTmpCode}`;
-          window.location.href = href;
-          // console.log("href:",href)
+      // DDLogin({
+      //   id: 'wx_reg',
+      //   goto,
+      //   style: 'border:none;background-color:#FFFFFF;',
+      //   width: '365',
+      //   height: '500'
+      // });
+      // // tslint:disable-next-line:only-arrow-functions
+      // const handleMessage = (event: any) => {
+      //   const origin = event.origin;
+      //   // console.log('origin', event.origin);
+      //   console.log('appKey:', this.appKey);
+      //   if (origin == 'https://login.dingtalk.com') {
+      //     // 判断是否来自ddLogin扫码事件。
+      //     const loginTmpCode = event.data;
+      //     // 获取到loginTmpCode后就可以在这里构造跳转链接进行跳转了
+      //     console.log('loginTmpCode', loginTmpCode);
+      //     let href = `https://oapi.dingtalk.com/connect/oauth2/sns_authorize?appid=${this.appKey}&response_type=code&scope=snsapi_login&state=STATE&redirect_uri=${url}&loginTmpCode=${loginTmpCode}`;
+      //     window.location.href = href;
+      //     // console.log("href:",href)
+      //   }
+      // };
+      // if (typeof window.addEventListener != 'undefined') {
+      //   window.addEventListener('message', handleMessage, false);
+      // } else {
+      //   // @ts-ignore
+      //   if (typeof window.attachEvent != 'undefined') {
+      //     // @ts-ignore
+      //     window.attachEvent('onmessage', handleMessage);
+      //   }
+      // }
+
+      // STEP3：在需要的时候，调用 window.DTFrameLogin 方法构造登录二维码，并处理登录成功或失败的回调。
+      window.DTFrameLogin(
+        {
+          id: 'wx_reg',
+          style: 'border:none;background-color:#FFFFFF;',
+          width: '300',
+          height: '300'
+        },
+        {
+          redirect_uri: encodeURIComponent('http://localhost:4200/passport/login'),
+          client_id: this.appKey,
+          scope: 'openid',
+          response_type: 'code',
+          state: 'dddd',
+          prompt: 'consent'
+        },
+        (loginResult: any) => {
+          const { redirectUrl, authCode, state } = loginResult;
+          // 这里可以直接进行重定向
+          window.location.href = redirectUrl;
+          // 也可以在不跳转页面的情况下，使用code进行授权
+          console.log(authCode);
+        },
+        (errorMsg: any) => {
+          // 这里一般需要展示登录失败的具体原因
+          alert(`Login Error: ${errorMsg}`);
         }
-      };
-      if (typeof window.addEventListener != 'undefined') {
-        window.addEventListener('message', handleMessage, false);
-      } else {
-        // @ts-ignore
-        if (typeof window.attachEvent != 'undefined') {
-          // @ts-ignore
-          window.attachEvent('onmessage', handleMessage);
-        }
-      }
+      );
     }
   }
 
@@ -188,7 +218,7 @@ export class PassportLoginDdComponent implements OnInit, OnDestroy {
     //此处写死、读取配置文件
     let appId = environment.api['appId'];
     this.activeRoute.queryParams.subscribe((params: any) => {
-      const code = params.code;
+      const code = params.authCode;
       if (code !== undefined && code !== '') {
         this.oauthLogin = false;
         // console.log(this.oauthLogin);
@@ -202,7 +232,7 @@ export class PassportLoginDdComponent implements OnInit, OnDestroy {
   judgeScanQrCodeLogin(): void {
     this.activeRoute.queryParams.subscribe((params: any) => {
       // console.log(params);
-      const code = params.code;
+      const code = params.authCode;
       if (code !== undefined && code !== '') {
         this.scanQrCodeTechnologicalProcess(code);
       }

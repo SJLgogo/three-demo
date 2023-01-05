@@ -38,7 +38,7 @@ export const environment = {
   },
   SERVER_URL: '',
   RESOURCE_SERVER_URL: '',
-  logout_url: 'http://127.0.0.1:4200/portal/passport/login',
+  logout_url: 'http://localhost:4200/passport/login',
   modules: [DelonMockModule.forRoot({ data: MOCKDATA })]
 } as Environment;
 
