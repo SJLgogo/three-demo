@@ -8,19 +8,37 @@ import * as MOCKDATA from '../../_mock';
 
 
 
+// export const environment = {
+//   production: false,
+//   useHash: false,
+//   api: {
+//     baseUrl: './api/',
+//     refreshTokenEnabled: true,
+//     refreshTokenType: 'auth-refresh',
+//     version: 'rpc',
+//     appId: 2
+//   },
+//   SERVER_URL: '',
+//   RESOURCE_SERVER_URL: '',
+//   logout_url: 'http://localhost:4200/passport/login',
+//   modules: [DelonMockModule.forRoot({ data: MOCKDATA })]
+// } as Environment;
+
+/**
+ * 测试环境配置
+ */
 export const environment = {
-  production: false,
+  production: true,
   useHash: false,
   api: {
     baseUrl: './api/',
     refreshTokenEnabled: true,
     refreshTokenType: 'auth-refresh',
-    version: 'rpc',
-    appId: 0
+    appId: 25
   },
   SERVER_URL: '',
   RESOURCE_SERVER_URL: '',
-  logout_url: 'http://localhost:4200/passport/login',
+  logout_url: 'http://127.0.0.1:4200/portal/passport/login',
   modules: [DelonMockModule.forRoot({ data: MOCKDATA })]
 } as Environment;
 

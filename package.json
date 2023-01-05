@@ -4,7 +4,7 @@
   "description": "ng-zorro-antd admin panel front-end framework",
   "author": "cipchk <cipchk@qq.com>",
   "config": {
-    "image": "dev.huiztech.cn:20276/platform-develop/platform-admin:0.0.2"
+    "image": "dev.huiztech.cn:20276/platform-develop/platform-admin:0.0.4"
   },
   "repository": {
     "type": "git",
