@@ -1,5 +1,7 @@
 <div class="modal-header">
-  <div class="modal-title">选择人员/部门</div>
+  <div *ngIf="chooseMode== 'department' " class="modal-title">选择人员/部门</div>
+  <div *ngIf="chooseMode== 'employee' " class="modal-title">选择人员</div>
+  <div *ngIf="chooseMode== 'organization' " class="modal-title">选择部门</div>
 </div>
 <nz-card class="choose">
   <div class="selectMain">
@@ -12,7 +14,9 @@
 
 <nz-tabset>
   <nz-tab nzTitle="部门">
-    <app-department [chooseMode]="chooseMode" [(selectList)]="selectList" [functionName]="functionName" [pageSize]="pageSize"  [singleChoice]="singleChoice"></app-department>
+    <app-department [chooseMode]="chooseMode" [(selectList)]="selectList" [functionName]="functionName"
+      [pageSize]="pageSize" [singleChoice]="singleChoice" [externalParentId]="externalParentId"
+      [externalCompanyId]="externalCompanyId"></app-department>
   </nz-tab>
 </nz-tabset>
 
@@ -21,5 +25,3 @@
   <button nz-button type="button" (click)="close()">关闭</button>
   <button nz-button type="submit" nzType="primary" (click)="save()">保存</button>
 </div>
-
-
