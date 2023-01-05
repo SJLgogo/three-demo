@@ -2,7 +2,7 @@ import { Component, Input, OnInit, Output, EventEmitter, OnChanges, SimpleChange
 import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd/tree';
 import { _HttpClient, ModalHelper } from '@delon/theme';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
-import { fn, TreeNode, variable, Person, Organization, selected, DepartmentClass } from './department.interface';
+import { fn, TreeNode, variable, Person, Organization, selected, DepartmentClass, Common } from './department.interface';
 import { RxjsChangeService } from '../../rxjsChange.service';
 import { Unsubscribable } from 'rxjs';
 
@@ -139,7 +139,10 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
       value.companyId,
       value.companyName,
       value.thirdPartyAccountUserId,
-      value.org.map((item:any)=>item.id)
+      value.org.map((item:any)=>({
+        label:item.name,
+        value:item.id
+      }))
     );
   }
 
@@ -153,7 +156,7 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
     companyId: string,
     companyName: string,
     thirdPartyAccountUserId: variable<string>,
-    orgIds?:string[]
+    orgs?:Common[]
   ) {
     const person: Person = {
       name: name,
@@ -164,7 +167,7 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
       category: category,
       companyId: companyId,
       companyName: companyName,
-      orgIds:orgIds
+      orgs:orgs
     };
     this.singleChoice ? this.selected.clear() : '';
     this.selected.set(id, person);

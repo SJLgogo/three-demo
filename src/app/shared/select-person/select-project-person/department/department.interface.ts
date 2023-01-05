@@ -18,8 +18,14 @@ interface Person extends CommonSelect {
   corpId: string;
   departmentId: string;
   departmentName: string;
-  orgIds?:string[];
+  orgs?:Common[];
 }
+
+interface Common{
+  label:string;
+  value:string;
+}
+
 
 interface Organization extends CommonSelect {
   selected?: boolean;
@@ -41,4 +47,4 @@ type fn = voidFn;
 type voidFn = () => void;
 type promiseFn<T = void> = (str: string) => Promise<T>;
 
-export { DepartmentClass, TreeNode, fn, variable, childNode, Person, Organization, selected };
+export { DepartmentClass, TreeNode, fn, variable, childNode, Person, Organization, selected , Common};
