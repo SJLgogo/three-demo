@@ -138,7 +138,7 @@ export class PassportLoginDdComponent implements OnInit, OnDestroy {
           height: '300'
         },
         {
-          redirect_uri: encodeURIComponent('http://localhost:4200/passport/login'),
+          redirect_uri: encodeURIComponent(window.location.href),
           client_id: this.appKey,
           scope: 'openid',
           response_type: 'code',
