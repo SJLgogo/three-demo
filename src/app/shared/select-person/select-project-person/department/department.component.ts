@@ -73,7 +73,7 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
   globalSearch() {
     const params = {
       searchValue: this.searchValue,
-      mode: this.chooseMode
+      mode: [this.chooseMode]
     };
     if (this.searchValue === '' || this.searchValue === 'undefined') {
       this.showSearchResult = false;
@@ -83,6 +83,7 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
       this.http.post(`/org/service/organization/admin/account/global-search`, params).subscribe((res: any) => {
         if (res.success) {
           this.panels = res.data;
+          console.log(this.panels);
         }
         this.orgTreeLoading = false;
       });
@@ -127,6 +128,7 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
   }
 
   optSearchResult(value: any) {
+    console.log(value);
     this.addSelectedPersonList(
       value.type,
       value.loginUserId.toString(),
@@ -136,7 +138,8 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
       value.departmentName,
       value.companyId,
       value.companyName,
-      value.thirdPartyAccountUserId
+      value.thirdPartyAccountUserId,
+      value.org.map((item:any)=>item.id)
     );
   }
 
@@ -149,7 +152,8 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
     departmentName: string,
     companyId: string,
     companyName: string,
-    thirdPartyAccountUserId: variable<string>
+    thirdPartyAccountUserId: variable<string>,
+    orgIds?:string[]
   ) {
     const person: Person = {
       name: name,
@@ -159,7 +163,8 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
       departmentName: departmentName,
       category: category,
       companyId: companyId,
-      companyName: companyName
+      companyName: companyName,
+      orgIds:orgIds
     };
     this.singleChoice ? this.selected.clear() : '';
     this.selected.set(id, person);

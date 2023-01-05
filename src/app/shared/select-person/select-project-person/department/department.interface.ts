@@ -18,6 +18,7 @@ interface Person extends CommonSelect {
   corpId: string;
   departmentId: string;
   departmentName: string;
+  orgIds?:string[];
 }
 
 interface Organization extends CommonSelect {
