@@ -1,12 +1,7 @@
 <div class="container">
-  <div class="left">
+  <div class="left" [class]="isEmployee()">
     <nz-input-group [nzSuffix]="suffixIconSearch">
-      <input
-        nz-input
-        [(ngModel)]="searchValue"
-        (change)="inputChange()"
-        type="text"
-        placeholder="input search text"/>
+      <input nz-input [(ngModel)]="searchValue" (change)="inputChange()" type="text" placeholder="input search text" />
     </nz-input-group>
     <ng-template #suffixIconSearch>
       <i nz-icon nzType="search"></i>
@@ -14,33 +9,26 @@
     <div *ngIf="orgTreeLoading" class="load-more">
       <nz-spin nzSimple></nz-spin>
     </div>
-    <nz-tree
-      *ngIf="!showSearchResult"
-      [nzData]="orgNodes"
-      [nzAsyncData]="'true'"
-      (nzExpandChange)="orgEvent($event)"
-      (nzClick)="orgEvent($event)"
-      (nzDblClick)="orgEvent($event)"
-      [nzTreeTemplate]="nzTreeTemplate"
-    ></nz-tree>
+    <nz-tree *ngIf="!showSearchResult" [nzData]="orgNodes" [nzAsyncData]="'true'" (nzExpandChange)="orgEvent($event)"
+      (nzClick)="orgEvent($event)" (nzDblClick)="orgEvent($event)" [nzTreeTemplate]="nzTreeTemplate"></nz-tree>
     <ng-template #nzTreeTemplate let-node>
-            <span class="custom-node" [class.active]="activeNode?.key === node.key">
-              <span class="custom-node-item" *ngIf="!node.isLeaf">
-                <i nz-icon [nzType]="node.isExpanded ? 'folder-open' : 'folder'"></i>
-                <span class="folder-name" style="margin-left: 5px; margin-right: 10px">
-                  {{ node.title }}
-                  <i nz-icon nzType="check" nzTheme="outline" *ngIf="node.origin.checked"></i>
-                </span>
-              </span>
-              <span class="custom-node-item" *ngIf="node.isLeaf">
-                <i nz-icon nzType="user" *ngIf="node.origin.category == 'employee'"></i>
-                <i nz-icon nzType="file" *ngIf="node.origin.category != 'employee'"></i>
-                <span class="file-name" style="margin-left: 5px; margin-right: 10px">
-                  {{ node.title }}
-                  <i nz-icon nzType="check" nzTheme="outline" *ngIf="node.origin.checked"></i>
-                </span>
-              </span>
-            </span>
+      <span class="custom-node" [class.active]="activeNode?.key === node.key">
+        <span class="custom-node-item" *ngIf="!node.isLeaf">
+          <i nz-icon [nzType]="node.isExpanded ? 'folder-open' : 'folder'"></i>
+          <span class="folder-name" style="margin-left: 5px; margin-right: 10px">
+            {{ node.title }}
+            <i nz-icon nzType="check" nzTheme="outline" *ngIf="node.origin.checked"></i>
+          </span>
+        </span>
+        <span class="custom-node-item" *ngIf="node.isLeaf">
+          <i nz-icon nzType="user" *ngIf="node.origin.category == 'employee'"></i>
+          <i nz-icon nzType="file" *ngIf="node.origin.category != 'employee'"></i>
+          <span class="file-name" style="margin-left: 5px; margin-right: 10px">
+            {{ node.title }}
+            <i nz-icon nzType="check" nzTheme="outline" *ngIf="node.origin.checked"></i>
+          </span>
+        </span>
+      </span>
     </ng-template>
 
     <div *ngIf="showSearchResult">
@@ -54,16 +42,13 @@
       </nz-collapse>
     </div>
   </div>
-  <div class="right">
+  <div *ngIf="chooseMode!='employee'" class="right">
     <p>常用部门 : </p>
     <div class="main">
-      <div  (click)="commonDepartmentsClick(item,i)"
-            [class]="item.selected ? 'selectedItem' : 'item' "
-           *ngFor="let item of commonDepartments let i=index">
-        <span  [class]="item.selected ? 'spanItem' : '' ">{{item.name}}</span>
+      <div (click)="commonDepartmentsClick(item,i)" [class]="item.selected ? 'selectedItem' : 'item' "
+        *ngFor="let item of commonDepartments let i=index">
+        <span [class]="item.selected ? 'spanItem' : '' ">{{item.name}}</span>
       </div>
     </div>
   </div>
 </div>
-
-

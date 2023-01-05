@@ -22,6 +22,8 @@ export class SelectProjectPersonComponent implements OnInit {
   chooseMode: variable<string>; // 必填，organization | employee | department
   functionName: variable<string>; // 必填，自定义功能名称
   singleChoice: boolean = false; // 是否多选 默认多选
+  externalParentId: string = ''; // 非必填 , 外界父级Id ;
+  externalCompanyId: string = ''; // 非必填 , 公司Id ;
   selectList: selected[] = [];
   pageSize: number = 10; // 常用部门查询
 
@@ -33,6 +35,9 @@ export class SelectProjectPersonComponent implements OnInit {
     if (!this.chooseMode || !this.functionName) {
       this.msgSrv.error('请正确传递参数');
       this.close();
+    }
+    if (this.chooseMode === 'organization') {
+      this.chooseMode = 'org';
     }
   }
 
@@ -56,6 +61,7 @@ export class SelectProjectPersonComponent implements OnInit {
 
   save(): void {
     this.commonDepartments();
+    this.selectList.forEach(i => (i.category === 'org' ? (i.category = 'organization') : ''));
     this.modal.close({ selectList: this.selectList });
     this.clearCatch();
   }
