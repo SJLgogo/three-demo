@@ -17,6 +17,10 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
   @Input()
   functionName: variable<string>;
   @Input()
+  externalParentId: variable<string>;
+  @Input()
+  externalCompanyId: variable<string>;
+  @Input()
   pageSize: variable<number>;
   @Input()
   selectList: selected[] = [];
@@ -83,7 +87,6 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
       this.http.post(`/org/service/organization/admin/account/global-search`, params).subscribe((res: any) => {
         if (res.success) {
           this.panels = res.data;
-          console.log(this.panels);
         }
         this.orgTreeLoading = false;
       });
@@ -108,7 +111,12 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
       this.http
         .get(`/org/service/organization/admin/organization/tree/child/` + node.origin!.key + '/' + node.origin['companyId'])
         .subscribe((res: any) => {
-          res.success && node.addChildren(res.data);
+          if (res.data[0].category == 'employee' && this.chooseMode == 'org') {
+            node.addChildren([]);
+            return;
+          } else {
+            res.success && node.addChildren(res.data);
+          }
         });
     }
   }
@@ -118,7 +126,7 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
       case 'employee':
         this.addPerson(node);
         break;
-      case 'organization':
+      case 'org':
         this.addOrganization(node);
         break;
       case 'department':
@@ -128,7 +136,6 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
   }
 
   optSearchResult(value: any) {
-    console.log(value);
     this.addSelectedPersonList(
       value.type,
       value.loginUserId.toString(),
@@ -156,7 +163,7 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
     companyId: string,
     companyName: string,
     thirdPartyAccountUserId: variable<string>,
-    orgs?:Common[]
+    orgs:Common[]
   ) {
     const person: Person = {
       name: name,
@@ -205,7 +212,7 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
     if (node.origin['category'] === 'employee') {
       this.addPerson(node);
     }
-    if (node.origin['category'] === 'organization' || node.origin['category'] === 'org') {
+    if (node.origin['category'] === 'org' || node.origin['category'] === 'organization') {
       this.addSelectedOrganizationList(
         node.origin!['category'],
         node.key,
@@ -225,6 +232,7 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
   }
 
   addPerson(node: NzTreeNode): void {
+    console.log(node);
     if (this.chooseMode === node.origin['category'] || this.chooseMode === 'department') {
       this.addSelectedPersonList(
         node.origin!['category'],
@@ -235,13 +243,18 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
         node.parentNode!['title'],
         node.origin['companyId'],
         node.origin['companyName'],
-        node.origin['thirdPartyAccountUserId']
+        node.origin['thirdPartyAccountUserId'],
+        [{label: node.parentNode!['title'] , value: node.parentNode!['key']}]
       );
     }
   }
 
   addOrganization(node: NzTreeNode): void {
-    if (this.chooseMode === node.origin['category'] || this.chooseMode === 'department') {
+    if (
+      this.chooseMode === node.origin['category'] ||
+      this.chooseMode === 'department' ||
+      (this.chooseMode == 'org' && node.origin['category'] == 'organization')
+    ) {
       this.addSelectedOrganizationList(
         node.origin!['category'],
         node.key,
@@ -287,22 +300,19 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
     const res = localStorage.getItem(this.functionName!) ? JSON.parse(<string>localStorage.getItem(this.functionName!)) : [];
     res.forEach((item: selected) => this.selected.set(item.id as string, item));
   }
-
   commonDepartmentsClick(item: selected, idx: number): void {
     if (this.singleChoice && this.selected.size >= 1) {
       return;
     }
-    if (this.chooseMode != 'department') {
+    if (this.chooseMode != 'department' && this.chooseMode != 'org') {
       return;
     }
     this.commonDepartments[idx].selected = true;
-    this.addSelectedOrganizationList(
-      'organization',
-      item.id as string,
-      item.name as string,
-      item.companyId as string,
-      item.companyName as string
-    );
+    this.addSelectedOrganizationList('org', item.id as string, item.name as string, item.companyId as string, item.companyName as string);
+  }
+
+  isEmployee(): string {
+    return this.chooseMode == 'employee' ? 'employee' : '';
   }
 
   ngOnDestroy(): void {
