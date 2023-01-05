@@ -232,6 +232,7 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
   }
 
   addPerson(node: NzTreeNode): void {
+    console.log(node);
     if (this.chooseMode === node.origin['category'] || this.chooseMode === 'department') {
       this.addSelectedPersonList(
         node.origin!['category'],
@@ -243,7 +244,7 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
         node.origin['companyId'],
         node.origin['companyName'],
         node.origin['thirdPartyAccountUserId'],
-        []
+        [{label: node.parentNode!['title'] , value: node.parentNode!['key']}]
       );
     }
   }
