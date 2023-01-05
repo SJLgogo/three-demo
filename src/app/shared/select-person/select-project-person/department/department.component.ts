@@ -2,7 +2,7 @@ import { Component, Input, OnInit, Output, EventEmitter, OnChanges, SimpleChange
 import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd/tree';
 import { _HttpClient, ModalHelper } from '@delon/theme';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
-import { fn, TreeNode, variable, Person, Organization, selected, DepartmentClass } from './department.interface';
+import { fn, TreeNode, variable, Person, Organization, selected, DepartmentClass, Common } from './department.interface';
 import { RxjsChangeService } from '../../rxjsChange.service';
 import { Unsubscribable } from 'rxjs';
 
@@ -73,7 +73,7 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
   globalSearch() {
     const params = {
       searchValue: this.searchValue,
-      mode: this.chooseMode
+      mode: [this.chooseMode]
     };
     if (this.searchValue === '' || this.searchValue === 'undefined') {
       this.showSearchResult = false;
@@ -83,6 +83,7 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
       this.http.post(`/org/service/organization/admin/account/global-search`, params).subscribe((res: any) => {
         if (res.success) {
           this.panels = res.data;
+          console.log(this.panels);
         }
         this.orgTreeLoading = false;
       });
@@ -127,6 +128,7 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
   }
 
   optSearchResult(value: any) {
+    console.log(value);
     this.addSelectedPersonList(
       value.type,
       value.loginUserId.toString(),
@@ -136,7 +138,11 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
       value.departmentName,
       value.companyId,
       value.companyName,
-      value.thirdPartyAccountUserId
+      value.thirdPartyAccountUserId,
+      value.org.map((item:any)=>({
+        label:item.name,
+        value:item.id
+      }))
     );
   }
 
@@ -149,7 +155,8 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
     departmentName: string,
     companyId: string,
     companyName: string,
-    thirdPartyAccountUserId: variable<string>
+    thirdPartyAccountUserId: variable<string>,
+    orgs?:Common[]
   ) {
     const person: Person = {
       name: name,
@@ -159,7 +166,8 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
       departmentName: departmentName,
       category: category,
       companyId: companyId,
-      companyName: companyName
+      companyName: companyName,
+      orgs:orgs
     };
     this.singleChoice ? this.selected.clear() : '';
     this.selected.set(id, person);
