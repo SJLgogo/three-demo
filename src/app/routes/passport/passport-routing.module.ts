@@ -7,7 +7,8 @@ import { UserLockComponent } from './lock/lock.component';
 import { UserRegisterResultComponent } from './register-result/register-result.component';
 import { UserRegisterComponent } from './register/register.component';
 import { UserLogoutComponent } from './logout/logout.component';
-import { PassportLoginDdComponent } from './login-dd/login-dd.component';
+import { UserLoginComponent } from './login/login.component';
+import { PassportLoginSxComponent } from './login-sx/login-sx.component';
 
 const routes: Routes = [
   // passport
@@ -25,16 +26,16 @@ const routes: Routes = [
       //   component: PassportLoginDlComponent,
       //   data: { title: '大连登录', titleI18n: 'app.login.login' }
       // },
-      // {
-      //   path: 'login',
-      //   component: UserLoginComponent,
-      //   data: { title: '测试账号密码登录', titleI18n: 'app.login.login' }
-      // },
       {
         path: 'login',
-        component: PassportLoginDdComponent,
-        data: { title: '钉钉扫码', titleI18n: 'app.login.login' }
+        component: UserLoginComponent,
+        data: { title: '测试账号密码登录', titleI18n: 'app.login.login' }
       },
+      // {
+      //   path: 'login',
+      //   component: PassportLoginDdComponent,
+      //   data: { title: '钉钉扫码', titleI18n: 'app.login.login' }
+      // },
       {
         path: 'register',
         component: UserRegisterComponent,

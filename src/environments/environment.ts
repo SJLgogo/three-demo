@@ -34,11 +34,11 @@ export const environment = {
     baseUrl: './api/',
     refreshTokenEnabled: true,
     refreshTokenType: 'auth-refresh',
-    appId: 25
+    appId: 0
   },
   SERVER_URL: '',
   RESOURCE_SERVER_URL: '',
-  logout_url: 'http://localhost:4200/passport/login',
+  logout_url: 'http://dl5.huiztech.cn/platform-admin/passport/login',
   modules: [DelonMockModule.forRoot({ data: MOCKDATA })]
 } as Environment;
 
