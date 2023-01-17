@@ -102,7 +102,6 @@ export class SetupSecurityRoleEditComponent implements OnInit {
     this.modal.destroy();
   }
   appIdHide(): any {
-console.log(this.tokenService.get(),'APPID');
     // @ts-ignore
     let appId = this.tokenService.get()['appId'];
     // @ts-ignore
