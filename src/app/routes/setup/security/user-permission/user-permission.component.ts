@@ -105,7 +105,7 @@ export class SetupUserPermissionComponent implements AfterViewInit, OnChanges {
       .createStatic(BatchIncreaseConfigurationComponent, {
         i: {roleId: this.role.id},
         mode: 'add',
-      }, { size: 1200 })
+      }, { size: 1400 })
       .subscribe(() => {
         this.st.req.body = {roleId: this.role.id}; // 给body赋值
         this.st.reload();

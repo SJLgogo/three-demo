@@ -49,6 +49,7 @@ export class BatchIncreaseConfigurationComponent implements AfterViewInit, OnCha
     {title: '登陆账号', index: 'account', width: 100},
     {title: '邮箱', index: 'user.email', width: 100},
     {title: '手机号', index: 'mobilePhone', width: 100},
+    {title: '公司', index: 'companyName', width: 100},
   ];
 
   constructor(

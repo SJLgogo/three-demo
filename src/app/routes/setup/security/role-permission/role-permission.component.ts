@@ -173,5 +173,4 @@ export class SetupSecurityRolePermissionComponent implements OnInit {
       this.permissions.optDataPermission(this.permissions.selectedScope);
     }
   }
-
 }
