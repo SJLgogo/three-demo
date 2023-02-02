@@ -18,7 +18,7 @@ export class SetupResourceMenuEditComponent implements OnInit {
     properties: {
       name: { type: 'string', title: '菜单名称' },
       menuIcon: { type: 'string', title: '菜单图标' },
-      // level: { type: 'number', title: '菜单级别' },
+      identifier: { type: 'string', title: '菜单标识符' },
       position: { type: 'number', title: '菜单排序位置' },
       url: { type: 'string', title: '菜单URL' },
       hide: {
