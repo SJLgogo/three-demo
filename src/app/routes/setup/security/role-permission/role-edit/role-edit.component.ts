@@ -1,19 +1,17 @@
 /* eslint-disable */
-import {Component, Inject, OnInit} from '@angular/core';
-import {_HttpClient} from '@delon/theme';
-import {SFSchema, SFSchemaEnumType, SFUISchema} from '@delon/form';
-import {NzModalRef} from 'ng-zorro-antd/modal';
-import {NzMessageService} from 'ng-zorro-antd/message';
-import {map} from "rxjs/operators";
-import {CommonSelect} from "../../../../../api/common-interface/common-interface";
-import {DA_SERVICE_TOKEN, ITokenService} from "@delon/auth";
-import {environment} from "@env/environment";
+import { AfterViewInit, Component, Inject, OnInit } from '@angular/core';
+import { _HttpClient } from '@delon/theme';
+import { SFSchema, SFSchemaEnumType, SFUISchema } from '@delon/form';
+import { NzModalRef } from 'ng-zorro-antd/modal';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { map } from 'rxjs/operators';
+import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
 
 @Component({
   selector: 'app-setup-security-role-edit',
-  templateUrl: './role-edit.component.html',
+  templateUrl: './role-edit.component.html'
 })
-export class SetupSecurityRoleEditComponent implements OnInit {
+export class SetupSecurityRoleEditComponent implements OnInit, AfterViewInit {
   modalTitle = '';
   formData: any = {};
   mode: any;
@@ -29,7 +27,7 @@ export class SetupSecurityRoleEditComponent implements OnInit {
             return this.http.get(`/base/api/agent/app/find-all`).pipe(
               map((item) => {
                 const children = item.data.map((element: any) => {
-                  return {label: element.name, value: element.id};
+                  return { label: element.name, value: element.id };
                 });
                 const type: SFSchemaEnumType = [
                   {
@@ -42,44 +40,51 @@ export class SetupSecurityRoleEditComponent implements OnInit {
               })
             );
           },
-          hidden: this.appIdHide(),
-        },
+          hidden: this.appIdHide()
+        }
       },
-      name: {type: 'string', title: '角色名称'},
-      code: {type: 'string', title: '角色编码'},
-      remark: {type: 'string', title: '描述', maxLength: 255},
+      name: { type: 'string', title: '角色名称' },
+      code: { type: 'string', title: '角色编码' },
+      remark: { type: 'string', title: '描述', maxLength: 255 }
     },
-    required: ['name'],
+    required: ['name']
   };
   ui: SFUISchema = {
     '*': {
-      spanLabelFixed: 100,
+      spanLabelFixed: 100
     },
     $remark: {
       widget: 'textarea',
-      grid: {span: 24},
-      autosize: {minRows: 4, maxRows: 6}
-    },
+      grid: { span: 24 },
+      autosize: { minRows: 4, maxRows: 6 }
+    }
   };
   subAdmin: any;
-  constructor(private modal: NzModalRef, private msgSrv: NzMessageService, public http: _HttpClient,    @Inject(DA_SERVICE_TOKEN) private tokenService: ITokenService,) {
+
+  constructor(private modal: NzModalRef, private msgSrv: NzMessageService, public http: _HttpClient, @Inject(DA_SERVICE_TOKEN) private tokenService: ITokenService) {
   }
 
   ngOnInit(): void {
+
+  }
+
+  ngAfterViewInit() {
     if (this.mode === 'add') {
       this.modalTitle = '添加角色';
     } else if (this.mode === 'edit') {
       this.formData = this.editNode;
       this.modalTitle = '编辑角色 [' + this.formData.name + ']';
     }
+
+
   }
 
   save(value: any) {
     let url = `/security/service/security/admin/authority/role/create`;
     if (this.mode === 'add') {
       value.parentId = this.editNode.key;
-        // @ts-ignore
-      let appIdIndex=this.tokenService.get()['appId'];
+      // @ts-ignore
+      let appIdIndex = this.tokenService.get()['appId'];
       // @ts-ignore
       if (appIdIndex == 0 && value.parentId == '1') {
         value.type = 'sub-admin';
@@ -87,7 +92,6 @@ export class SetupSecurityRoleEditComponent implements OnInit {
     } else if (this.mode === 'edit') {
       url = `/security/service/security/admin/authority/role/edit-name`;
     }
-
     this.http.post(url, value).subscribe((res) => {
       if (res.success) {
         this.msgSrv.success('保存成功');
@@ -101,12 +105,12 @@ export class SetupSecurityRoleEditComponent implements OnInit {
   close() {
     this.modal.destroy();
   }
+
   appIdHide(): any {
-console.log(this.tokenService.get(),'APPID');
     // @ts-ignore
     let appId = this.tokenService.get()['appId'];
     // @ts-ignore
-    if (appId == "0") {
+    if (appId == '0') {
       return false;
     } else {
       return true;

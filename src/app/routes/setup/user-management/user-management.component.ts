@@ -43,17 +43,20 @@ export class UserManagementComponent implements OnInit {
       ]
     }
   ];
+  list:any[]=[]
   ngOnInit(): void {}
 
   choosePerson(): void {
     this.modal
       .createStatic(SelectProjectPersonComponent, {
         chooseMode: 'employee', // department organization employee
-        functionName: 'not-clock'
+        functionName: 'not-clock',
+        selectList:this.list
         // singleChoice:true
       })
       .subscribe(res => {
         console.log(res);
+        this.list = res.selectList
       });
   }
 }
