@@ -16,8 +16,10 @@
 ## 基础功能点
 
 + minio分布式存储功能组织使用方法
-+ 
-+ 1.环境变量配置
+
+1. 环境变量配置
+
+```typescript
 export const environment = {
   production: false,
   useHash: false,
@@ -31,7 +33,7 @@ export const environment = {
   modules: [DelonMockModule.forRoot({ data: MOCKDATA })]
 } as Environment;
 
-+ 2.html
+
 <div class="upload">
   <nz-upload
     nzType="drag"
@@ -50,7 +52,6 @@ export const environment = {
   </nz-upload>
 </div>
 
-+ 3.ts代码
 handleUpload() {
   const formData = new FormData();
   this.fileList.forEach((file: any) => {
@@ -88,7 +89,6 @@ presignedGetObjectUrl(objectName: String) {
   });
 }
 
-
 ## 特性
 
 + 基于 `ng-zorro-antd`
@@ -115,5 +115,3 @@ presignedGetObjectUrl(objectName: String) {
 ![desktop](https://raw.githubusercontent.com/ng-alain/delon/master/_screenshot/desktop.png)
 ![ipad](https://raw.githubusercontent.com/ng-alain/delon/master/_screenshot/ipad.png)
 ![iphone](https://raw.githubusercontent.com/ng-alain/delon/master/_screenshot/iphone.png)
-
-
