@@ -443,7 +443,7 @@ export class SetupContactComponent implements OnInit {
   choosePerson2() {
     this.modal
       .createStatic(SelectProjectPersonComponent, {
-        chooseMode: 'employee', // department organization employee
+        chooseMode: 'organization', // department organization employee
         functionName: '2'
       })
       .subscribe(res => {

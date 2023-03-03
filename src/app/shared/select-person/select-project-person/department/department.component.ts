@@ -138,7 +138,7 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
   optSearchResult(value: any) {
     this.addSelectedPersonList(
       value.type,
-      value.loginUserId.toString(),
+      value.loginUserId?.toString() ? value.loginUserId?.toString() : value.id?.toString(),
       value.name,
       '',
       value.departmentId,
@@ -146,7 +146,7 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
       value.companyId,
       value.companyName,
       value.thirdPartyAccountUserId,
-      value.org.map((item:any)=>({
+      value.org?.map((item:any)=>({
         label:item.name,
         value:item.id
       }))
@@ -176,6 +176,7 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
       companyName: companyName,
       orgs:orgs
     };
+    console.log(this.singleChoice);
     this.singleChoice ? this.selected.clear() : '';
     this.selected.set(id, person);
     this.getSelectedList<Person>(this.selected as Map<string, Person>);
