@@ -8,6 +8,7 @@ import {OrganizationService} from "../../../api/dict/organization-management/org
 import {HttpResult, variable} from "../../../api/common-interface/common-interface";
 import {NzMessageService} from "ng-zorro-antd/message";
 import { SelectProjectPersonComponent } from '../../../shared/select-person/select-project-person/select-project-person.component';
+import { SFComponent, SFSchema } from '@delon/form';
 
 declare var ClipboardJS: any;
 
@@ -30,8 +31,7 @@ export class AppManagementComponent implements OnInit {
   urlApp = '/base/api/agent/app/page-all'
   columnsPro: STColumn[] = [
     {title: '名称', index: 'name'},
-    {title: '公司Id', index: 'corpId'},
-    // {title: '应用Id', index: 'agentId'},
+    {title: '第三方公司id', index: 'corpId'},
     {title: '应用', index: 'category', type: 'enum', enum: {'wxCp': '企业微信', 'ding': '钉钉', 'yzj': '云之家', 'other': '其他'}},
     {title: '通讯录自动同步', index: 'automaticUpdate', type: 'yn'},
     {
@@ -71,6 +71,8 @@ export class AppManagementComponent implements OnInit {
     {title: '企业微信通讯录secret', index: 'secret'},
     {title: '通讯录token', index: 'messageToken'},
     {title: '通讯录Key', index: 'messageEncodingAesKey'},
+    {title:'第三方应用id',index:'agentId'},
+    {title:'第三方公司id',index:'corpId'},
     {
       title: '操作',
       buttons: [
@@ -94,7 +96,23 @@ export class AppManagementComponent implements OnInit {
       ],
     },
   ];
-
+  searchSchema: SFSchema = {
+    properties: {
+      name: {
+        type: 'string',
+        title: '应用名称'
+      }
+    }
+  };
+  searchSchema1: SFSchema = {
+    properties: {
+      name: {
+        type: 'string',
+        title: '应用名称'
+      }
+    }
+  };
+  @ViewChild('sf') sf!: SFComponent;
   ngOnInit(): void {
     const clipboard = new ClipboardJS('.cp-trigger', {
       text: (event: any) => {

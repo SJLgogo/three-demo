@@ -107,7 +107,7 @@
         {
           "text": "公司与应用管理",
           "icon": "anticon-cloud",
-          "link": "/dict/organization-management",
+          "link": "/dict/app-management",
           "target": "_blank",
           "reuse": false
         }

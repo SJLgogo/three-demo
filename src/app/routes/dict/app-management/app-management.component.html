@@ -4,7 +4,12 @@
 </page-header>
 
 <nz-card>
+
   <div>
+    <sf mode="search" [schema]="searchSchema1" (formSubmit)="stPro.reset($event)" (formReset)="stPro.reset($event)"></sf>
+  </div>
+
+  <div style='margin:8px 0px;'>
     <button  nz-button nzType="primary" (click)="addPro()">添加公司</button>
   </div>
   <st #stPro [data]="urlPro" [columns]="columnsPro"></st>
@@ -13,8 +18,14 @@
 <nz-card>
 <!--  <p>项目名</p>-->
   <div>
+    <sf mode="search" [schema]="searchSchema" (formSubmit)="stApp.reset($event)" (formReset)="stApp.reset($event)"></sf>
+  </div>
+
+
+  <div style='margin:8px 0px;'>
     <button  nz-button nzType="primary" (click)="addApp()">添加应用</button>
   </div>
+
   <st #stApp [data]="urlApp" [columns]="columnsApp">
     <ng-template st-row="renderAppAuthUrl" let-c let-column="column" let-item="item" let-index="index">
       <label class="app-auth-url" title="{{c.url+ '?appId=' + c.id}}"
