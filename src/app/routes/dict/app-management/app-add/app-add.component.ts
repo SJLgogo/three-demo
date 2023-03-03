@@ -3,7 +3,7 @@ import { SFComponent, SFSchema, SFSelectWidgetSchema, SFUISchema } from '@delon/
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {CommonSelect, EmptyObject, HttpResult, variable} from "../../../../api/common-interface/common-interface";
-import {applicationType, SaveApp, SavePro} from "../organization.interface";
+import {applicationType, SaveApp, SavePro} from "../app.interface";
 import {OrganizationService} from "../../../../api/dict/organization-management/organization.service.ts";
 import {map} from "rxjs/operators";
 

@@ -5,16 +5,16 @@ import { SharedModule } from '@shared';
 import { DictRoutingModule } from './dict-routing.module';
 import { DictSwaggerEditComponent } from './swagger-edit/swagger-edit.component';
 import { DictSwaggerListComponent } from './swagger-list/swagger-list.component';
-import {OrganizationManagementComponent} from "./organization-management/organization-management.component";
-import {AppAddComponent} from "./organization-management/app-add/app-add.component";
-import {ProAddComponent} from "./organization-management/pro-add/pro-add.component";
+import {AppManagementComponent} from "./app-management/app-management.component";
+import {AppAddComponent} from "./app-management/app-add/app-add.component";
+import {ProAddComponent} from "./app-management/pro-add/pro-add.component";
 import {NzToolTipModule} from "ng-zorro-antd/tooltip";
 import {FormsModule} from "@angular/forms";
 
 const COMPONENTS: Array<Type<void>> = [
   DictSwaggerListComponent,
   DictSwaggerEditComponent,
-  OrganizationManagementComponent,
+  AppManagementComponent,
   AppAddComponent,
   ProAddComponent
 ];

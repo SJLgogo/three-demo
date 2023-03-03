@@ -27,6 +27,10 @@
           "link": "/setup/security/role-permission"
         },
         {
+          "text": "岗位授权",
+          "link": "/setup/security/post-permission"
+        },
+        {
           "text": "用户管理",
           "link": "/setup/user"
         },

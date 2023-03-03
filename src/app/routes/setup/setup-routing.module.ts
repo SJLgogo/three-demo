@@ -15,6 +15,12 @@ import {SetupDataPermissionsComponent} from './security/data-permissions/data-pe
 import {NzCollapseModule} from "ng-zorro-antd/collapse";
 import {UserManagementComponent} from "./user-management/user-management.component";
 import {VolumeIncreaseComponent} from "./security/volume-increase/volume-increase.component";
+import { SetupPostPermissionComponent } from './security/post-permission/post-permission.component';
+import { SetupPostEditComponent } from './security/post-permission/post-edit/post-edit.component';
+import { SetupPostBindUserComponent } from './security/post-permission/post-bind-user/post-bind-user.component';
+import { SetupPostCheckUserTableComponent } from './security/post-permission/post-check-user-table/post-check-user-table.component';
+import { SetupPostBindRoleComponent } from './security/post-permission/post-bind-role/post-bind-role.component';
+import { SetupPostCheckRoleTableComponent } from './security/post-permission/post-check-role-table/post-check-role-table.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'security/contact', pathMatch: 'full'},
@@ -38,8 +44,13 @@ const routes: Routes = [
   {path: 'security/contact', component: SetupContactComponent, data: {title: '组织机构', titleI18n: '组织机构'}},
   {path: 'security/account', component: SetupAccountComponent, data: {title: '账号管理', titleI18n: '账号管理'}},
   {path: 'synchronize', component: SetupSynchronizeComponent, data: {title: '第三方账户同步', titleI18n: '第三方账户同步'}},
-  {path: 'user', component: UserManagementComponent, data: {title: '用户管理', titleI18n: '用户管理'}}
-];
+  {path: 'user', component: UserManagementComponent, data: {title: '用户管理', titleI18n: '用户管理'}},
+  { path: 'security/post-permission', component: SetupPostPermissionComponent,data: {title: '岗位管理', titleI18n: '岗位管理'} },
+  { path: 'post-edit', component: SetupPostEditComponent },
+  { path: 'post-bind-user', component: SetupPostBindUserComponent },
+  { path: 'post-check-user-table', component: SetupPostCheckUserTableComponent },
+  { path: 'post-bind-role', component: SetupPostBindRoleComponent },
+  { path: 'post-check-role-table', component: SetupPostCheckRoleTableComponent }];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

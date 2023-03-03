@@ -3,12 +3,12 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { DictSwaggerEditComponent } from './swagger-edit/swagger-edit.component';
 import { DictSwaggerListComponent } from './swagger-list/swagger-list.component';
-import {OrganizationManagementComponent} from "./organization-management/organization-management.component";
+import {AppManagementComponent} from "./app-management/app-management.component";
 
 const routes: Routes = [
   { path: 'data', component: DictSwaggerListComponent },
   { path: 'swagger-edit', component: DictSwaggerEditComponent },
-  { path: 'organization-management', component: OrganizationManagementComponent },
+  { path: 'app-management', component: AppManagementComponent },
   { path: 'swagger-edit', component: DictSwaggerEditComponent },
   { path: 'swagger-edit', component: DictSwaggerEditComponent }
 ];

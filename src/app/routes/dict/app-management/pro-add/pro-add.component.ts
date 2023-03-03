@@ -3,7 +3,7 @@ import {SFComponent, SFSchema, SFUISchema} from "@delon/form";
 import {NzModalRef} from "ng-zorro-antd/modal";
 import {NzMessageService} from "ng-zorro-antd/message";
 import {CommonSelect, EmptyObject, HttpResult, variable} from "../../../../api/common-interface/common-interface";
-import {appRange, SavePro} from "../organization.interface";
+import {appRange, SavePro} from "../app.interface";
 import {OrganizationService} from "../../../../api/dict/organization-management/organization.service.ts";
 
 @Component({

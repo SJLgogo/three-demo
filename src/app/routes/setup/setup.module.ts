@@ -40,6 +40,12 @@ import { UserManagementComponent } from './user-management/user-management.compo
 import { SelectPersonModule } from 'src/app/shared/select-person/select-person.module';
 import {BatchIncreaseConfigurationComponent} from "./security/user-permission/batch-increase-configuration/batch-increase-configuration.component";
 import {VolumeIncreaseComponent} from "./security/volume-increase/volume-increase.component";
+import { SetupPostPermissionComponent } from './security/post-permission/post-permission.component';
+import { SetupPostEditComponent } from './security/post-permission/post-edit/post-edit.component';
+import { SetupPostBindUserComponent } from './security/post-permission/post-bind-user/post-bind-user.component';
+import { SetupPostCheckUserTableComponent } from './security/post-permission/post-check-user-table/post-check-user-table.component';
+import { SetupPostBindRoleComponent } from './security/post-permission/post-bind-role/post-bind-role.component';
+import { SetupPostCheckRoleTableComponent } from './security/post-permission/post-check-role-table/post-check-role-table.component';
 
 const COMPONENTS: Array<Type<void>> = [
   SetupIndexComponent,
@@ -70,8 +76,13 @@ const COMPONENTS: Array<Type<void>> = [
   SystemContactPostEditComponent,
   SystemContactOrgEditComponent,
   UserManagementComponent,
-  VolumeIncreaseComponent
-];
+  VolumeIncreaseComponent,
+  SetupPostPermissionComponent,
+  SetupPostEditComponent,
+  SetupPostBindUserComponent,
+  SetupPostCheckUserTableComponent,
+  SetupPostBindRoleComponent,
+  SetupPostCheckRoleTableComponent];
 
 @NgModule({
   imports: [

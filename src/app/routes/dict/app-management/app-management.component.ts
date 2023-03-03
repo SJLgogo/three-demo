@@ -13,10 +13,10 @@ declare var ClipboardJS: any;
 
 @Component({
   selector: 'app-organization-management',
-  templateUrl: './organization-management.component.html',
-  styleUrls: ['./organization-management.component.less']
+  templateUrl: './app-management.component.html',
+  styleUrls: ['./app-management.component.less']
 })
-export class OrganizationManagementComponent implements OnInit {
+export class AppManagementComponent implements OnInit {
   @ViewChild('stPro') private readonly stPro!: STComponent;
   @ViewChild('stApp') private readonly stApp!: STComponent;
   @ViewChild('cpTrigger')

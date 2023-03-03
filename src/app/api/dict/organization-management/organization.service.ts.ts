@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BaseApi, Body, DELETE, GET, Path, POST, PUT } from '@delon/theme';
 import { Observable } from 'rxjs';
 import { HttpResult } from '../../common-interface/common-interface';
-import { SavePro } from '../../../routes/dict/organization-management/organization.interface';
+import { SavePro } from '../../../routes/dict/app-management/app.interface';
 
 @Injectable({
   providedIn: 'root',
