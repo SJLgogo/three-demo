@@ -82,8 +82,7 @@ export class SetupPostBindRoleComponent implements OnInit {
 
 
   addUserPost() {
-    this.modal
-      .createStatic(SetupPostCheckRoleTableComponent, {
+    this.modal.createStatic(SetupPostCheckRoleTableComponent, {
         i: { postId: this.post.id },
         mode: 'add'
       })

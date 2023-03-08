@@ -50,10 +50,11 @@ export class SetupPostCheckRoleTableComponent implements OnInit,AfterViewInit {
       index: 'id',
       type: 'checkbox'
     },
-    { title: '名称', index: 'name', width: '100px' },
-    { title: 'appId', index: 'appId', width: '100px' },
-    { title: '编码', index: 'code', width: '100px' },
-    // { title: '公司', index: 'companyName', width: '100px' },
+    { title: '名称', index: 'name'},
+    { title: '公司', index: 'companyName' },
+    { title: '应用名称', index: 'appName' },
+    { title: '应用appId', index: 'appId' },
+    { title: '编码', index: 'code' },
 
   ];
 
