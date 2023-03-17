@@ -7,7 +7,7 @@
 </page-header>
 
 <div nz-row [nzGutter]="18">
-  <div nz-col [nzSpan]="4">
+  <div nz-col [nzSpan]="4" style="position: relative;">
     <nz-card nzTitle="岗位关系">
       <nz-tree
         [nzData]="postNodes"
@@ -32,9 +32,12 @@
             <i nz-icon nzType="file"></i>
             <span class="file-name">{{ node.title }}</span>
             <span class="file-desc">
-              <a nz-dropdown [nzDropdownMenu]="roleOptMenu" nzTrigger="click"
-              ><i nz-icon nzType="menu" (click)="optRole(node)" nzTheme="outline"></i
-              ></a>
+<!--              <a nz-dropdown [nzDropdownMenu]="roleOptMenu" nzTrigger="click"-->
+<!--              ><i nz-icon nzType="menu" (click)="optRole(node)" nzTheme="outline"></i-->
+<!--              ></a>-->
+              <a nz-dropdown [nzDropdownMenu]="roleOptMenu" nzTrigger="click" nzPlacement="bottomLeft" nzStopPropagation>
+                 <i nz-icon nzType="menu" (click)="optRole(node)" nzTheme="outline"></i>
+              </a>
             </span>
           </span>
 
@@ -60,14 +63,32 @@
         <nz-empty *ngIf="selectedPost == null" nzNotFoundContent="请先选择角色"></nz-empty>
         <nz-tabset *ngIf="selectedPost != null" [nzSelectedIndex]="index" (nzSelectChange)="nzSelectChange($event)">
 
-          <nz-tab nzTitle="岗位-角色-绑定" >
-            <app-setup-post-bind-role [post]="selectedPost"></app-setup-post-bind-role>
+          <nz-tab nzTitle="岗位-角色-绑定" nzForceRender>
+            <app-setup-post-bind-role #postAndRoleBind [post]="selectedPost"></app-setup-post-bind-role>
           </nz-tab>
 
-          <nz-tab nzTitle="岗位-用户-绑定">
+          <nz-tab nzTitle="岗位-用户-绑定" nzForceRender>
             <app-setup-post-bind-user #appUsePermission [post]="selectedPost" #permission  ></app-setup-post-bind-user>
           </nz-tab>
         </nz-tabset>
+
+<!--        <nz-tabset *ngIf="selectedPost != null" [nzSelectedIndex]="index" (nzSelectChange)="nzSelectChange($event)">-->
+<!--          <nz-tab nzTitle="岗位-角色-绑定">-->
+<!--            <ng-template nz-tab>-->
+<!--              <app-setup-post-bind-role #postAndRoleBind [post]="selectedPost"></app-setup-post-bind-role>-->
+<!--            </ng-template>-->
+<!--          </nz-tab>-->
+
+<!--          <nz-tab nzTitle="岗位-用户-绑定">-->
+<!--            <ng-template nz-tab>-->
+<!--              <app-setup-post-bind-user #appUsePermission [post]="selectedPost" #permission></app-setup-post-bind-user>-->
+<!--            </ng-template>-->
+<!--          </nz-tab>-->
+<!--        </nz-tabset>-->
+
+
+
+
       </div>
     </nz-card>
   </div>

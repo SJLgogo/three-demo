@@ -61,7 +61,7 @@ export class SetupPostCheckUserTableComponent implements OnInit, AfterViewInit {
     },
     { title: '名称', index: 'thirdPartyName', width: '100px' },
     { title: '手机号', index: 'mobilePhone', width: '100px' },
-    { title: 'email', index: 'user.email', width: '100px' },
+    // { title: 'email', index: 'user.email', width: '100px' },
     { title: '公司', index: 'companyName', width: '100px' },
     { title: '账户状态', index: 'status', width: '100px', type: 'tag', tag: statusTAG }
   ];

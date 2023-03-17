@@ -59,7 +59,9 @@ export class HeaderUserComponent {
         this.tokenService.clear();
         this.cookieSrv.removeAll()
         localStorage.clear();
-        window.location.href = environment['logout_url'];
+        // window.location.href = environment['logout_url'];
+        //路由跳转到登录页面
+        this.router.navigateByUrl('/passport/login');
       } else {
         this.msgSrv.error(res.message);
       }

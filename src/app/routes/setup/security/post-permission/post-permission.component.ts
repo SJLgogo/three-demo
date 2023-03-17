@@ -7,6 +7,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 import { Router } from '@angular/router';
 import { PermissionService } from '../../service/permission.service';
 import { SetupPostEditComponent } from './post-edit/post-edit.component';
+import { SetupPostBindRoleComponent } from './post-bind-role/post-bind-role.component';
 
 @Component({
   selector: 'app-setup-post-permission',
@@ -24,6 +25,8 @@ export class SetupPostPermissionComponent implements OnInit {
   confirmModal!: NzModalRef;
   index: number = 0;
   @ViewChild('appUsePermission', { static: false }) sf!: SetupUserPermissionComponent;
+  @ViewChild('postAndRoleBind', { static: false }) postAndRoleBindSF!: SetupPostBindRoleComponent;
+
   contentDate: string = '';
   opacityNumber: string = '20';
   @ViewChild('permission') permission: any;
@@ -45,9 +48,9 @@ export class SetupPostPermissionComponent implements OnInit {
       this.activeRoleNode = node;
       this.activeRole(this.activeRoleNode, this.index);
       // if (this.index == 1) {
-        // this.permissions.optDataPermission([]);
-        // this.permissions.permissionUserId = '';
-        // this.permissions.treeNodes = [];
+      // this.permissions.optDataPermission([]);
+      // this.permissions.permissionUserId = '';
+      // this.permissions.treeNodes = [];
       // }
     }
   }
@@ -86,6 +89,10 @@ export class SetupPostPermissionComponent implements OnInit {
           this.loadRoleTree();
         });
     } else if (opt === 'edit') {
+      if (node.key == 1) {
+        this.messageService.warning('不能编辑顶级节点！');
+        return;
+      }
       this.modal
         .createStatic(
           SetupPostEditComponent,
@@ -98,6 +105,10 @@ export class SetupPostPermissionComponent implements OnInit {
         this.loadRoleTree();
       });
     } else if (opt === 'remove') {
+      if (node.key == 1) {
+        this.messageService.warning('不能删除顶级节点！');
+        return;
+      }
       this.confirmModal = this.modalSrv.confirm({
         nzTitle: '删除确认?',
         nzContent: '是否确认删除岗位 [' + node.title + '] ?',
@@ -142,7 +153,12 @@ export class SetupPostPermissionComponent implements OnInit {
     this.index = args.index;
     this.selectedPost.index = args.index;
     this.opacityNumber = this.index == 1 ? '20' : '20';
-    this.sf.reloadTable();
+    if (this.index === 0) {
+      // 在这里刷新表格数据
+      this.postAndRoleBindSF.reloadTable();
+    } else if (this.index === 1) {
+      this.sf.reloadTable();
+    }
   }
 
   constructor(
@@ -156,17 +172,4 @@ export class SetupPostPermissionComponent implements OnInit {
   ) {
   }
 
-  // permissionsAll(value: any): any {
-  //   if (value) {
-  //     this.contentDate = value;
-  //     this.permissionUserId = this.permission.userId;
-  //   }
-  // }
-  //
-  // permissionAll(value: any): any {
-  //   if (value) {
-  //     this.permissions.permissionUserId = value;
-  //     this.permissions.optDataPermission(this.permissions.selectedScope);
-  //   }
-  // }
 }
