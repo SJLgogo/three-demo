@@ -5,6 +5,7 @@ import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
 import { fn, TreeNode, variable, Person, Organization, selected, DepartmentClass, Common } from './department.interface';
 import { RxjsChangeService } from '../../rxjsChange.service';
 import { Unsubscribable } from 'rxjs';
+import { add } from 'lodash';
 
 @Component({
   selector: 'app-department',
@@ -137,6 +138,7 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
 
   optSearchResult(value: any) {
     this.addSelectedPersonList(
+      value,
       value.type,
       value.loginUserId?.toString() ? value.loginUserId?.toString() : value.id?.toString(),
       value.name,
@@ -154,6 +156,7 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
   }
 
   addSelectedPersonList(
+    addItem:any,
     category: string,
     id: string,
     name: string,
@@ -174,9 +177,9 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
       category: category,
       companyId: companyId,
       companyName: companyName,
-      orgs:orgs
+      orgs:orgs,
+      avatar:addItem.avatar
     };
-    console.log(this.singleChoice);
     this.singleChoice ? this.selected.clear() : '';
     this.selected.set(id, person);
     this.getSelectedList<Person>(this.selected as Map<string, Person>);
@@ -235,7 +238,9 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
   addPerson(node: NzTreeNode): void {
     console.log(node);
     if (this.chooseMode === node.origin['category'] || this.chooseMode === 'department') {
+      (node as any).avatar = node.icon
       this.addSelectedPersonList(
+        node,
         node.origin!['category'],
         node.key,
         node.title,

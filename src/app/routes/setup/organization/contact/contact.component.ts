@@ -431,7 +431,7 @@ export class SetupContactComponent implements OnInit {
   choosePerson1() {
     this.modal
       .createStatic(SelectProjectPersonComponent, {
-        chooseMode: 'organization', // department organization employee
+        chooseMode: 'employee', // department organization employee
         functionName: '1',
         singleChoice: true
       })
@@ -443,7 +443,7 @@ export class SetupContactComponent implements OnInit {
   choosePerson2() {
     this.modal
       .createStatic(SelectProjectPersonComponent, {
-        chooseMode: 'organization', // department organization employee
+        chooseMode: 'employee', // department organization employee
         functionName: '2'
       })
       .subscribe(res => {
