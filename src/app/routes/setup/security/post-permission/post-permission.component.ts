@@ -36,22 +36,19 @@ export class SetupPostPermissionComponent implements OnInit {
 
   //----------------岗位树,用于岗位继承关系
   ngOnInit() {
+    console.log('SetupPostPermissionComponent initialized');
     this.loadRoleTree();
     this.index = 0;
+    this.cdr.detectChanges(); // 在这里添加更改检测的调用
   }
-
 
   //点击加载下级树节点
   postEvent(event: NzFormatEmitEvent): void {
     const node: any = event.node;
+    console.log("postEvent triggered", event);
     if (event.eventName === 'click') {
       this.activeRoleNode = node;
       this.activeRole(this.activeRoleNode, this.index);
-      // if (this.index == 1) {
-      // this.permissions.optDataPermission([]);
-      // this.permissions.permissionUserId = '';
-      // this.permissions.treeNodes = [];
-      // }
     }
   }
 
@@ -62,7 +59,6 @@ export class SetupPostPermissionComponent implements OnInit {
       if (res.success) {
         this.postNodes = res.data;
         this.roleTreeLoading = false;
-        this.cdr.detectChanges();
       }
     });
   }
@@ -143,22 +139,26 @@ export class SetupPostPermissionComponent implements OnInit {
   }
 
   activeRole(roleNode: any, index: number) {
-    this.cdr.reattach();
     this.index = index;
     this.selectedPost = { id: roleNode.key, name: roleNode.title, index: this.index };
     this.roleTitle = this.selectedPost.name;
+    console.log('selectedPost:', this.selectedPost);
+    this.cdr.markForCheck();
+    setTimeout(() => {
+      this.cdr.detectChanges();
+    }, 1);
   }
 
   nzSelectChange(args: any): void {
     this.index = args.index;
     this.selectedPost.index = args.index;
-    this.opacityNumber = this.index == 1 ? '20' : '20';
     if (this.index === 0) {
       // 在这里刷新表格数据
       this.postAndRoleBindSF.reloadTable();
     } else if (this.index === 1) {
       this.sf.reloadTable();
     }
+    // this.cdr.detectChanges();
   }
 
   constructor(

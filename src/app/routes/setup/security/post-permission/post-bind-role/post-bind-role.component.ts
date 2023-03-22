@@ -75,7 +75,6 @@ export class SetupPostBindRoleComponent implements OnInit {
     private modal: ModalHelper,
     public settingsService: SettingsService,
     private messageService: NzMessageService,
-    private cdr: ChangeDetectorRef,
   ) {
   }
 

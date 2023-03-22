@@ -36,6 +36,22 @@ export const environment = {
   },
   SERVER_URL: '',
   RESOURCE_SERVER_URL: '',
-  logout_url: 'http://192.168.31.203:10306/portal/passport/login',
+  logout_url: '/passport/login',
   modules: [DelonMockModule.forRoot({ data: MOCKDATA })]
 } as Environment;
+
+
+// export const environment = {
+//   production: true,
+//   useHash: false,
+//   api: {
+//     baseUrl: './api/',
+//     refreshTokenEnabled: true,
+//     refreshTokenType: 'auth-refresh',
+//     appId: 0
+//   },
+//   SERVER_URL: '',
+//   RESOURCE_SERVER_URL: '',
+//   logout_url: 'http://122.9.101.239:12111/platform-admin/passport/login',
+//   modules: [DelonMockModule.forRoot({ data: MOCKDATA })]
+// } as Environment;

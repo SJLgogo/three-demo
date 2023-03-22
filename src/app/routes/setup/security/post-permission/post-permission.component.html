@@ -32,9 +32,6 @@
             <i nz-icon nzType="file"></i>
             <span class="file-name">{{ node.title }}</span>
             <span class="file-desc">
-<!--              <a nz-dropdown [nzDropdownMenu]="roleOptMenu" nzTrigger="click"-->
-<!--              ><i nz-icon nzType="menu" (click)="optRole(node)" nzTheme="outline"></i-->
-<!--              ></a>-->
               <a nz-dropdown [nzDropdownMenu]="roleOptMenu" nzTrigger="click" nzPlacement="bottomLeft" nzStopPropagation>
                  <i nz-icon nzType="menu" (click)="optRole(node)" nzTheme="outline"></i>
               </a>
@@ -57,40 +54,39 @@
     </nz-card>
   </div>
 
-  <div nz-col [nzSpan]=this.opacityNumber>
-    <nz-card [nzTitle]="'授权信息: ' + roleTitle">
-      <div>
-        <nz-empty *ngIf="selectedPost == null" nzNotFoundContent="请先选择角色"></nz-empty>
-        <nz-tabset *ngIf="selectedPost != null" [nzSelectedIndex]="index" (nzSelectChange)="nzSelectChange($event)">
+  <div nz-col [nzSpan]=20>
+<!--    <nz-card [nzTitle]="'授权信息: ' + roleTitle">-->
+<!--      <div>-->
+<!--&lt;!&ndash;        <nz-empty *ngIf="selectedPost == null" nzNotFoundContent="请先选择角色"></nz-empty>&ndash;&gt;-->
+<!--&lt;!&ndash;        <nz-tabset *ngIf="selectedPost != null" [nzSelectedIndex]="index" (nzSelectChange)="nzSelectChange($event)">&ndash;&gt;-->
 
-          <nz-tab nzTitle="岗位-角色-绑定" nzForceRender>
-            <app-setup-post-bind-role #postAndRoleBind [post]="selectedPost"></app-setup-post-bind-role>
-          </nz-tab>
+<!--            <nz-empty *ngIf="selectedPost == null" nzNotFoundContent="请先选择角色"></nz-empty>-->
+<!--            <nz-tabset *ngIf="selectedPost != null" [nzSelectedIndex]="index" (nzSelectChange)="nzSelectChange($event)">-->
 
-          <nz-tab nzTitle="岗位-用户-绑定" nzForceRender>
-            <app-setup-post-bind-user #appUsePermission [post]="selectedPost" #permission  ></app-setup-post-bind-user>
-          </nz-tab>
-        </nz-tabset>
-
-<!--        <nz-tabset *ngIf="selectedPost != null" [nzSelectedIndex]="index" (nzSelectChange)="nzSelectChange($event)">-->
-<!--          <nz-tab nzTitle="岗位-角色-绑定">-->
-<!--            <ng-template nz-tab>-->
-<!--              <app-setup-post-bind-role #postAndRoleBind [post]="selectedPost"></app-setup-post-bind-role>-->
-<!--            </ng-template>-->
+<!--          <nz-tab nzTitle="岗位-角色-绑定" nzForceRender>-->
+<!--            <app-setup-post-bind-role #postAndRoleBind [post]="selectedPost"></app-setup-post-bind-role>-->
 <!--          </nz-tab>-->
 
-<!--          <nz-tab nzTitle="岗位-用户-绑定">-->
-<!--            <ng-template nz-tab>-->
-<!--              <app-setup-post-bind-user #appUsePermission [post]="selectedPost" #permission></app-setup-post-bind-user>-->
-<!--            </ng-template>-->
+<!--          <nz-tab nzTitle="岗位-用户-绑定" nzForceRender>-->
+<!--            <app-setup-post-bind-user #appUsePermission [post]="selectedPost" #permission  ></app-setup-post-bind-user>-->
 <!--          </nz-tab>-->
 <!--        </nz-tabset>-->
+<!--      </div>-->
+<!--    </nz-card>-->
 
+    <div class="card-container" style="padding: 1rem; border: 1px solid #e8e8e8; border-radius: 4px; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);">
+      <nz-empty *ngIf="selectedPost == null" nzNotFoundContent="请先选择角色"></nz-empty>
+      <nz-tabset nzType="card" *ngIf="selectedPost != null" [nzSelectedIndex]="index" (nzSelectChange)="nzSelectChange($event)">
+        <nz-tab nzTitle="岗位-角色-绑定" >
+          <app-setup-post-bind-role #postAndRoleBind [post]="selectedPost"></app-setup-post-bind-role>
+        </nz-tab>
 
+        <nz-tab nzTitle="岗位-用户-绑定" >
+          <app-setup-post-bind-user #appUsePermission [post]="selectedPost" #permission  ></app-setup-post-bind-user>
+        </nz-tab>
+      </nz-tabset>
+    </div>
 
-
-      </div>
-    </nz-card>
   </div>
 
 </div>
