@@ -58,7 +58,7 @@ export class SetupPostBindUserComponent implements OnInit {
     { title: '名称', index: 'name', width: '100px' },
     // {title: '登陆账号', index: 'account', width: '100px'},
     // {title: '公司', index: 'companyName', width: '100px'},
-    { title: '邮箱', index: 'email', width: '100px' },
+    // { title: '邮箱', index: 'email', width: '100px' },
     { title: '手机号', index: 'mobilePhone', width: '100px' }
   ];
 

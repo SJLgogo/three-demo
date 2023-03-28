@@ -70,11 +70,11 @@ export class SetupPostEditComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     if (this.mode === 'add') {
-      this.modalTitle = '添加角色';
+      this.modalTitle = '添加岗位';
     } else if (this.mode === 'edit') {
       this.http.get(`/security/service/security/admin/post/${this.editNode.key}`).subscribe(res => {
         this.formData = res.data;
-        this.modalTitle = '编辑角色 [' + this.formData.name + ']';
+        this.modalTitle = '编辑岗位 [' + this.formData.name + ']';
       });
     }
   }

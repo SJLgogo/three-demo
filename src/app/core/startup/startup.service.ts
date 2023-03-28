@@ -74,73 +74,73 @@ export class StartupService {
    * 系统菜单没有导入后台开发的时候打开此段代码、正式部署请用下面的方法
    * @private
    */
-  private afterLogin(): Observable<void> {
-    const defaultLang = this.i18n.defaultLang;
-    return zip(this.i18n.loadLangData(defaultLang), this.httpClient.get('assets/tmp/app-data.json')).pipe(
-      // 接收其他拦截器后产生的异常消息
-      catchError(res => {
-        console.warn(`StartupService.load: Network request failed`, res);
-        setTimeout(() => this.router.navigateByUrl(`/exception/500`));
-        return [];
-      }),
-      map(([langData, appData]: [Record<string, string>, NzSafeAny]) => {
-        // setting language data
-        this.i18n.use(defaultLang, langData);
-
-        // 应用信息：包括站点名、描述、年份
-        this.settingService.setApp(appData.app);
-        // 用户信息：包括姓名、头像、邮箱地址
-        this.settingService.setUser(appData.user);
-        // ACL：设置权限为全量
-        this.aclService.setFull(true);
-        // 初始化菜单
-        this.menuService.add(appData.menu);
-        // 设置页面标题的后缀
-        this.titleService.default = '';
-        this.titleService.suffix = appData.app.name;
-      })
-    );
-  }
-
-  /**
-   * 登录后调用、正式环境用
-   * @private
-   */
-  // private afterLogin(): Observable<any> {
+  // private afterLogin(): Observable<void> {
   //   const defaultLang = this.i18n.defaultLang;
-  //   return zip(this.i18n.loadLangData(defaultLang),
-  //     this.httpClient.get('/security/service/security/admin/security-resource/myAlainAppData'),
-  //     this.httpClient.get(`/service/dictionary/dict-data/find-all`)
-  //   ).pipe(
+  //   return zip(this.i18n.loadLangData(defaultLang), this.httpClient.get('assets/tmp/app-data.json')).pipe(
   //     // 接收其他拦截器后产生的异常消息
   //     catchError(res => {
   //       console.warn(`StartupService.load: Network request failed`, res);
   //       setTimeout(() => this.router.navigateByUrl(`/exception/500`));
   //       return [];
   //     }),
-  //     map(([langData, appData, dicData]: [Record<string, string>, NzSafeAny, any]) => {
+  //     map(([langData, appData]: [Record<string, string>, NzSafeAny]) => {
   //       // setting language data
   //       this.i18n.use(defaultLang, langData);
-  //       //后端获取格式不一样
-  //       if (appData.success) {
-  //         appData = appData.data;
-  //         // 应用信息：包括站点名、描述、年份
-  //         this.settingService.setApp(appData.app);
-  //         // 用户信息：包括姓名、头像、邮箱地址
-  //         this.settingService.setUser(appData.user);
-  //         // ACL：设置权限为全量
-  //         this.aclService.setFull(true);
-  //         // 初始化菜单
-  //         this.menuService.add(appData.menu);
-  //         // 设置页面标题的后缀
-  //         this.titleService.default = '';
-  //         this.titleService.suffix = appData.app.name;
-  //       }else {
-  //         //如果后台接口报错暂时不处理、根据统一拦截器处理
-  //       }
+  //
+  //       // 应用信息：包括站点名、描述、年份
+  //       this.settingService.setApp(appData.app);
+  //       // 用户信息：包括姓名、头像、邮箱地址
+  //       this.settingService.setUser(appData.user);
+  //       // ACL：设置权限为全量
+  //       this.aclService.setFull(true);
+  //       // 初始化菜单
+  //       this.menuService.add(appData.menu);
+  //       // 设置页面标题的后缀
+  //       this.titleService.default = '';
+  //       this.titleService.suffix = appData.app.name;
   //     })
   //   );
   // }
+
+  /**
+   * 登录后调用、正式环境用
+   * @private
+   */
+  private afterLogin(): Observable<any> {
+    const defaultLang = this.i18n.defaultLang;
+    return zip(this.i18n.loadLangData(defaultLang),
+      this.httpClient.get('/security/service/security/admin/security-resource/myAlainAppData'),
+      this.httpClient.get(`/service/dictionary/dict-data/find-all`)
+    ).pipe(
+      // 接收其他拦截器后产生的异常消息
+      catchError(res => {
+        console.warn(`StartupService.load: Network request failed`, res);
+        setTimeout(() => this.router.navigateByUrl(`/exception/500`));
+        return [];
+      }),
+      map(([langData, appData, dicData]: [Record<string, string>, NzSafeAny, any]) => {
+        // setting language data
+        this.i18n.use(defaultLang, langData);
+        //后端获取格式不一样
+        if (appData.success) {
+          appData = appData.data;
+          // 应用信息：包括站点名、描述、年份
+          this.settingService.setApp(appData.app);
+          // 用户信息：包括姓名、头像、邮箱地址
+          this.settingService.setUser(appData.user);
+          // ACL：设置权限为全量
+          this.aclService.setFull(true);
+          // 初始化菜单
+          this.menuService.add(appData.menu);
+          // 设置页面标题的后缀
+          this.titleService.default = '';
+          this.titleService.suffix = appData.app.name;
+        }else {
+          //如果后台接口报错暂时不处理、根据统一拦截器处理
+        }
+      })
+    );
+  }
 
 
 }
