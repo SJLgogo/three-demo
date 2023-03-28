@@ -19,6 +19,8 @@ interface Person extends CommonSelect {
   departmentId: string;
   departmentName: string;
   avatar:string;
+  jobNumber:string;
+  mobilePhone:string;
   orgs?:Common[];
 }
 
