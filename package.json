@@ -4,7 +4,7 @@
   "description": "ng-zorro-antd admin panel front-end framework",
   "author": "cipchk <cipchk@qq.com>",
   "config": {
-    "image": "dev.huiztech.cn:20276/platform-develop/platform-admin:0.3.2"
+    "image": "dev.huiztech.cn:20276/platform-develop/platform-admin:0.3.4"
   },
   "repository": {
     "type": "git",
@@ -44,7 +44,10 @@
     "theme": "ng-alain-plugin-theme -t=themeCss",
     "icon": "ng g ng-alain:plugin icon",
     "prepare": "husky install",
-    "add": "ng g @huiztech/code-generator:add"
+    "add": "ng g @huiztech/code-generator:add",
+    "window_image": "docker build -t %npm_package_config_image% .",
+    "window_psuh": "docker push %npm_package_config_image%",
+    "window_deploy": "npm run build && npm run window_image && npm run window_psuh"
   },
   "dependencies": {
     "@angular/animations": "~13.3.0",

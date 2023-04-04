@@ -10,10 +10,11 @@ import {
 } from '@angular/core';
 import { _HttpClient, ModalHelper, SettingsService } from '@delon/theme';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd/modal';
-import { SFComponent, SFSchema } from '@delon/form';
+import { SFComponent, SFSchema, SFSchemaEnumType } from '@delon/form';
 import { STChange, STClickRowClassNameType, STColumn, STComponent } from '@delon/abc/st';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { SetupPostCheckRoleTableComponent } from '../post-check-role-table/post-check-role-table.component';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-setup-post-bind-role',
