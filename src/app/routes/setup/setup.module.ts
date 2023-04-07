@@ -46,6 +46,7 @@ import { SetupPostBindUserComponent } from './security/post-permission/post-bind
 import { SetupPostCheckUserTableComponent } from './security/post-permission/post-check-user-table/post-check-user-table.component';
 import { SetupPostBindRoleComponent } from './security/post-permission/post-bind-role/post-bind-role.component';
 import { SetupPostCheckRoleTableComponent } from './security/post-permission/post-check-role-table/post-check-role-table.component';
+import { DelonACLModule } from '@delon/acl';
 
 const COMPONENTS: Array<Type<void>> = [
   SetupIndexComponent,
@@ -95,7 +96,7 @@ const COMPONENTS: Array<Type<void>> = [
     NzTreeModule,
     NzCollapseModule,
     SetupRoutingModule,
-    SelectPersonModule
+    SelectPersonModule,
   ],
   declarations: COMPONENTS,
   providers: []

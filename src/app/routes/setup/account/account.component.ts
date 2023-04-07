@@ -1,10 +1,10 @@
-
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { SFComponent, SFSchema } from '@delon/form';
 import { _HttpClient, ModalHelper } from '@delon/theme';
 import { STColumn, STComponent } from '@delon/abc/st';
 import { SetupAccountEditComponent } from './edit/edit.component';
 import { SetupSynchronizeComponent } from './synchronize/synchronize.component';
+import { ACLService, ACLType } from '@delon/acl';
 
 @Component({
   selector: 'app-setup-account',
@@ -32,11 +32,21 @@ export class SetupAccountComponent implements OnInit {
       buttons: [
         // { text: '查看', click: (item: any) => `/form/${item.id}` },
         { text: '编辑', type: 'static', icon: 'edit', click: (item: any) => this.updatePageElementResource(item) },
+        //新增一个带有权限的删除按钮
+        // {
+        //   text: '删除', type: 'del', icon: 'delete', acl: {
+        //     ability: ['add_examine']
+        //   }
+        // }
+
       ]
     }
   ];
 
-  constructor(private http: _HttpClient, private modal: ModalHelper) {
+  ngOnInit() {
+  }
+
+  constructor(private http: _HttpClient, private modal: ModalHelper, public acl: ACLService) {
   }
 
   updatePageElementResource(item: any) {
@@ -64,8 +74,6 @@ export class SetupAccountComponent implements OnInit {
     this.modal.createStatic(SetupSynchronizeComponent, { i: { id: 0 }, mode: 'add' }).subscribe(() => this.st.reload());
   }
 
-  ngOnInit() {
-  }
 
   add() {
     this.modal.createStatic(SetupAccountEditComponent, { i: { id: 0 }, mode: 'add' }).subscribe(() => this.st.reload());
