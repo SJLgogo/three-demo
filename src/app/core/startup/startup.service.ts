@@ -138,7 +138,7 @@ export class StartupService {
           const buttonPermissionDTOS = appData.buttonPermissionDTOS;
           const identifiers: string[] = buttonPermissionDTOS.map((item: any) => item.identifier);
 
-          console.log("identifiers:",identifiers);
+          // console.log("identifiers:",identifiers);
           this.aclService.attachAbility(identifiers);
 
           // this.aclService.setFull(true);
