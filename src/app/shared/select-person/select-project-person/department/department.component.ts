@@ -88,6 +88,7 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
       this.http.post(`/org/service/organization/admin/account/global-search`, params).subscribe((res: any) => {
         if (res.success) {
           this.panels = res.data;
+          this.panels[0].childPanel.forEach((i:any)=> i.phone = i.mobilePhone ? i.mobilePhone : i.jobNumber ?  i.jobNumber : ''   )
         }
         this.orgTreeLoading = false;
       });
@@ -141,7 +142,7 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
       value,
       value.type,
       value.loginUserId?.toString() ? value.loginUserId?.toString() : value.id?.toString(),
-      value.name,
+      value.loginUserName,
       '',
       value.departmentId,
       value.departmentName,
@@ -178,7 +179,9 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
       companyId: companyId,
       companyName: companyName,
       orgs:orgs,
-      avatar:addItem.avatar
+      avatar:addItem.avatar,
+      jobNumber:addItem.jobNumber,
+      mobilePhone:addItem.mobilePhone,
     };
     this.singleChoice ? this.selected.clear() : '';
     this.selected.set(id, person);
