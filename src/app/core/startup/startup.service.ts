@@ -128,14 +128,18 @@ export class StartupService {
           this.settingService.setApp(appData.app);
           // 用户信息：包括姓名、头像、邮箱地址
           this.settingService.setUser(appData.user);
-          // ACL：设置权限为全量
-          this.aclService.setRole(appData.user.roles);
+
+          //先判断user对象是否有roleCodes字段
+          if(appData.user.roleCodes){
+            // ACL：设置权限为全量
+            this.aclService.attachRole(appData.user.roleCodes);
+          }
 
           const buttonPermissionDTOS = appData.buttonPermissionDTOS;
           const identifiers: string[] = buttonPermissionDTOS.map((item: any) => item.identifier);
 
           console.log("identifiers:",identifiers);
-          this.aclService.setAbility(identifiers);
+          this.aclService.attachAbility(identifiers);
 
           // this.aclService.setFull(true);
           // 初始化菜单
