@@ -6,7 +6,7 @@
       <button type="submit" nz-button nzType="primary" [disabled]="!sf.valid">搜索</button>
       <button (click)="reset()" type="button" nz-button>重置</button>
     </sf>
-    <st #st [data]="url" [columns]="columns" (change)="permissionTableChange($event)" [res]="{ process: dataProcess }"></st>
+    <st #st [data]="url" [columns]="columns" (change)="permissionTableChange($event)" [res]="{ process: dataProcess }" [ps]='300'></st>
   </div>
 
   <div nz-col [nzSpan]="8">

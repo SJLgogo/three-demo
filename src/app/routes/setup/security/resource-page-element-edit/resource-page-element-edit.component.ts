@@ -21,6 +21,7 @@ export class SetupSecurityResourcePageElementEditComponent implements OnInit {
       identifier: { type: 'string', title: '页面元素标识符' },
       type: {
         type: 'string',
+        width: 100,
         title: '按钮还是标签',
         enum: [
           { label: '按钮', value: 'button' },
@@ -29,7 +30,6 @@ export class SetupSecurityResourcePageElementEditComponent implements OnInit {
         default: 'button',
         ui: {
           widget: 'select',
-          width: 200,
         } as SFSelectWidgetSchema
       },
       remark: { type: 'string', title: '备注', maxLength: 140 }
@@ -42,6 +42,7 @@ export class SetupSecurityResourcePageElementEditComponent implements OnInit {
     },
     $remark: {
       widget: 'textarea',
+      autosize: { minRows: 2, maxRows: 2 }, // 设置 minRows 和 maxRows 为相同的值来固定高度
       grid: { span: 24 }
     }
   };
