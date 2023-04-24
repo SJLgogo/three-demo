@@ -90,6 +90,7 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
           this.panels = res.data;
           this.panels[0].childPanel.forEach((i:any)=> i.phone = i.mobilePhone ? i.mobilePhone : i.jobNumber ?  i.jobNumber : ''   )
         }
+        console.log(this.panels);
         this.orgTreeLoading = false;
       });
     }
@@ -138,11 +139,13 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
   }
 
   optSearchResult(value: any) {
+    console.log(value);
+    const name = value.type == "organization" ? value.pathName : value.loginUserName
     this.addSelectedPersonList(
       value,
       value.type,
       value.loginUserId?.toString() ? value.loginUserId?.toString() : value.id?.toString(),
-      value.loginUserName,
+      name,
       '',
       value.departmentId,
       value.departmentName,
