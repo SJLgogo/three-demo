@@ -6,6 +6,7 @@ import { fn, TreeNode, variable, Person, Organization, selected, DepartmentClass
 import { RxjsChangeService } from '../../rxjsChange.service';
 import { Unsubscribable } from 'rxjs';
 import { add } from 'lodash';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-department',
@@ -35,6 +36,7 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
     private modal: ModalHelper,
     private modalRef: NzModalRef,
     private msgSrv: NzModalService,
+    private msg:NzMessageService,
     private rxjsChangeService: RxjsChangeService
   ) {
     super();
@@ -88,9 +90,11 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
       this.http.post(`/org/service/organization/admin/account/global-search`, params).subscribe((res: any) => {
         if (res.success) {
           this.panels = res.data;
-          this.panels[0].childPanel.forEach((i:any)=> i.phone = i.mobilePhone ? i.mobilePhone : i.jobNumber ?  i.jobNumber : ''   )
+          if(!this.panels[0]){
+              this.msg.warning('在您的权限范围内未搜索到！')            
+          }
+          this.panels[0]?.childPanel.forEach((i:any)=> i.phone = i.mobilePhone ? i.mobilePhone : i.jobNumber ?  i.jobNumber : ''   )
         }
-        console.log(this.panels);
         this.orgTreeLoading = false;
       });
     }
