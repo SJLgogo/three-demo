@@ -131,13 +131,15 @@ export class StartupService {
 
           //先判断user对象是否有roleCodes字段
           if(appData.user.roleCodes){
-            // ACL：设置权限为全量
+            // ACL：设置权限
             this.aclService.attachRole(appData.user.roleCodes);
           }
 
           const buttonPermissionDTOS = appData.buttonPermissionDTOS;
-          const identifiers: string[] = buttonPermissionDTOS.map((item: any) => item.identifier);
-
+          let identifiers = [];
+          if (buttonPermissionDTOS && Array.isArray(buttonPermissionDTOS) && buttonPermissionDTOS.length > 0) {
+            identifiers = buttonPermissionDTOS.map((item: any) => item.identifier);
+          }
           // console.log("identifiers:",identifiers);
           this.aclService.attachAbility(identifiers);
 

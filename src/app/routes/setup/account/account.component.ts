@@ -4,7 +4,7 @@ import { _HttpClient, ModalHelper } from '@delon/theme';
 import { STColumn, STComponent } from '@delon/abc/st';
 import { SetupAccountEditComponent } from './edit/edit.component';
 import { SetupSynchronizeComponent } from './synchronize/synchronize.component';
-import { ACLService, ACLType } from '@delon/acl';
+import { ACLService } from '@delon/acl';
 
 @Component({
   selector: 'app-setup-account',
@@ -44,6 +44,7 @@ export class SetupAccountComponent implements OnInit {
   ];
 
   ngOnInit() {
+    this.acl.setAbility(['add_examine']);
   }
 
   constructor(private http: _HttpClient, private modal: ModalHelper, public acl: ACLService) {

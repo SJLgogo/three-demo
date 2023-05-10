@@ -50,11 +50,12 @@ export class SetupAccountEditComponent implements OnInit {
 
 
   save(value: any): void {
-    // 默认账号就是手机号
-    // value.account = value.mobilePhone;
     let url = 'register';
     if (this.i.id) {
       url = 'update';
+    }else {
+      //注册的时候默认账号就是手机号
+      value.account = value.mobilePhone;
     }
     this.http.post(`/org/service/organization/admin/account/` + url, value).subscribe((res) => {
       if (res.success) {

@@ -1,10 +1,12 @@
-<page-header [action]="phActionTpl">
+<page-header [action]='phActionTpl'>
   <ng-template #phActionTpl>
     <!--    <button (click)="add()" nz-button nzType="primary">新建</button>-->
-    <button nz-button type="submit" nzType="primary" (click)="synchronizeThirdPartyAccount()">同步第三方通讯录</button>
+    <button nz-button type='submit' nzType='primary' (click)='synchronizeThirdPartyAccount()'>同步第三方通讯录</button>
+<!--    <div *ngIf="acl.canAbility('add_examine')">testfdsafafdasfdasdfasdfasf</div>-->
   </ng-template>
 </page-header>
+
 <nz-card>
-  <sf mode="search" [schema]="searchSchema" (formSubmit)="st.reset($event)" (formReset)="st.reset($event)"></sf>
-  <st #st [data]="url" [scroll]="{ x: '1300px' }" [columns]="columns"></st>
+  <sf mode='search' [schema]='searchSchema' (formSubmit)='st.reset($event)' (formReset)='st.reset($event)'></sf>
+  <st  #st [data]='url' [scroll]="{ x: '1300px' }" [columns]='columns'></st>
 </nz-card>
