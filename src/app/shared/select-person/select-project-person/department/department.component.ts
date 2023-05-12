@@ -118,8 +118,9 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
       this.http
         .get(`/org/service/organization/admin/organization/tree/child/` + node.origin!.key + '/' + node.origin['companyId'])
         .subscribe((res: any) => {
-          if (res.data[0].category == 'employee' && this.chooseMode == 'org') {
-            node.addChildren([]);
+          if (this.chooseMode == 'org') {
+            const departmentList = res.data.filter((i:any)=>i.category=='org') 
+            node.addChildren(departmentList);
             return;
           } else {
             res.success && node.addChildren(res.data);
