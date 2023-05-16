@@ -19,16 +19,21 @@ export class SelectProjectPersonComponent implements OnInit {
     private rxjsChangeService: RxjsChangeService
   ) {}
 
-  chooseMode: variable<string>; // 必填，organization | employee | department
+  chooseMode: variable<string>; // 必填，organization(部门) | employee(人) | department(人和部门)
   functionName: variable<string>; // 必填，自定义功能名称
   singleChoice: boolean = false; // 是否多选 默认多选
   externalParentId: string = ''; // 非必填 , 外界父级Id ;
   externalCompanyId: string = ''; // 非必填 , 公司Id ;
   selectList: selected[] = [];
   pageSize: number = 10; // 常用部门查询
+  declare type:'部门' | '人员' | '人员/部门';
 
   ngOnInit(): void {
-    Promise.all([this.judge()]);
+    Promise.all([this.judge(),this.obtainType()]);
+  }
+
+  obtainType():void{
+   this.type = this.chooseMode == 'department' ? '人员/部门' : this.chooseMode == 'employee' ? '人员' : '部门'
   }
 
   judge(): void {

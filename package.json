@@ -26,7 +26,7 @@
   "scripts": {
     "ng-high-memory": "node --max_old_space_size=8000 ./node_modules/@angular/cli/bin/ng",
     "ng": "ng",
-    "start": "ng s -o   --disableHostCheck --live-reload  false",
+    "start": "ng s -o --port 4204 --disableHostCheck --live-reload  false",
     "hmr": "ng s -o --hmr",
     "build": "npm run ng-high-memory build -- --prod --base-href=/platform-admin/",
     "analyze": "npm run ng-high-memory build -- --source-map",

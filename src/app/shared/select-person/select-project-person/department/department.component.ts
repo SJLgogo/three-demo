@@ -93,6 +93,16 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
           if(!this.panels[0]){
               this.msg.warning('在您的权限范围内未搜索到！')            
           }
+
+          if(this.chooseMode=='employee'){
+            this.panels[0].childPanel = this.panels[0].childPanel?.filter((i:any)=>i.type=='employee')
+          }
+
+          
+          if(this.chooseMode == 'org'){
+            this.panels[0].childPanel = this.panels[0].childPanel?.filter((i:any)=>i.type=='organization')
+          }
+
           this.panels[0]?.childPanel.forEach((i:any)=> i.phone = i.mobilePhone ? i.mobilePhone : i.jobNumber ?  i.jobNumber : ''   )
         }
         this.orgTreeLoading = false;
@@ -118,8 +128,10 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
       this.http
         .get(`/org/service/organization/admin/organization/tree/child/` + node.origin!.key + '/' + node.origin['companyId'])
         .subscribe((res: any) => {
+          console.log(this.chooseMode);
           if (this.chooseMode == 'org') {
-            const departmentList = res.data.filter((i:any)=>i.category=='org') 
+            const departmentList = this.removePerson(res.data) 
+            console.log(departmentList);
             node.addChildren(departmentList);
             return;
           } else {
@@ -128,6 +140,20 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
         });
     }
   }
+
+  /** 
+   * 递归移除人员
+   */
+  removePerson(list:any):any{
+    const res = list.filter((i:any)=>i.category=='org')
+    list.forEach((val:any)=>{
+      if(val.children?.length){
+        val.children = this.removePerson(val.children)
+      }
+    })
+    return res
+  }
+
 
   treeNodeClick(node: NzTreeNode): void {
     switch (this.chooseMode) {
@@ -144,7 +170,6 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
   }
 
   optSearchResult(value: any) {
-    console.log(value);
     const name = value.type == "organization" ? value.pathName : value.loginUserName
     this.addSelectedPersonList(
       value,
