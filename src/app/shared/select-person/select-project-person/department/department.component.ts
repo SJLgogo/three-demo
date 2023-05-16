@@ -97,7 +97,6 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
           if(this.chooseMode=='employee'){
             this.panels[0].childPanel = this.panels[0].childPanel?.filter((i:any)=>i.type=='employee')
           }
-
           
           if(this.chooseMode == 'org'){
             this.panels[0].childPanel = this.panels[0].childPanel?.filter((i:any)=>i.type=='organization')
