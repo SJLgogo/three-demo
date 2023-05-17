@@ -38,6 +38,7 @@
             <span *ngIf="item.type == 'employee'">
               {{ item.companyName }}-{{ item.loginUserName }}
               <span *ngIf="item.phone">({{item.phone}})</span>
+              <span *ngIf="item.orgName"> ({{item.orgName}})</span>
               <span *ngIf="item.isDel">(已删除)</span>
             </span>
             <span *ngIf="item.type == 'organization'">{{ item.pathName }}</span>

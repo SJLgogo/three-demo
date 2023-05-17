@@ -94,15 +94,25 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
               this.msg.warning('在您的权限范围内未搜索到！')            
           }
 
-          if(this.chooseMode=='employee'){
-            this.panels[0].childPanel = this.panels[0].childPanel?.filter((i:any)=>i.type=='employee')
-          }
-          
-          if(this.chooseMode == 'org'){
-            this.panels[0].childPanel = this.panels[0].childPanel?.filter((i:any)=>i.type=='organization')
-          }
+          this.panels.forEach((panel:any,idx:number)=>{
+            if(this.chooseMode=='employee'){
+              panel.childPanel = panel?.childPanel?.filter((i:any)=>i.type=='employee')
+              panel.childPanel.length == 0 ? this.panels.splice(idx,1)  : ''
+            }
+            if(this.chooseMode == 'org'){
+              panel.childPanel =panel?.childPanel?.filter((i:any)=>i.type=='organization')
+              panel.childPanel.length == 0 ? this.panels.splice(idx,1)  : ''
+            }
+          })
+      
+          this.panels[0]?.childPanel.forEach((i:any)=> {
+            i.phone = i.mobilePhone ? i.mobilePhone : i.jobNumber ?  i.jobNumber : '' 
+            if(i.type=='employee'){
+              i.orgName = i.org?.map((val:any)=>val.pathName).join(' ; ')
+            }
+          })
 
-          this.panels[0]?.childPanel.forEach((i:any)=> i.phone = i.mobilePhone ? i.mobilePhone : i.jobNumber ?  i.jobNumber : ''   )
+
         }
         this.orgTreeLoading = false;
       });
