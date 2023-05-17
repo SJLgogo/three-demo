@@ -108,7 +108,10 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
           this.panels[0]?.childPanel.forEach((i:any)=> {
             i.phone = i.mobilePhone ? i.mobilePhone : i.jobNumber ?  i.jobNumber : '' 
             if(i.type=='employee'){
-              i.orgName = i.org?.map((val:any)=>val.pathName).join(' ; ')
+              i.orgName = i.org?.map((val:any)=>{
+                const index = val.pathName.indexOf('/');
+                return  val.pathName.substring(index + 1);
+              }).join(';')
             }
           })
 
