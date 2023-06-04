@@ -109,7 +109,7 @@ export class DepartmentComponent extends DepartmentClass implements OnInit, OnDe
             i.phone = i.mobilePhone ? i.mobilePhone : i.jobNumber ? i.jobNumber : ''
             if (i.type == 'employee') {
               i.orgName = i.org?.map((val: any) => {
-                const index = val.D.indexOf('/');
+                const index = val.pathName.indexOf('/');
                 return val.pathName.substring(index + 1);
               }).join(';')
             }
