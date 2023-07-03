@@ -11,12 +11,12 @@ import { LayoutBlankComponent } from '../layout/blank/blank.component';
 const routes: Routes = [
   {
     path: '',
-    component: LayoutBasicComponent,
-    canActivate: [SimpleGuard],
-    canActivateChild: [SimpleGuard],
+    // component: LayoutBasicComponent,
+    // canActivate: [SimpleGuard],
+    // canActivateChild: [SimpleGuard],
     data: {},
     children: [
-      { path: '', redirectTo: 'setup', pathMatch: 'full' },
+      { path: '', redirectTo: 'three', pathMatch: 'full' },
       {
         path: 'dashboard',
         loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule),
@@ -32,7 +32,8 @@ const routes: Routes = [
       { path: 'pro', loadChildren: () => import('./pro/pro.module').then(m => m.ProModule) },
       { path: 'system', loadChildren: () => import('./system/system.module').then(m => m.SystemModule) },
       { path: 'dict', loadChildren: () => import('./dict/dict.module').then(m => m.DictModule) },
-      { path: 'setup', loadChildren: () => import('./setup/setup.module').then(m => m.SetupModule) }
+      { path: 'setup', loadChildren: () => import('./setup/setup.module').then(m => m.SetupModule) },
+      { path: 'three', loadChildren: () => import('./three/three.module').then(m => m.ThreeModule) },
     ]
   },
   // Blak Layout 空白布局
@@ -64,4 +65,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class RouteRoutingModule {}
+export class RouteRoutingModule { }

@@ -1,0 +1,5 @@
+<div style="position:absolute">
+    <button nz-button (click)="idxChange(0)">基本移动</button>
+</div>
+
+<app-basic-move [scene]="scene" [camera]="camera" [renderer]="renderer" [currentControls]="currentControls"  *ngIf="idx == 0"></app-basic-move>
