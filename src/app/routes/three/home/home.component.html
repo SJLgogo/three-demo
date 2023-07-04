@@ -1,5 +1,7 @@
 <div style="position:absolute">
     <button nz-button (click)="idxChange(0)">基本移动</button>
+    <button nz-button (click)="idxChange(1)">第一人称视角</button>
 </div>
 
 <app-basic-move [scene]="scene" [camera]="camera" [renderer]="renderer" [currentControls]="currentControls"  *ngIf="idx == 0"></app-basic-move>
+<app-person-view [scene]="scene" [camera]="camera" [renderer]="renderer" [currentControls]="currentControls"  *ngIf="idx == 1" ></app-person-view>

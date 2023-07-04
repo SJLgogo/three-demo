@@ -12,7 +12,7 @@ export class HomeComponent implements OnInit {
   constructor() { }
 
 
-  idx: number = 0
+  idx: number = 1
 
   scene: any;  // 三维场景
   camera: any;  // 相机
@@ -56,14 +56,28 @@ export class HomeComponent implements OnInit {
   setCamera(): void {
     const [width, height] = [window.innerWidth, window.innerHeight]; //3d场景宽高
     const k = width / height; //窗口宽高比
-    const s = 200; //三维场景显示范围控制系数，系数越大，显示的范围越大
-    this.camera = new THREE.OrthographicCamera(-s * k, s * k, s, -s, 1, 1000);  //创建相机对象
+    const s = 500; //三维场景显示范围控制系数，系数越大，显示的范围越大
+    // this.camera = new THREE.OrthographicCamera(-s * k, s * k, s, -s, 1, 1000);  //创建相机对象
+    // this.camera.position.set(0, 100, 600); //设置相机位置
+    // this.camera.lookAt(this.scene.position); //设置相机方向(指向的场景对象)
+
+    this.camera = this.returnPerspective()
     this.camera.position.set(0, 100, 600); //设置相机位置
     this.camera.lookAt(this.scene.position); //设置相机方向(指向的场景对象)
 
     this.renderer.setSize(width, height); //设置渲染区域尺寸
     this.renderer.setClearColor(0xFFFFFF, 1); //设置背景颜色
     document.body.appendChild(this.renderer.domElement); // body元素中插入canvas对象
+  }
+
+
+  returnPerspective(): any {
+    const fov = 45; // 视场角度
+    const aspect = window.innerWidth / window.innerHeight; // 纵横比
+    const near = 0.1; // 近剪切面
+    const far = 10000; // 远剪切面
+    const camera = new THREE.PerspectiveCamera(fov, aspect, near, far); // 透视相机
+    return camera
   }
 
   /** 控制视图移动拖拽  */
@@ -76,6 +90,7 @@ export class HomeComponent implements OnInit {
     // 添加以下几行代码
     this.orbitControls.update(); // 更新控件
     this.orbitControls.addEventListener('change', () => this.render());//监听鼠标、键盘事件
+    this.currentControls = this.orbitControls
   }
 
   idxChange(idx: number): void {
