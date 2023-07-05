@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import * as THREE from 'three';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { Common } from '../common/common.class';
@@ -10,12 +10,15 @@ import { Common } from '../common/common.class';
 })
 export class HomeComponent extends Common implements OnInit {
 
+  @ViewChild('peronView') peronView: any
+  @ViewChild('basicMove') basicMove: any
+
   constructor() {
     super()
   }
 
 
-  idx: number = 1
+  idx: number = 2
 
   scene: any;  // 三维场景
   camera: any;  // 相机
@@ -60,10 +63,6 @@ export class HomeComponent extends Common implements OnInit {
     const [width, height] = [window.innerWidth, window.innerHeight]; //3d场景宽高
     const k = width / height; //窗口宽高比
     const s = 500; //三维场景显示范围控制系数，系数越大，显示的范围越大
-    // this.camera = new THREE.OrthographicCamera(-s * k, s * k, s, -s, 1, 1000);  //创建相机对象
-    // this.camera.position.set(0, 100, 600); //设置相机位置
-    // this.camera.lookAt(this.scene.position); //设置相机方向(指向的场景对象)
-
     this.camera = this.returnPerspective()
     this.camera.position.set(0, 100, 600); //设置相机位置
     this.camera.lookAt(this.scene.position); //设置相机方向(指向的场景对象)
@@ -90,13 +89,18 @@ export class HomeComponent extends Common implements OnInit {
     this.orbitControls.enablePan = true; //启用平移
     this.orbitControls.enableZoom = true;//启用缩放
 
-    // 添加以下几行代码
     this.orbitControls.update(); // 更新控件
     this.orbitControls.addEventListener('change', () => this.render());//监听鼠标、键盘事件
     this.currentControls = this.orbitControls
   }
 
   idxChange(idx: number): void {
+    if (this.idx == 1) {
+      this.peronView.sceneClear()
+    }
+    if (this.idx == 0) {
+      this.basicMove.scenenClear()
+    }
     this.idx = idx
   }
 

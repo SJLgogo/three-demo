@@ -86,11 +86,14 @@ export class BasicMoveComponent extends Common implements OnInit {
     const curve = new THREE.CatmullRomCurve3([
       new THREE.Vector3(100, 0, 0),
       new THREE.Vector3(-2, 3, 0),
-      new THREE.Vector3(2, -3, 0),
-      new THREE.Vector3(5, 0, 0)
+      new THREE.Vector3(-20, -3, 40),
+      new THREE.Vector3(-80, 0, 0),
     ]);
     const curvePath = new THREE.CurvePath();
     curvePath.add(curve);
+    this.user.currentGroup.remove(this.user.userModel)
+    this.user.currentGroup.add(this.user.walkingModel)
+    this.gltfAnimation(this.scene, this.renderer, this.camera, this.user.walkingGltf)
     new TWEEN.Tween({ t: 0 })
       .to({ t: 1 }, 10000)
       .onUpdate((e: any) => {
@@ -99,6 +102,8 @@ export class BasicMoveComponent extends Common implements OnInit {
         this.render()
       })
       .onComplete(() => {
+        this.user.currentGroup.remove(this.user.walkingModel)
+        this.user.currentGroup.add(this.user.userModel)
       })          // 动画结束后执行
       .start();
     animate()
@@ -144,6 +149,12 @@ export class BasicMoveComponent extends Common implements OnInit {
       renderer.render(scene, camera);
     }
     animate();
+  }
+
+
+  scenenClear(): void {
+    this.scene.remove(this.user.currentGroup)
+    this.render()
   }
 
 

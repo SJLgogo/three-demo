@@ -5,7 +5,7 @@ import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls'
-
+import { HDRCubeTextureLoader } from "three/examples/jsm/loaders/HDRCubeTextureLoader";
 
 @Component({
   selector: 'app-first-person',
@@ -44,5 +44,21 @@ export class FirstPersonComponent extends Common implements OnInit {
   render(): void {
     this.renderer.render(this.scene, this.camera);
   }
+
+  editBackground(): void {
+    const loader = new HDRCubeTextureLoader();
+    loader.setPath('assets/hdr'); // 设置 HDR 图像所在的文件夹路径
+
+    const hdrCubeMap = loader.load([
+      '1.hdr', '1.hdr', // 正 x、负 x 方向
+      '1.hdr', '1.hdr', // 正 y、负 y 方向
+      '1.hdr', '1.hdr'  // 正 z、负 z 方向
+    ], () => {
+
+    });
+    // hdrCubeMap.encoding = THREE.RGBEEncoding; // 设置 HDR 编码
+    this.scene.background = hdrCubeMap;
+  }
+
 
 }
