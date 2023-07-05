@@ -72,4 +72,10 @@ export class Common {
         });
         return group
     }
+
+    getCameraDirection(camera: any): void {
+        const direction = new THREE.Vector3(); // 创建一个向量来保存相机的朝向数据
+        camera.getWorldDirection(direction); // 将相机的朝向数据存储在 direction 向量中
+        console.log('Camera Direction:', direction.x, direction.y, direction.z);    // 输出相机朝向的 x、y、z 分量
+    }
 }

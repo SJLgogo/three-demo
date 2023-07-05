@@ -4,6 +4,7 @@ import { HomeComponent } from './home/home.component';
 import { ThreeRoutingModule } from './three-routing.module';
 import { BasicMoveComponent } from './animation/basic-move/basic-move.component';
 import { PersonViewComponent } from './animation/person-view/person-view.component';
+import { FirstPersonComponent } from './animation/first-person/first-person.component';
 
 
 
@@ -11,7 +12,8 @@ import { PersonViewComponent } from './animation/person-view/person-view.compone
   declarations: [
     HomeComponent,
     BasicMoveComponent,
-    PersonViewComponent
+    PersonViewComponent,
+    FirstPersonComponent
   ],
   imports: [
     CommonModule, ThreeRoutingModule

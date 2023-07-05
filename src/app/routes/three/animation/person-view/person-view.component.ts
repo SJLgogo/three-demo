@@ -28,26 +28,48 @@ export class PersonViewComponent extends Common implements OnInit {
   @Input()
   currentControls: any;
   user = new UserModel()
-  t = 0;
   sceneView: any;
-  loopTime = 10 * 1000; // loopTime: 循环一圈的时间
+
 
 
   async ngOnInit(): Promise<void> {
     this.sceneView = await new FBXLoader().loadAsync('assets/svg/5.fbx');
-    this.user.setCurrentGroup(this.user.userModel)
     this.addModelToScenen()
     this.render()
   }
 
   /** 模型加入场景 */
   addModelToScenen(): void {
-    this.scene.add(this.user.currentGroup)
     this.scene.add(this.sceneView)
   }
 
   render(): void {
     this.renderer.render(this.scene, this.camera);
+  }
+
+  cameraViewAnimate(): void {
+    const cameraAnimate = () => {
+      requestAnimationFrame(cameraAnimate);
+      TWEEN.update();
+    }
+    const position = this.camera.position
+
+    const startCameraPosition = new THREE.Vector3(position.x, position.y, position.z); // 设置起始相机位置
+    const targetCameraPosition = new THREE.Vector3(200, -60, 0); // 设置目标相机位置
+    new TWEEN.Tween(startCameraPosition)
+      .to(targetCameraPosition, 1000)
+      .easing(TWEEN.Easing.Quadratic.InOut)
+      .onUpdate(() => {     // 在Tween动画更新时，更新相机位置
+        this.camera.position.copy(startCameraPosition);
+        this.camera.lookAt(0, -60, 0);
+        this.render()
+      })
+      .onComplete(() => {
+        this.currentControls.target.set(0, -60, 0); // 改变目标点
+        this.currentControls.update();
+      })
+      .start();
+    cameraAnimate()
   }
 
   viewMove(): void {
@@ -60,8 +82,8 @@ export class PersonViewComponent extends Common implements OnInit {
       .to({ t: 1 }, 30000)
       .onUpdate((e: any) => {
         const position = curve.getPointAt(e.t);
-        if (e.t > 0.04) {
-          var pos = curve.getPointAt(e.t - 0.04);
+        if (e.t > 0.03) {
+          var pos = curve.getPointAt(e.t - 0.03);
           this.camera.position.copy(pos);
           this.camera.lookAt(position);
         }
@@ -69,6 +91,7 @@ export class PersonViewComponent extends Common implements OnInit {
       })
       .onComplete(() => {
         console.log(this.camera.position);
+
       })          // 动画结束后执行
       .start();
     animate()
@@ -83,6 +106,15 @@ export class PersonViewComponent extends Common implements OnInit {
     ]);
     return curve
   }
+
+  getCameraLookAt(): void {
+    const target = new THREE.Vector3();
+    this.camera.getWorldDirection(target);
+    const lookAtData = this.camera.position.clone().add(target);
+    console.log('LookAt Point:', lookAtData.x, lookAtData.y, lookAtData.z);
+  }
+
+
 
 
 }

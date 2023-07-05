@@ -1,15 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import * as THREE from 'three';
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { Common } from '../common/common.class';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.less']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent extends Common implements OnInit {
 
-  constructor() { }
+  constructor() {
+    super()
+  }
 
 
   idx: number = 1
