@@ -5,6 +5,8 @@ import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls'
+import { HDRCubeTextureLoader } from "three/examples/jsm/loaders/HDRCubeTextureLoader";
+
 import * as THREE from 'three';
 import * as TWEEN from '@tweenjs/tween.js';
 
@@ -37,6 +39,8 @@ export class PersonViewComponent extends Common implements OnInit {
     this.addModelToScenen()
     this.render()
   }
+
+
 
   /** 模型加入场景 */
   addModelToScenen(): void {
@@ -101,20 +105,18 @@ export class PersonViewComponent extends Common implements OnInit {
     const curve = new THREE.CatmullRomCurve3([
       new THREE.Vector3(400, -60, 0),
       new THREE.Vector3(300, -50, 0),
-      new THREE.Vector3(200, -60, 0),
+      new THREE.Vector3(200, -60, 40),
       new THREE.Vector3(-200, -60, 0)
     ]);
     return curve
   }
 
-  getCameraLookAt(): void {
-    const target = new THREE.Vector3();
-    this.camera.getWorldDirection(target);
-    const lookAtData = this.camera.position.clone().add(target);
-    console.log('LookAt Point:', lookAtData.x, lookAtData.y, lookAtData.z);
+
+
+  sceneClear(): void {
+    this.scene.remove(this.sceneView)
+    this.render()
   }
-
-
 
 
 }
