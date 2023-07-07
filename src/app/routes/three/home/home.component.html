@@ -6,4 +6,4 @@
 
 <app-basic-move #basicMove [scene]="scene" [camera]="camera" [renderer]="renderer" [currentControls]="currentControls"  *ngIf="idx == 0"></app-basic-move>
 <app-person-view #peronView [scene]="scene" [camera]="camera" [renderer]="renderer" [currentControls]="currentControls"  *ngIf="idx == 1" ></app-person-view>
-<app-first-person [scene]="scene" [camera]="camera" [renderer]="renderer" [currentControls]="currentControls"  *ngIf="idx == 2"></app-first-person>
+<app-first-person #firstPerson [scene]="scene" [camera]="camera" [renderer]="renderer" [currentControls]="currentControls" (changeController)="changeController"  *ngIf="idx == 2"></app-first-person>

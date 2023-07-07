@@ -78,4 +78,25 @@ export class Common {
         camera.getWorldDirection(direction); // 将相机的朝向数据存储在 direction 向量中
         console.log('Camera Direction:', direction.x, direction.y, direction.z);    // 输出相机朝向的 x、y、z 分量
     }
+
+    /** gltf自身动画 */
+    gltfAnimation(scene: any, renderer: any, camera: any, gltf: any): void {
+        const mixer = new THREE.AnimationMixer(scene);
+        const clock = new THREE.Clock();
+        // 获取动画剪辑
+        const animationClip = gltf.animations[0];
+        // 创建动画动作
+        const action = mixer.clipAction(animationClip);
+
+        // 开始播放动画
+        action.play();
+
+        const animate = () => {
+            requestAnimationFrame(animate);
+            const deltaTime = clock.getDelta();
+            mixer.update(deltaTime);
+            renderer.render(scene, camera);
+        }
+        animate();
+    }
 }
