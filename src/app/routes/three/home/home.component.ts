@@ -12,6 +12,7 @@ export class HomeComponent extends Common implements OnInit {
 
   @ViewChild('peronView') peronView: any
   @ViewChild('basicMove') basicMove: any
+  @ViewChild('firstPerson') firstPerson: any
 
   constructor() {
     super()
@@ -32,9 +33,8 @@ export class HomeComponent extends Common implements OnInit {
 
   baseThree(): void {
     this.scene = new THREE.Scene()
-    this.renderer = new THREE.WebGLRenderer();
+    this.renderer = new THREE.WebGLRenderer({ alpha: false });
     this.setLight()
-    this.AxesHelper()
     this.setCamera()
     this.controllSceen()
     this.render()
@@ -46,6 +46,7 @@ export class HomeComponent extends Common implements OnInit {
     const point = new THREE.PointLight(0x999999);  // 创建一个光源对象，参数定义光照强度
     point.position.set(200, 1000, 1000); //点光源位置
     this.scene.add(point); //点光源添加到场景中
+
     const ambient = new THREE.AmbientLight(0x444444); //环境光
     this.scene.add(ambient);
   }
@@ -95,17 +96,26 @@ export class HomeComponent extends Common implements OnInit {
   }
 
   idxChange(idx: number): void {
+    if (this.idx == 0) {
+      this.basicMove.scenenClear()
+    }
     if (this.idx == 1) {
       this.peronView.sceneClear()
     }
-    if (this.idx == 0) {
-      this.basicMove.scenenClear()
+    if (this.idx == 2) {
+      this.firstPerson.scenenClear()
     }
     this.idx = idx
   }
 
+  // 控制器改变
+  changeController(e: any): void {
+    console.log(e);
+  }
+
 
   render(): void {
+    console.log(this.currentControls);
     this.renderer.render(this.scene, this.camera);//执行渲染操作
     requestAnimationFrame(() => this.render);//请求再次执行渲染函数render
   }

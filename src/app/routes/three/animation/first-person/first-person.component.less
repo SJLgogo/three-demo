@@ -1,0 +1,65 @@
+p {
+    margin: 0px;
+}
+
+.thoroughfare {
+    position: absolute;
+
+    .main {
+        background-image: url('^assets/thoroughfare.png');
+        background-size: 100% 100%;
+        box-sizing: border-box;
+        padding: 20px 30px;
+        height: 142px;
+        width: 252px;
+        animation: fadeIn 0.5s ease-in-out forwards;
+
+        .title {
+            font-size: 18px;
+            font-family: PingFangSC-Semibold, PingFang SC;
+            font-weight: 600;
+            color: #FFFFFF;
+            margin-bottom: 3px;
+            animation: show 0.5s ease-in-out forwards;
+        }
+
+        .in {
+            font-size: 16px;
+            font-family: PingFangSC-Regular, PingFang SC;
+            font-weight: 400;
+            color: #FFFFFF;
+            animation: show 0.5s ease-in-out forwards;
+        }
+
+        .out {
+            font-size: 16px;
+            font-family: PingFangSC-Regular, PingFang SC;
+            font-weight: 400;
+            color: #FFFFFF;
+            animation: show 0.5s ease-in-out forwards;
+        }
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+
+@keyframes show {
+    from {
+        display: none;
+    }
+
+    to {
+        display: block;
+    }
+}
